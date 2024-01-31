@@ -1,4 +1,5 @@
-﻿/* 
+// Version: 1.0.0.169
+/* 
  * MIT License
  * 
  * Copyright (c) 2023 Softbery by Paweł Tobis
@@ -21,16 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Author                : Paweł Tobis
- * Email                 : softbery@gmail.com
- * Description           :
- * Create                : 2023-02-24 04:31:42
- * Last Modification Date: 2023-03-02 19:58:04
+ * Author						: Paweł Tobis
+ * Email							: softbery@gmail.com
+ * Description					:
+ * Create						: 2023-02-24 04:31:42
+ * Last Modification Date: 2024-01-30 19:58:04
  */
 
+using softbery;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Configuration;
 
 /* Creating a namespace called `Versioner`. */
 namespace Versioner
@@ -39,28 +47,30 @@ namespace Versioner
 	public class DebugVersion
 	{
 		/* A property of the class `Ver`. */
-		public int build { get; set; }
+		public int Build { get; set; }
 		/* A property of the class `Ver`. */
-		public int major { get; set; }
+		public int Major { get; set; }
 		/* A property of the class `Ver`. */
-		public int minor { get; set; }
+		public int Minor { get; set; }
 		/* A property of the class `Ver`. */
-		public int revision { get; set; }
+		public int Revision { get; set; }
 		/* A nullable array of integers. */
-		public int[]? versiontab { get; set; }
+		public int[]? VersionTab { get; set; }
 	}
 
 	/* The main class of the program. */
 	public class Program
 	{
-		/* A variable that is used to store the build version of the program. */
-		static int BuildInt = 99;
+		public static Conf? Config { get; private set; }
+        /* A variable that is used to store the build version of the program. */
+        static int BuildInt = 99;
 		/* A variable that is used to store the major version of the program. */
 		static int MajorInt = 0;
 		/* A variable that is used to store the minor version of the program. */
 		static int MinorInt = 9;
 		/* A variable that is used to store the revision version of the program. */
 		static int RevisionInt = 999;
+		private static List<Tree> _trees = new List<Tree>();
 		/// <summary>
 		/// The main function of the program.
 		/// </summary>
@@ -68,6 +78,33 @@ namespace Versioner
 		/// arguments.</param>
 		public static void Main(string[] args)
 		{
+			try
+			{
+                FileInfo fi = new(".sbconf");
+                List<FileInfo> lfi = new();
+                lfi.Add(fi);
+                Config = new Conf(args);
+            }catch(Exception ex)
+			{
+				Console.WriteLine(ex.ToString());
+			}
+			
+			/* Add line to with version for each file */
+			_trees = FileManager.GetDataTree("./");
+			var tree = "";
+			if (File.Exists(".sbver_files"))
+			{
+				File.Delete(".sbver_files");
+			}
+
+			foreach (var item in _trees)
+			{
+				tree += $"{item.Name}-{item.Path}-{item.FileType.ToString()}{Environment.NewLine}";
+				
+			}
+
+			File.WriteAllText(".sbver_files", tree);
+
 			/* Checking if the file `.sbver` exists. */
 			if (!File.Exists(".sbver"))
 			{
@@ -92,23 +129,23 @@ namespace Versioner
 				var ver = new DebugVersion();
 
 				/* Creating a new array of integers with the size of the array `splited`. */
-				ver.versiontab = new int[splited.Count()];
+				ver.VersionTab = new int[splited.Count()];
 
 				int i = 0;
 				/* Iterating through the array `splited`. */
 				foreach (var item in splited)
 				{
-					ver.versiontab[i] = Convert.ToInt16(splited[i]);
+					ver.VersionTab[i] = Convert.ToInt16(splited[i]);
 					i++;
 				}
 
 				/* Changing the color of the text. */
 				Console.ForegroundColor = ConsoleColor.DarkMagenta;
 
-				ver.major = ver.versiontab[0];
-				ver.minor = ver.versiontab[1];
-				ver.build = ver.versiontab[2];
-				ver.revision = ver.versiontab[3];
+				ver.Major = ver.VersionTab[0];
+				ver.Minor = ver.VersionTab[1];
+				ver.Build = ver.VersionTab[2];
+				ver.Revision = ver.VersionTab[3];
 
 				AssemblyName appname = typeof(Program).Assembly.GetName();
 				Version appver = appname.Version!=null ? appname.Version: new Version(1,0,0,0);
@@ -125,12 +162,12 @@ namespace Versioner
 					Console.WriteLine("Application name or version has null value.");	
 				
 				/* Printing the current version of the program. */
-				Console.WriteLine($"{Environment.NewLine}{name.ToUpper()} ver.{version}{Environment.NewLine}{Environment.NewLine}Current thread  : {Environment.CurrentManagedThreadId}{Environment.NewLine}Current process : {Environment.ProcessId}{Environment.NewLine}Current user    : {Environment.UserName}{Environment.NewLine}Current OS      : {Environment.OSVersion}{Environment.NewLine}Current version : {ver.major}.{ver.minor}.{ver.build}.{ver.revision}");
+				Console.WriteLine($"{Environment.NewLine}{name.ToUpper()} ver.{version}{Environment.NewLine}{Environment.NewLine}Current thread  : {Environment.CurrentManagedThreadId}{Environment.NewLine}Current process : {Environment.ProcessId}{Environment.NewLine}Current user    : {Environment.UserName}{Environment.NewLine}Current OS      : {Environment.OSVersion}{Environment.NewLine}Current version : {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
 
 				ver = UpdateVersion(ver);
 
 				/* Printing the new version of the program. */
-				Console.WriteLine($"New version     : {ver.major}.{ver.minor}.{ver.build}.{ver.revision}");
+				Console.WriteLine($"New version     : {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
 
 				/* Checking if the file `.sbver` exists. */
 				if (File.Exists(".sbver"))
@@ -139,47 +176,50 @@ namespace Versioner
 				}
 
 				/* Writing the new version of the program to the file `.sbver`. */
-				File.WriteAllText(".sbver", $"{ver.major}.{ver.minor}.{ver.build}.{ver.revision}");
+				File.WriteAllText(".sbver", $"{ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
 
 				/* Printing the status of the program. */
 				Console.WriteLine("Status: OK");
+
+				Console.WriteLine(Config.Configuration["Template"]);
+				Console.ReadLine();
 			}
 		}
 
-		private static DebugVersion UpdateVersion(DebugVersion version)
+		public static DebugVersion UpdateVersion(DebugVersion version)
 		{
 			var ver = new DebugVersion();
-			ver.major = version.major;
-			ver.minor = version.minor;
-			ver.build = version.build;
-			ver.revision = version.revision;
+			ver.Major = version.Major;
+			ver.Minor = version.Minor;
+			ver.Build = version.Build;
+			ver.Revision = version.Revision;
 
-			ver.revision++;
+			ver.Revision++;
 
 			/* Checking if the revision is greater than 9999. */
-			if (ver.revision > RevisionInt)
+			if (ver.Revision > RevisionInt)
 			{
-				ver.revision = 0;
-				ver.build++;
+				ver.Revision = 0;
+				ver.Build++;
 			}
 
 			/* Checking if the build is greater than 99. */
-			if (ver.build > BuildInt)
+			if (ver.Build > BuildInt)
 			{
-				ver.build = 0;
-				ver.minor++;
+				ver.Build = 0;
+				ver.Minor++;
 			}
 
 			/* Checking if the minor version is greater than 12. */
-			if (ver.minor > MinorInt)
+			if (ver.Minor > MinorInt)
 			{
-				ver.minor = 0;
-				ver.major++;
+				ver.Minor = 0;
+				ver.Major++;
 			}
 
 			/* Checking if the major version is less than 1. */
-			if (ver.major <= MajorInt)
-				ver.major++;
+			if (ver.Major <= MajorInt)
+				ver.Major++;
 
 			return ver;
 		}
