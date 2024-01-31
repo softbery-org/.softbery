@@ -10,6 +10,11 @@ git clone https://github.com/softbery-org/.softbery <project dir>
     </Target>
 ```
 
+
+
+
+
+
 > When you build your project. Application will be grow up your version.
 > 
 > Enjoy using `Softbery Versioner by Paweł Tobis`.
