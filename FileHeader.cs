@@ -1,4 +1,9 @@
-// Version: 1.0.0.9
+// Version: 10.0.0.55
+// Version: 10.0.0.48
+// Version: 10.0.0.47
+// Version: 10.0.0.46
+// Version: 10.0.0.44
+// Version: 10.0.0.42
 /* 
  * MIT License
  * 
@@ -83,7 +88,7 @@ namespace softbery
         /// <summary>
         /// Template to file header
         /// </summary>
-        public string? Template { get => _template; set => _template= value; }
+        public string? Template { get => _template; set => _template = value; }
         /// <summary>
         /// Create date
         /// </summary>
@@ -103,6 +108,12 @@ namespace softbery
         /// </summary>
         public int Year { get => _year; set => _year = value; }
 
+        private string _copyrightPattern = @"^.*\*.*Copyright \([Cc]\).*";
+        private string _authorPattern = @"(^.*\*.*Author.*): (.*)";
+        private string _emailPattern = @"(^.*\*.*Email.*): (.*)";
+        private string _descriptionPattern = @"(^.*\*.*Description.*): (.*)";
+        private string _createPattern = @"(^.*\*.*Create.*): (.*)";
+        private string _modifiedPattern = @"(^.*\*.*Author.*): (.*)";
 
         /// <summary>
         /// Create a file header
@@ -111,5 +122,7 @@ namespace softbery
         {
 
         }
+
+
     }
 }

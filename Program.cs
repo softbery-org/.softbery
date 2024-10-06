@@ -1,4 +1,4 @@
-// Version: 1.0.0.169
+// Version: 1.0.0.41
 /* 
  * MIT License
  * 
@@ -25,203 +25,134 @@
  * Author						: Paweł Tobis
  * Email							: softbery@gmail.com
  * Description					:
- * Create						: 2023-02-24 04:31:42
+ * Create						: 2024-10-01 04:31:42
  * Last Modification Date: 2024-01-30 19:58:04
  */
 
-using softbery;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using System.Reflection.Metadata;
 using System.Text;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Configuration;
+using System.Threading.Tasks;
 
-/* Creating a namespace called `Versioner`. */
-namespace Versioner
+namespace softbery
 {
-	/* A class that contains the version of the program. */
-	public class DebugVersion
-	{
-		/* A property of the class `Ver`. */
-		public int Build { get; set; }
-		/* A property of the class `Ver`. */
-		public int Major { get; set; }
-		/* A property of the class `Ver`. */
-		public int Minor { get; set; }
-		/* A property of the class `Ver`. */
-		public int Revision { get; set; }
-		/* A nullable array of integers. */
-		public int[]? VersionTab { get; set; }
-	}
+    public class Program
+    {
+        private static List<Tree> _trees = new List<Tree>();
 
-	/* The main class of the program. */
-	public class Program
-	{
-		public static Conf? Config { get; private set; }
-        /* A variable that is used to store the build version of the program. */
-        static int BuildInt = 99;
-		/* A variable that is used to store the major version of the program. */
-		static int MajorInt = 0;
-		/* A variable that is used to store the minor version of the program. */
-		static int MinorInt = 9;
-		/* A variable that is used to store the revision version of the program. */
-		static int RevisionInt = 999;
-		private static List<Tree> _trees = new List<Tree>();
-		/// <summary>
-		/// The main function of the program.
-		/// </summary>
-		/// <param name="args">This is an array of strings that contains the command-line
-		/// arguments.</param>
-		public static void Main(string[] args)
-		{
-			try
-			{
+        public static void Main(string[] args) 
+        {
+            try
+            {
                 FileInfo fi = new(".sbconf");
                 List<FileInfo> lfi = new();
                 lfi.Add(fi);
-                Config = new Conf(args);
-            }catch(Exception ex)
-			{
-				Console.WriteLine(ex.ToString());
-			}
-			
-			/* Add line to with version for each file */
-			_trees = FileManager.GetDataTree("./");
-			var tree = "";
-			if (File.Exists(".sbver_files"))
-			{
-				File.Delete(".sbver_files");
-			}
+                //Config = new Conf(args);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
 
-			foreach (var item in _trees)
-			{
-				tree += $"{item.Name}-{item.Path}-{item.FileType.ToString()}{Environment.NewLine}";
-				
-			}
+            /* Add line to with version for each file */
+            _trees = FileManager.GetDataTree("./");
+            var tree = "";
+            if (File.Exists(".sbver_files"))
+            {
+                File.Delete(".sbver_files");
+            }
 
-			File.WriteAllText(".sbver_files", tree);
+            foreach (var item in _trees)
+            {
+                tree += $"{item.Name}-{item.Path}-{item.FileType.ToString()}{Environment.NewLine}";
 
-			/* Checking if the file `.sbver` exists. */
-			if (!File.Exists(".sbver"))
-			{
-				File.WriteAllText(".sbver", $"1.0.0.0");
-			}
+            }
 
-			var txt = File.ReadAllLines(".sbver", Encoding.UTF8);
-			/* Declaring a variable of type `string` and assigning it the value `""`. */
-			string trimed = "";
-			/* Iterating through the array `txt`. */
-			foreach (var item in txt)
-			{
-				trimed = item.Trim();
-			}
+            File.WriteAllText(".sbver_files", tree);
 
-			/* Checking if the file `.sbver` is empty. */
-			if (txt.Count() >= 0)
-			{
-				/* Splitting the string `trimed` by the character `.` and removing the empty entries. */
-				var splited = trimed.Split(".", StringSplitOptions.RemoveEmptyEntries);
-				/* Creating a new instance of the class `Ver`. */
-				var ver = new DebugVersion();
+            /* Checking if the file `.sbver` exists. */
+            if (!File.Exists(".sbver"))
+            {
+                File.WriteAllText(".sbver", $"1.0.0.0");
+            }
 
-				/* Creating a new array of integers with the size of the array `splited`. */
-				ver.VersionTab = new int[splited.Count()];
+            var txt = File.ReadAllLines(".sbver", Encoding.UTF8);
+            /* Declaring a variable of type `string` and assigning it the value `""`. */
+            string trimed = "";
+            /* Iterating through the array `txt`. */
+            foreach (var item in txt)
+            {
+                trimed = item.Trim();
+            }
 
-				int i = 0;
-				/* Iterating through the array `splited`. */
-				foreach (var item in splited)
-				{
-					ver.VersionTab[i] = Convert.ToInt16(splited[i]);
-					i++;
-				}
+            /* Checking if the file `.sbver` is empty. */
+            if (txt.Count() >= 0)
+            {
+                /* Splitting the string `trimed` by the character `.` and removing the empty entries. */
+                var splited = trimed.Split(".", StringSplitOptions.RemoveEmptyEntries);
+                /* Creating a new instance of the class `Ver`. */
+                var ver = new DebugVersion();
 
-				/* Changing the color of the text. */
-				Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                /* Creating a new array of integers with the size of the array `splited`. */
+                ver.VersionTab = new int[splited.Count()];
 
-				ver.Major = ver.VersionTab[0];
-				ver.Minor = ver.VersionTab[1];
-				ver.Build = ver.VersionTab[2];
-				ver.Revision = ver.VersionTab[3];
+                int i = 0;
+                /* Iterating through the array `splited`. */
+                foreach (var item in splited)
+                {
+                    ver.VersionTab[i] = Convert.ToInt16(splited[i]);
+                    i++;
+                }
 
-				AssemblyName appname = typeof(Program).Assembly.GetName();
-				Version appver = appname.Version!=null ? appname.Version: new Version(1,0,0,0);
+                /* Changing the color of the text. */
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
 
-				string name="";
-				string version="";
-				
-				if(appname.Name!=null && appname.Version!=null)
-				{
-					name = appname.Name.ToUpper();
-					version = appver.ToString();
-				}
-				else
-					Console.WriteLine("Application name or version has null value.");	
-				
-				/* Printing the current version of the program. */
-				Console.WriteLine($"{Environment.NewLine}{name.ToUpper()} ver.{version}{Environment.NewLine}{Environment.NewLine}Current thread  : {Environment.CurrentManagedThreadId}{Environment.NewLine}Current process : {Environment.ProcessId}{Environment.NewLine}Current user    : {Environment.UserName}{Environment.NewLine}Current OS      : {Environment.OSVersion}{Environment.NewLine}Current version : {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
+                ver.Major = ver.VersionTab[0];
+                ver.Minor = ver.VersionTab[1];
+                ver.Build = ver.VersionTab[2];
+                ver.Revision = ver.VersionTab[3];
 
-				ver = UpdateVersion(ver);
+                AssemblyName appname = typeof(Program).Assembly.GetName();
+                Version appver = appname.Version != null ? appname.Version : new Version(1, 0, 0, 0);
 
-				/* Printing the new version of the program. */
-				Console.WriteLine($"New version     : {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
+                string name = "";
+                string version = "";
 
-				/* Checking if the file `.sbver` exists. */
-				if (File.Exists(".sbver"))
-				{
-					File.Delete(".sbver");
-				}
+                if (appname.Name != null && appname.Version != null)
+                {
+                    name = appname.Name.ToUpper();
+                    version = appver.ToString();
+                }
+                else
+                    Console.WriteLine("Application name or version has null value.");
 
-				/* Writing the new version of the program to the file `.sbver`. */
-				File.WriteAllText(".sbver", $"{ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
+                /* Printing the current version of the program. */
+                Console.WriteLine($"{Environment.NewLine}{name.ToUpper()} ver.{version}{Environment.NewLine}{Environment.NewLine}" +
+                    $"Current thread   : {Environment.CurrentManagedThreadId}{Environment.NewLine}" +
+                    $"Current process : {Environment.ProcessId}{Environment.NewLine}" +
+                    $"Current user      : {Environment.UserName}{Environment.NewLine}" +
+                    $"Current OS        : {Environment.OSVersion}{Environment.NewLine}" +
+                    $"Current version  : {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
 
-				/* Printing the status of the program. */
-				Console.WriteLine("Status: OK");
+                ver = Ver.CountingVersion(ver);
 
-				Console.WriteLine(Config.Configuration["Template"]);
-				Console.ReadLine();
-			}
-		}
+                /* Printing the new version of the program. */
+                Console.WriteLine($"New version     : {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
 
-		public static DebugVersion UpdateVersion(DebugVersion version)
-		{
-			var ver = new DebugVersion();
-			ver.Major = version.Major;
-			ver.Minor = version.Minor;
-			ver.Build = version.Build;
-			ver.Revision = version.Revision;
+                /* Checking if the file `.sbver` exists. */
+                if (File.Exists(".sbver"))
+                {
+                    File.Delete(".sbver");
+                }
 
-			ver.Revision++;
+                /* Writing the new version of the program to the file `.sbver`. */
+                File.WriteAllText(".sbver", $"{ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
 
-			/* Checking if the revision is greater than 9999. */
-			if (ver.Revision > RevisionInt)
-			{
-				ver.Revision = 0;
-				ver.Build++;
-			}
-
-			/* Checking if the build is greater than 99. */
-			if (ver.Build > BuildInt)
-			{
-				ver.Build = 0;
-				ver.Minor++;
-			}
-
-			/* Checking if the minor version is greater than 12. */
-			if (ver.Minor > MinorInt)
-			{
-				ver.Minor = 0;
-				ver.Major++;
-			}
-
-			/* Checking if the major version is less than 1. */
-			if (ver.Major <= MajorInt)
-				ver.Major++;
-
-			return ver;
-		}
-	}
+                /* Printing the status of the program. */
+                Console.WriteLine("Status: OK");
+            }
+        }
+    }
 }

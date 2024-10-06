@@ -1,4 +1,9 @@
-// Version: 1.0.0.9
+// Version: 10.0.0.55
+// Version: 10.0.0.48
+// Version: 10.0.0.47
+// Version: 10.0.0.46
+// Version: 10.0.0.44
+// Version: 10.0.0.42
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,8 +71,6 @@ namespace softbery
                 }
             }
         }
-
-
 
         /// <summary>
         /// Ini background worker.
