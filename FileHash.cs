@@ -15,7 +15,7 @@ namespace softbery
 {
     internal static class FileHash
     {
-        /// <summary>
+        /*/// <summary>
         /// Get / check MD5 file hash.
         /// </summary>
         /// <param name="file">FileInfo</param>
@@ -37,14 +37,14 @@ namespace softbery
             using var md5 = MD5.Create();
             using var stream = File.OpenRead(file.FullName);
             return Encoding.Default.GetString(md5.ComputeHash(stream));
-        }
+        }*/
 
         /// <summary>
-        /// 
+        /// Get MD5 Checksum by bit converter.
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public static string GetMD5Checksum(this FileInfo file)
+        /// <param name="file">FileInfo</param>
+        /// <returns>string</returns>
+        public static string GetMD5ChecksumBitConverter(this FileInfo file)
         {
             using (var md5 = MD5.Create())
             {
@@ -52,6 +52,23 @@ namespace softbery
                 {
                     var hash = md5.ComputeHash(stream);
                     return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get MD5 Checksum by encoding stream.
+        /// </summary>
+        /// <param name="file">Fileinfo</param>
+        /// <returns>string</returns>
+        public static string GetMD5ChecksumEncoding(this FileInfo file)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(file.FullName))
+                {
+                    var hash = md5.ComputeHash(stream);
+                    return Encoding.Default.GetString(hash);
                 }
             }
         }

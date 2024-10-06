@@ -66,7 +66,7 @@ namespace softbery
 
             foreach (var item in _trees)
             {
-                tree += $"{item.Name}-{item.Path}-{item.FileType.ToString()}{Environment.NewLine}";
+                tree += $"File name: {item.Name} | File path: {item.Path} | File type: {item.FileType.ToString()} | File hash: {item.Hash}{Environment.NewLine}";
 
             }
 

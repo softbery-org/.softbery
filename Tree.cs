@@ -25,6 +25,7 @@ namespace softbery
 		public DirectoryTree Directory { get; set; }
 		public FileInfo Info { get; set; }
 		public DataType FileType { get; set; }
+		public string Hash { get; set; }
 	}
 
 	public struct DirectoryTree

@@ -50,6 +50,7 @@ namespace softbery
 							ft.FileType = DataType.file;
 							ft.Info = fi;
 							ft.Directory = dt;
+							ft.Hash = fi.GetMD5ChecksumEncoding();
 
 							if (!_trees.Contains(ft))
 							{
@@ -65,6 +66,7 @@ namespace softbery
 							ft.FileType = DataType.file;
 							ft.Info = fi;
 							ft.Directory = dt;
+							ft.Hash = fi.GetMD5ChecksumEncoding();
 
 							if (!_trees.Contains(ft))
 							{
@@ -154,6 +156,15 @@ namespace softbery
 			return $"// Version: {u.Major}.{u.Minor}.{u.Build}.{u.Revision}";
 		}
 
+		/// <summary>
+		/// Generated regex can be used in line 145
+		/// </summary>
+		/// <example>
+		/// var r = new Regex("^.*//.*Version:").Replace(group, "");
+		/// or
+		/// var r = ReplaceRegex().Replace(group, "");
+		/// </example>
+		/// <returns></returns>
         [GeneratedRegex(@"^.*//.*Version:")]
         private static partial Regex ReplaceRegex();
     }
