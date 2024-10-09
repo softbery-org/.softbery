@@ -1,4 +1,4 @@
-// Version: 10.0.0.55
+// Version: 10.0.0.170
 // Version: 10.0.0.48
 // Version: 10.0.0.47
 // Version: 10.0.0.46
@@ -15,7 +15,7 @@ namespace softbery
 {
     internal static class FileHash
     {
-        /*/// <summary>
+        /// <summary>
         /// Get / check MD5 file hash.
         /// </summary>
         /// <param name="file">FileInfo</param>
@@ -27,7 +27,7 @@ namespace softbery
             return Encoding.Default.GetString(md5.ComputeHash(stream));
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Read hash code from file
         /// </summary>
         /// <param name="file">fileinfo file</param>
