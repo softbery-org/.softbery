@@ -1,4 +1,4 @@
-// Version: 1.0.0.41
+// Version: 1.0.0.156
 /* 
  * MIT License
  * 
@@ -29,11 +29,14 @@
  * Last Modification Date: 2024-01-30 19:58:04
  */
 
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace softbery
@@ -42,7 +45,7 @@ namespace softbery
     {
         private static List<Tree> _trees = new List<Tree>();
 
-        public static void Main(string[] args) 
+        public static void Main(string[] args)
         {
             try
             {
@@ -59,18 +62,69 @@ namespace softbery
             /* Add line to with version for each file */
             _trees = FileManager.GetDataTree("./");
             var tree = "";
-            if (File.Exists(".sbver_files"))
-            {
-                File.Delete(".sbver_files");
-            }
 
+            var i = 0;
             foreach (var item in _trees)
             {
-                tree += $"File name: {item.Name} | File path: {item.Path} | File type: {item.FileType.ToString()} | File hash: {item.Hash}{Environment.NewLine}";
-
+                tree +=
+                    $"ID: {i}{Environment.NewLine}" +
+                    $"File name: {item.Name}{Environment.NewLine}" +
+                    $"File path: {item.Path}{Environment.NewLine}" +
+                    $"File type: {item.FileType.ToString()}{Environment.NewLine}" +
+                    $"File hash: {item.Hash}{Environment.NewLine}" +
+                    $"{Environment.NewLine}";
+                i++;
             }
 
-            File.WriteAllText(".sbver_files", tree);
+            File.WriteAllText(".sbver_files_temp", tree);
+
+            // Compare temp and file, files.
+            var read_temp_files = File.ReadAllText(".sbver_files_temp");
+            var read_files = File.ReadAllText(".sbver_files");
+
+            var patterns = new string[] { @"^.*File name: (.*)$", @"^.*File path: (.*)$", @"^.*File type: (.*)$", @"^.*File hash: (.*)$" };
+            var listTemp = new List<Tree>();
+            var list = new List<Tree>();
+
+            var names = Regex.Matches(read_temp_files, patterns[0]);
+            var paths = Regex.Matches(read_temp_files, patterns[1]);
+            var types = Regex.Matches(read_temp_files, patterns[2]);
+            var hashs = Regex.Matches(read_temp_files, patterns[3]);
+
+            for (int j= 0; j < names.Count(); j++)
+            {
+                listTemp.Add(new Tree() { Name = names[j].Value, Path = paths[j].Value, Hash = hashs[j].Value });
+            }
+
+            names = Regex.Matches(read_files, patterns[0]);
+            paths = Regex.Matches(read_files, patterns[1]);
+            types = Regex.Matches(read_files, patterns[2]);
+            hashs = Regex.Matches(read_files, patterns[3]);
+
+            for (int j = 0; j < names.Count(); j++)
+            {
+                list.Add(new Tree() { Name = names[j].Value, Path = paths[j].Value, Hash = hashs[j].Value });
+            }
+
+            var result = new List<Tree>();
+
+            foreach (var item in list)
+            {
+                if (!listTemp.Contains(item))
+                { 
+                    result.Add(item);
+                }
+            }
+
+            var t = "";
+            foreach (var res in result)
+            {
+                t += res.Name+Environment.NewLine;
+                t += res.Hash + Environment.NewLine;
+            }
+            File.WriteAllText(".sbver_backup", t);
+
+            File.Replace(".sbver_files_temp", ".sbver_files", null);
 
             /* Checking if the file `.sbver` exists. */
             if (!File.Exists(".sbver"))
@@ -98,7 +152,7 @@ namespace softbery
                 /* Creating a new array of integers with the size of the array `splited`. */
                 ver.VersionTab = new int[splited.Count()];
 
-                int i = 0;
+                i = 0;
                 /* Iterating through the array `splited`. */
                 foreach (var item in splited)
                 {

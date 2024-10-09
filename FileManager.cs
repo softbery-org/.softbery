@@ -1,4 +1,4 @@
-// Version: 1.0.0.212
+// Version: 1.0.0.327
 // Version: 1.0.0.205
 // Version: 1.0.0.204
 // Version: 1.0.0.203
@@ -50,7 +50,7 @@ namespace softbery
 							ft.FileType = DataType.file;
 							ft.Info = fi;
 							ft.Directory = dt;
-							ft.Hash = fi.GetMD5ChecksumEncoding();
+							ft.Hash = fi.CheckMD5();
 
 							if (!_trees.Contains(ft))
 							{
@@ -66,7 +66,7 @@ namespace softbery
 							ft.FileType = DataType.file;
 							ft.Info = fi;
 							ft.Directory = dt;
-							ft.Hash = fi.GetMD5ChecksumEncoding();
+							ft.Hash = fi.CheckMD5();
 
 							if (!_trees.Contains(ft))
 							{
