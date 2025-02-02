@@ -50,8 +50,8 @@ namespace softbery
             try
             {
                 FileInfo fi = new(".sbconf");
-                List<FileInfo> lfi = new();
-                lfi.Add(fi);
+                List<FileInfo> fil = new();
+                fil.Add(fi);
                 //Config = new Conf(args);
             }
             catch (Exception ex)
@@ -80,7 +80,12 @@ namespace softbery
 
             // Compare temp and file, files.
             var read_temp_files = File.ReadAllText(".sbver_files_temp");
-            var read_files = File.ReadAllText(".sbver_files");
+            var read_files = "";
+
+            if (File.Exists(".sbver_files"))
+                read_files = File.ReadAllText(".sbver_files");
+            else 
+                File.Create(".sbver_files").Flush();
 
             var patterns = new string[] { @"^.*File name: (.*)$", @"^.*File path: (.*)$", @"^.*File type: (.*)$", @"^.*File hash: (.*)$" };
             var listTemp = new List<Tree>();
