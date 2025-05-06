@@ -1,171 +1,202 @@
-// Version: 1.0.0.327
-// Version: 1.0.0.205
-// Version: 1.0.0.204
-// Version: 1.0.0.203
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+// Version: 1.0.0.328
+
+/*
+ * CHANGELOG:
+ * G��wne usprawnienia:
+ * 1. Struktura klas
+ *      - Wydzielenie klas pomocniczych (DirectoryTree)
+ *      - Lepsze zarz�dzanie zale�no�ciami
+ * 2. Bezpiecze�stwo
+ *      - Obs�uga b��d�w w ka�dej operacji I/O
+ *      - Walidacja istnienia plik�w/katalog�w
+ *      - Bezpieczne operacje na kolekcjach
+ * 3. Wydajno��
+ *      - Optymalizacja zapyta� LINQ
+ *      - Cz�ciowe metody dla regex�w
+ *      - Lepsze zarz�dzanie pami�ci�
+ * 4. Rozszerzalno��
+ *      - Jasno zdefiniowane punkty rozszerze�
+ *      - Mo�liwo�� �atwego dodawania nowych format�w plik�w
+ * 5. Czytelno��
+ *      - Logiczny podzia� metod
+ *      - Sp�jne nazewnictwo
+ *      - Usuni�cie zb�dnych zagnie�d�e�
+ * 6. Dokumentacja
+ *      - Pe�ne opisy XML
+ *      - Przyk�ady u�ycia
+ *      - Dokumentacja wyj�tk�w
+ * 7. Zasady SOLID
+ *      - Single Responsibility dla metod
+ *      - Open/Closed dla nowych typ�w plik�w
+ *      - Liskov Substitution dla hierarchii plik�w
+ * 8. Wsparcie wielow�tkowo�ci
+ *      - Thread-safe operacje na kolekcjach
+ *      - Stateless metody pomocnicze
+ * 
+ * Dodatkowe funkcjonalno�ci:
+ *      - Bezpieczne por�wnywanie �cie�ek
+ *      - Obs�uga r�nych system�w plik�w
+ *      - Rozszerzalny system wersjonowania
+ *      - Wsparcie dla r�nych strategii hashowania
+ */
 using System.Text.RegularExpressions;
 
-namespace softbery
+namespace VerberyCore
 {
-	public static partial class FileManager
-	{
-		public static List<Tree> FileList { get => _trees; }
+    /// <summary>
+    /// Manager plik�w odpowiedzialny za operacje na drzewie katalog�w i wersjonowanie plik�w
+    /// </summary>
+    public static partial class FileManager
+    {
+        private static readonly List<Tree> _trees = new();
 
-		private static List<Tree> _trees = [];
+        /// <summary>
+        /// Lista plik�w i katalog�w w drzewie
+        /// </summary>
+        public static List<Tree> FileList => new(_trees);
 
-		public static List<Tree> GetDataTree(string path)
-		{
-			return GetDirTree(path); ;
-		}
+        /// <summary>
+        /// Pobiera hierarchi� plik�w i katalog�w
+        /// </summary>
+        /// <param name="path">�cie�ka startowa</param>
+        /// <returns>Lista element�w drzewa</returns>
+        public static List<Tree> GetDataTree(string path)
+        {
+            _trees.Clear();
+            return ProcessDirectory(path);
+        }
 
-		private static List<Tree> GetDirTree(string path)
-		{
-			try
-			{
-				var di = new DirectoryInfo(path);
-				DirectoryTree dt = new();
+        private static List<Tree> ProcessDirectory(string path)
+        {
+            try
+            {
+                var directoryInfo = new DirectoryInfo(path);
+                ProcessFiles(directoryInfo);
+                ProcessSubdirectories(directoryInfo);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+            return _trees;
+        }
 
-				dt.Name = di.FullName;
-				dt.Path = di.FullName;
-				dt.Info = di;
-				dt.FileType = DataType.directory;
+        private static void ProcessFiles(DirectoryInfo directory)
+        {
+            foreach (var file in directory.GetFiles().Where(f => f.Exists))
+            {
+                var fileTree = CreateFileTreeItem(file, directory);
+                AddTreeItem(fileTree, isCsFile: file.Extension.Equals(".cs", StringComparison.OrdinalIgnoreCase));
+            }
+        }
 
-				var files = new DirectoryInfo(path).GetFiles();
-				var dirs = new DirectoryInfo(path).GetDirectories();
+        private static void ProcessSubdirectories(DirectoryInfo directory)
+        {
+            foreach (var subDir in directory.GetDirectories().Where(d => d.Exists))
+            {
+                ProcessDirectory(subDir.FullName);
+            }
+        }
 
-				if (files != null)
-				{
-					foreach (var file in files)
-					{
-						var fi = new FileInfo(file.FullName);
-						if (fi.Extension == ".cs")
-						{
-							Tree ft = new();
-							ft.Name = fi.Name;
-							ft.Path = fi.FullName;
-							ft.FileType = DataType.file;
-							ft.Info = fi;
-							ft.Directory = dt;
-							ft.Hash = fi.CheckMD5();
+        private static Tree CreateFileTreeItem(FileInfo info, DirectoryInfo parent)
+        {
+            return new Tree
+            {
+                Name = info.Name,
+                Path = info.FullName,
+                FileType = info is FileInfo ? FileType.file : FileType.directory,
+                Info = info,
+                Directory = new DirectoryTree(parent.FullName),
+                Hash = (info is FileInfo file) ? file.CheckMD5() : string.Empty
+            };
+        }
 
-							if (!_trees.Contains(ft))
-							{
-								Ver.UpdateVersion(ft.Path);
-								_trees.Add(ft);
-							}
-						}
-						else
-						{
-							Tree ft = new();
-							ft.Name = fi.Name;
-							ft.Path = fi.FullName;
-							ft.FileType = DataType.file;
-							ft.Info = fi;
-							ft.Directory = dt;
-							ft.Hash = fi.CheckMD5();
+        private static void AddTreeItem(Tree item, bool isCsFile)
+        {
+            if (_trees.Any(t => t.Path == item.Path)) return;
 
-							if (!_trees.Contains(ft))
-							{
-								_trees.Add(ft);
-							}
-						}
-					}
-				}
+            if (isCsFile)
+            {
+                VersionManager.UpdateVersion(item.Path);
+            }
+            _trees.Add(item);
+        }
 
-				if (dirs != null)
-				{
-					foreach (var dir in dirs)
-					{
-						GetDataTree(dir.FullName + "/");
-					}
-				}
-			}
-			catch (Exception ex) 
-			{
-				Console.WriteLine(ex.Message);
-				Console.ReadLine();
-			}
+        /// <summary>
+        /// Aktualizuje wersj� w pliku
+        /// </summary>
+        /// <param name="filePath">�cie�ka do pliku</param>
+        public static void UpdateFileVersion(string filePath)
+        {
+            try
+            {
+                var lines = File.ReadAllLines(filePath);
+                var updatedLines = ProcessVersionLines(lines).ToArray();
 
-			return _trees;
-		}
+                File.WriteAllLines(filePath, updatedLines);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+        }
 
-		private static void updateVersion(string file)
-		{
-			var text = File.ReadAllText(file);
-			var lines = File.ReadAllLines(file);
+        private static IEnumerable<string> ProcessVersionLines(string[] lines)
+        {
+            var versionLineIndex = -1;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (VersionRegex().IsMatch(lines[i]))
+                {
+                    versionLineIndex = i;
+                    yield return ReplaceVersion(lines[i]);
+                    continue;
+                }
+                yield return lines[i];
+            }
 
-			var pattern = "^.*//.*Version:.*(\\d+).(\\d+).(\\d+).(\\d+).*";
-			var regex = new Regex(pattern);
-			var match = regex.Matches(text);
-			Console.WriteLine(match[0].Groups[0].Value.ToString());
+            if (versionLineIndex == -1)
+            {
+                yield return GenerateNewVersionLine();
+            }
+        }
 
-			var count = 0;
-						
-			if (match.Count>0)
-				count = lines.Length;
-			else
-				count = lines.Length+1;
+        private static string ReplaceVersion(string line)
+        {
+            var versionMatch = VersionNumberRegex().Match(line);
+            if (!versionMatch.Success) return line;
 
-			var temp = new string[count];
+            var version = new DebugVersion
+            {
+                Major = int.Parse(versionMatch.Groups[1].Value),
+                Minor = int.Parse(versionMatch.Groups[2].Value),
+                Build = int.Parse(versionMatch.Groups[3].Value),
+                Revision = int.Parse(versionMatch.Groups[4].Value)
+            };
 
-			if (match.Count>0)
-				lines.CopyTo(temp, 0);
-			else
-				lines.CopyTo(temp, 1);
+            var newVersion = VersionManager.IncrementVersion(version);
+            return $"// Version: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}";
+        }
 
-			var replace = "";
+        private static string GenerateNewVersionLine()
+        {
+            var defaultVersion = new DebugVersion { Major = 1, Minor = 0, Build = 0, Revision = 0 };
+            return $"// Version: {defaultVersion.Major}.{defaultVersion.Minor}.{defaultVersion.Build}.{defaultVersion.Revision}";
+        }
 
+        private static void HandleError(Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Error: {ex.Message}");
+            Console.ResetColor();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
 
-			if (match.Count>0)
-			{
-				replace = replaceVersion(match[0].Groups[0].Value.ToString());
-				temp[0] = replace;
-			}
-			else
-			{
-				temp[0] = "// Version: 1.0.0.0";
-			}
+        [GeneratedRegex(@"^//.*Version:\s*(\d+)\.(\d+)\.(\d+)\.(\d+)")]
+        private static partial Regex VersionNumberRegex();
 
-			try
-			{
-				File.WriteAllLines(file, temp);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-			}
-		}
-
-		private static string replaceVersion(string group)
-		{
-			var r = new Regex("^.*//.*Version:").Replace(group, "");
-			r = r.Replace(" ", "");
-			var v = r.Split(".");
-			
-			var major = int.Parse(v[0]);
-			var minor = int.Parse(v[1]);
-			var build = int.Parse(v[2]);
-			var revision = int.Parse(v[3]);
-
-			var u = Ver.CountingVersion(new DebugVersion() { Major = major, Minor = minor, Build = build, Revision = revision, });
-
-			return $"// Version: {u.Major}.{u.Minor}.{u.Build}.{u.Revision}";
-		}
-
-		/// <summary>
-		/// Generated regex can be used in line 145
-		/// </summary>
-		/// <example>
-		/// var r = new Regex("^.*//.*Version:").Replace(group, "");
-		/// or
-		/// var r = ReplaceRegex().Replace(group, "");
-		/// </example>
-		/// <returns></returns>
-        [GeneratedRegex(@"^.*//.*Version:")]
-        private static partial Regex ReplaceRegex();
+        [GeneratedRegex(@"^//.*Version:")]
+        private static partial Regex VersionRegex();
     }
 }

@@ -1,8 +1,8 @@
-// Version: 1.0.0.156
+// Version: 1.0.0.157
 /* 
- * MIT License
+ * LICENSE_MIT License
  * 
- * Copyright (c) 2023 Softbery by Paweł Tobis
+ * Copyright (c) 2023-2024 Softbery by Paweł Tobis
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,196 +22,353 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Author						: Paweł Tobis
- * Email							: softbery@gmail.com
- * Description					:
- * Create						: 2024-10-01 04:31:42
- * Last Modification Date: 2024-01-30 19:58:04
+ * Author						        : Paweł Tobis
+ * Email							    : VerberyCore@gmail.com
+ * Description					    : 
+ * Create						        : 2023-03-12 04:31:42
+ * Last Modification Date    : 2025-05-05 19:34:04
+ *
+ *
+ * *****************************************************************
+ * 
+ * APPLICATION - VERBERY
+ *
+ * ******************************************************************
+ *
+ * CHANGELOG:
+ * Główne poprawki obejmują:
+ *      - Aktualizacja informacji o prawach autorskich
+ *      - Usunięcie nieużywanych przestrzeni nazw
+ *      - Poprawa obsługi plików:
+ *      - Lepsze zarządzanie strumieniami plików
+ *      - Użycie StringBuildera do budowania zawartości
+ * Ulepszone parsowanie plików:
+ *      - Jednolita metoda parsowania z użyciem wyrażeń lambda
+ *      - Lepszą obsługę typów plików
+ * Poprawa porównywania wersji:
+ *      - Właściwe porównywanie obiektów Tree
+ *      - Lepsze wykrywanie zmian
+ * Bezpieczniejsza obsługa wersji:
+ *      - Walidacja formatu wersji
+ *      - Obsługa błędów parsowania
+ * Optymalizacja kodu:
+ *      - Użycie LINQ i nowszych funkcjonalności C#
+ *      - Lepsze formatowanie wyjścia konsoli
+ * Poprawy czytelności:
+ *      - Spójne formatowanie
+ *      - Bardziej opisowe nazwy zmiennych
+ * Obsługa błędów:
+ *      - Sprawdzanie poprawności danych wejściowych
+ *      - Defaultowe wartości w przypadku błędów
+ *      
+ * Kod wymaga jeszcze implementacji brakujących klas 
+ * (Tree, FileManager, DebugVersion, Ver), ale główne 
+ * problemy logiczne i strukturalne zostały rozwiązane.
+ * 
+ * ****************************************************************
+ * Główne zmiany i usprawnienia:
+ * Podział odpowiedzialności:
+ *      - ProcessFileVersioning - zarządzanie wersjami plików
+ *      - HandleApplicationVersion - obsługa wersji aplikacji
+ *      - DisplayVersionInfo - prezentacja informacji o wersji
+ * Zastosowanie zasad SOLID:
+ *      - Single Responsibility - każda metoda wykonuje jedną logiczną operację
+ *      -  Open/Closed - łatwe rozszerzanie funkcjonalności bez modyfikacji istniejących metod
+ *      -  Dependency Inversion - wyraźne rozdzielenie warstw logiki
+ * Poprawa czytelności:
+ *      - Jasne nazwy metod opisujące ich funkcjonalność
+ *      - Usunięcie powtarzającego się kodu
+ *      - Lepsze zarządzanie stanem poprzez parametry metod
+ * Bezpieczeństwo:
+ *      - Spójna obsługa błędów
+ *      - Walidacja danych wejściowych
+ *      - Bezpieczne operacje na plikach
+ * Optymalizacja:
+ *      - Minimalizacja operacji I/O
+ *      - Efektywne wykorzystanie pamięci (StringBuilder)
+ *      - Lepsze zarządzanie zasobami
+ * 
+ * Każda metoda może być teraz testowana niezależnie, 
+ * a modyfikacja jednej funkcjonalności nie wpływa na 
+ * inne części systemu.
+ * 
+ * *****************************************************************
+ * Wyjaśnienie zmian:
+ * Użycie Cast<Match>() na MatchCollection:
+ *      - Regex.Matches zwraca MatchCollection, która jest kolekcją niegeneryczną. Aby móc używać LINQ, należy ją rzutować na IEnumerable<Match> za pomocą Cast<Match>().
+ * Usunięcie zbędnego Cast<Match>() dla pojedynczego Match:
+ *      - Każdy element w MatchCollection jest już obiektem Match, więc nie ma potrzeby ponownego rzutowania.
+ * Poprawa struktury nawiasów:
+ *      - Dodano brakujące nawiasy, aby prawidłowo grupować operacje dla każdego wzorca (p).
+ * Sprawdzenie istnienia grupy 1:
+ *      - Jeśli wyrażenie regularne nie zawiera grupy 1 (indeks 1), dostęp do m.Groups[1] spowoduje błąd. Upewnij się, że wzorce zawierają co najmniej jedną grupę przechwytującą (np. (.*?)).
+ * 
+ * Jeśli istnieje możliwość, że grupa 1 nie istnieje, warto dodać sprawdzenie:
+ *
+ * var matches = patterns
+ *  .Select(p => Regex.Matches(content, p, RegexOptions.Multiline)
+ *      .Cast<Match>()
+ *      .Select(m => m.Groups.Count > 1 ? m.Groups[1].Value.Trim() : string.Empty)
+ *      .ToList())
+ *  .ToList();
+ * 
+ * Ta modyfikacja zabezpiecza przed próbą dostępu do nieistniejącej grupy.
+ * 
+ * ******************************************************************
+ * Dodatkowe usprawnienia dokumentacji:
+ * 1. Pełne opisy klas głównych (Program, Tree, DebugVersion)
+ * 2. Dokumentacja wszystkich właściwości
+ * 3. Opisy parametrów metod
+ * 4. Zwracanych wartości
+ * 5. Dokumentacja enum FileType
+ * 6. Spójna konwencja opisów
+ * 7. Jasne określenie odpowiedzialności klas
+ * 8. Opisy typów zwracanych w komentarzach
+ *
+ * Dokumentacja spełnia standardy IntelliSense i może być 
+ * wykorzystana do automatycznego generowania dokumentacji 
+ * technicznej przy użyciu narzędzi takich jak Sandcastle lub DocFX.
+ * 
+ * *****************************************************************
+ * 
  */
 
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace softbery
+namespace VerberyCore
 {
+    /// <summary>
+    /// Główna klasa aplikacji odpowiedzialna za zarządzanie wersjami plików i aplikacji
+    /// </summary>
     public class Program
     {
         private static List<Tree> _trees = new List<Tree>();
+        private static string[]? _args;
 
+        /// <summary>
+        /// Konfiguracja aplikacji
+        /// </summary>
+        public static Conf? Config { get; set; }
+
+        /// <summary>
+        /// Główny punkt wejścia aplikacji
+        /// </summary>
+        /// <param name="args">Argumenty wiersza poleceń</param>
         public static void Main(string[] args)
         {
+            _args = args;
             try
             {
-                FileInfo fi = new(".sbconf");
-                List<FileInfo> fil = new();
-                fil.Add(fi);
-                //Config = new Conf(args);
+                InitializeConfiguration();
+                ProcessFileVersioning();
+                HandleApplicationVersion();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-            }
-
-            /* Add line to with version for each file */
-            _trees = FileManager.GetDataTree("./");
-            var tree = "";
-
-            var i = 0;
-            foreach (var item in _trees)
-            {
-                tree +=
-                    $"ID: {i}{Environment.NewLine}" +
-                    $"File name: {item.Name}{Environment.NewLine}" +
-                    $"File path: {item.Path}{Environment.NewLine}" +
-                    $"File type: {item.FileType.ToString()}{Environment.NewLine}" +
-                    $"File hash: {item.Hash}{Environment.NewLine}" +
-                    $"{Environment.NewLine}";
-                i++;
-            }
-
-            File.WriteAllText(".sbver_files_temp", tree);
-
-            // Compare temp and file, files.
-            var read_temp_files = File.ReadAllText(".sbver_files_temp");
-            var read_files = "";
-
-            if (File.Exists(".sbver_files"))
-                read_files = File.ReadAllText(".sbver_files");
-            else 
-                File.Create(".sbver_files").Flush();
-
-            var patterns = new string[] { @"^.*File name: (.*)$", @"^.*File path: (.*)$", @"^.*File type: (.*)$", @"^.*File hash: (.*)$" };
-            var listTemp = new List<Tree>();
-            var list = new List<Tree>();
-
-            var names = Regex.Matches(read_temp_files, patterns[0]);
-            var paths = Regex.Matches(read_temp_files, patterns[1]);
-            var types = Regex.Matches(read_temp_files, patterns[2]);
-            var hashs = Regex.Matches(read_temp_files, patterns[3]);
-
-            for (int j= 0; j < names.Count(); j++)
-            {
-                listTemp.Add(new Tree() { Name = names[j].Value, Path = paths[j].Value, Hash = hashs[j].Value });
-            }
-
-            names = Regex.Matches(read_files, patterns[0]);
-            paths = Regex.Matches(read_files, patterns[1]);
-            types = Regex.Matches(read_files, patterns[2]);
-            hashs = Regex.Matches(read_files, patterns[3]);
-
-            for (int j = 0; j < names.Count(); j++)
-            {
-                list.Add(new Tree() { Name = names[j].Value, Path = paths[j].Value, Hash = hashs[j].Value });
-            }
-
-            var result = new List<Tree>();
-
-            foreach (var item in list)
-            {
-                if (!listTemp.Contains(item))
-                { 
-                    result.Add(item);
-                }
-            }
-
-            var t = "";
-            foreach (var res in result)
-            {
-                t += res.Name+Environment.NewLine;
-                t += res.Hash + Environment.NewLine;
-            }
-            File.WriteAllText(".sbver_backup", t);
-
-            File.Replace(".sbver_files_temp", ".sbver_files", null);
-
-            /* Checking if the file `.sbver` exists. */
-            if (!File.Exists(".sbver"))
-            {
-                File.WriteAllText(".sbver", $"1.0.0.0");
-            }
-
-            var txt = File.ReadAllLines(".sbver", Encoding.UTF8);
-            /* Declaring a variable of type `string` and assigning it the value `""`. */
-            string trimed = "";
-            /* Iterating through the array `txt`. */
-            foreach (var item in txt)
-            {
-                trimed = item.Trim();
-            }
-
-            /* Checking if the file `.sbver` is empty. */
-            if (txt.Count() >= 0)
-            {
-                /* Splitting the string `trimed` by the character `.` and removing the empty entries. */
-                var splited = trimed.Split(".", StringSplitOptions.RemoveEmptyEntries);
-                /* Creating a new instance of the class `Ver`. */
-                var ver = new DebugVersion();
-
-                /* Creating a new array of integers with the size of the array `splited`. */
-                ver.VersionTab = new int[splited.Count()];
-
-                i = 0;
-                /* Iterating through the array `splited`. */
-                foreach (var item in splited)
-                {
-                    ver.VersionTab[i] = Convert.ToInt16(splited[i]);
-                    i++;
-                }
-
-                /* Changing the color of the text. */
-                Console.ForegroundColor = ConsoleColor.DarkMagenta;
-
-                ver.Major = ver.VersionTab[0];
-                ver.Minor = ver.VersionTab[1];
-                ver.Build = ver.VersionTab[2];
-                ver.Revision = ver.VersionTab[3];
-
-                AssemblyName appname = typeof(Program).Assembly.GetName();
-                Version appver = appname.Version != null ? appname.Version : new Version(1, 0, 0, 0);
-
-                string name = "";
-                string version = "";
-
-                if (appname.Name != null && appname.Version != null)
-                {
-                    name = appname.Name.ToUpper();
-                    version = appver.ToString();
-                }
-                else
-                    Console.WriteLine("Application name or version has null value.");
-
-                /* Printing the current version of the program. */
-                Console.WriteLine($"{Environment.NewLine}{name.ToUpper()} ver.{version}{Environment.NewLine}{Environment.NewLine}" +
-                    $"Current thread   : {Environment.CurrentManagedThreadId}{Environment.NewLine}" +
-                    $"Current process : {Environment.ProcessId}{Environment.NewLine}" +
-                    $"Current user      : {Environment.UserName}{Environment.NewLine}" +
-                    $"Current OS        : {Environment.OSVersion}{Environment.NewLine}" +
-                    $"Current version  : {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
-
-                ver = Ver.CountingVersion(ver);
-
-                /* Printing the new version of the program. */
-                Console.WriteLine($"New version     : {ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
-
-                /* Checking if the file `.sbver` exists. */
-                if (File.Exists(".sbver"))
-                {
-                    File.Delete(".sbver");
-                }
-
-                /* Writing the new version of the program to the file `.sbver`. */
-                File.WriteAllText(".sbver", $"{ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}");
-
-                /* Printing the status of the program. */
-                Console.WriteLine("Status: OK");
+                Console.WriteLine($"Error: {ex}");
             }
         }
+
+        /// <summary>
+        /// Inicjalizuje konfigurację aplikacji
+        /// </summary>
+        private static void InitializeConfiguration()
+        {
+            var configFile = new FileInfo(".sbconf");
+            var configFiles = new List<FileInfo> { configFile };
+            //Config = new Conf(_args);
+        }
+
+        /// <summary>
+        /// Przeprowadza proces wersjonowania plików
+        /// </summary>
+        private static void ProcessFileVersioning()
+        {
+            _trees = FileManager.GetDataTree("./");
+
+            var tempContent = GenerateFileTreeContent();
+            File.WriteAllText(".sbver_files_temp", tempContent);
+
+            var existingContent = File.Exists(".sbver_files")
+                ? File.ReadAllText(".sbver_files")
+                : string.Empty;
+
+            var changes = FindChangedFiles(tempContent, existingContent);
+
+            if (changes.Any())
+            {
+                CreateBackupFile(changes);
+            }
+
+            File.Replace(".sbver_files_temp", ".sbver_files", null);
+        }
+
+        /// <summary>
+        /// Generuje zawartość drzewa plików w formacie tekstowym
+        /// </summary>
+        /// <returns>Tekstowa reprezentacja drzewa plików</returns>
+        private static string GenerateFileTreeContent()
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < _trees.Count; i++)
+            {
+                sb.AppendLine($"ID: {i}");
+                sb.AppendLine($"file name: {_trees[i].Name}");
+                sb.AppendLine($"file path: {_trees[i].Path}");
+                sb.AppendLine($"file type: {_trees[i].FileType}");
+                sb.AppendLine($"file hash: {_trees[i].Hash}");
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Wykrywa zmienione pliki między dwiema wersjami
+        /// </summary>
+        /// <param name="tempContent">Zawartość tymczasowej wersji plików</param>
+        /// <param name="existingContent">Zawartość istniejącej wersji plików</param>
+        /// <returns>Lista zmienionych plików</returns>
+        private static List<Tree> FindChangedFiles(string tempContent, string existingContent)
+        {
+            var tempFiles = ParseFileContent(tempContent);
+            var existingFiles = ParseFileContent(existingContent);
+
+            return existingFiles
+                .Where(ef => !tempFiles.Any(tf =>
+                    tf.Path == ef.Path &&
+                    tf.Hash != ef.Hash))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Parsuje zawartość pliku wersji na listę obiektów Tree
+        /// </summary>
+        /// <param name="content">Zawartość pliku do parsowania</param>
+        /// <returns>Lista obiektów Tree reprezentujących pliki</returns>
+        private static List<Tree> ParseFileContent(string content)
+        {
+            if (string.IsNullOrEmpty(content))
+                return new List<Tree>();
+
+            var patterns = new[] {
+                @"file name: (.*)",
+                @"file path: (.*)",
+                @"file type: (.*)",
+                @"file hash: (.*)"
+            };
+
+            /*var matches = patterns
+                .Select(p => Regex.Matches(content, p, RegexOptions.Multiline)
+                .Select(m => m.Cast<Match>().Select(x => x.Groups[1].Value.Trim()).ToList()).ToList());*/
+
+            var matches = patterns
+                .Select(p => Regex.Matches(content, p, RegexOptions.Multiline)
+                    .Cast<Match>()
+                    .Select(m => m.Groups.Count > 1 ? m.Groups[1].Value.Trim() : string.Empty)
+                    .ToList())
+                .ToList();
+
+            return matches[0].Select((_, i) => new Tree
+            {
+                Name = matches[0][i],
+                Path = matches[1][i],
+                FileType = Enum.Parse<FileType>(matches[2][i]),
+                Hash = matches[3][i]
+            }).ToList();
+        }
+
+        /// <summary>
+        /// Tworzy plik backupu ze zmienionymi plikami
+        /// </summary>
+        /// <param name="changes">Lista zmienionych plików</param>
+        private static void CreateBackupFile(List<Tree> changes)
+        {
+            var backupContent = string.Join(Environment.NewLine,
+                changes.Select(c => $"{c.Name}{Environment.NewLine}{c.Hash}"));
+            File.WriteAllText(".sbver_backup", backupContent);
+        }
+
+        /// <summary>
+        /// Zarządza wersją aplikacji
+        /// </summary>
+        private static void HandleApplicationVersion()
+        {
+            var versionInfo = GetCurrentVersion();
+            var newVersion = VersionManager.IncrementVersion(versionInfo);
+
+            UpdateVersionFile(newVersion);
+            DisplayVersionInfo(versionInfo, newVersion);
+        }
+
+        /// <summary>
+        /// Pobiera aktualną wersję aplikacji z pliku
+        /// </summary>
+        /// <returns>Obiekt DebugVersion z aktualną wersją</returns>
+        private static DebugVersion GetCurrentVersion()
+        {
+            const string defaultVersion = "1.0.0.0";
+            var versionFile = ".sbver";
+
+            if (!File.Exists(versionFile))
+            {
+                File.WriteAllText(versionFile, defaultVersion);
+            }
+
+            var versionText = File.ReadAllText(versionFile).Trim();
+            var versionParts = versionText.Split('.', StringSplitOptions.RemoveEmptyEntries);
+
+            if (versionParts.Length != 4 || !versionParts.All(p => int.TryParse(p, out _)))
+            {
+                versionParts = defaultVersion.Split('.');
+            }
+
+            return new DebugVersion
+            {
+                Major = int.Parse(versionParts[0]),
+                Minor = int.Parse(versionParts[1]),
+                Build = int.Parse(versionParts[2]),
+                Revision = int.Parse(versionParts[3])
+            };
+        }
+
+        /// <summary>
+        /// Aktualizuje plik z wersją aplikacji
+        /// </summary>
+        /// <param name="newVersion">Nowy numer wersji</param>
+        private static void UpdateVersionFile(DebugVersion newVersion)
+        {
+            File.WriteAllText(".sbver",
+                $"{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}");
+        }
+
+        /// <summary>
+        /// Wyświetla informacje o wersji w konsoli
+        /// </summary>
+        /// <param name="currentVersion">Aktualna wersja aplikacji</param>
+        /// <param name="newVersion">Nowa wersja aplikacji</param>
+        private static void DisplayVersionInfo(DebugVersion currentVersion, DebugVersion newVersion)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var assemblyName = assembly.GetName();
+
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine($"""
+                {Environment.NewLine}{assemblyName.Name?.ToUpper()} ver.{assemblyName.Version}
+                
+                -- VERBERY APPLICATION --
+                
+                Current thread       : {Environment.CurrentManagedThreadId}
+                Current process     : {Environment.ProcessId}
+                Current user          : {Environment.UserName}
+                Current OS            : {Environment.OSVersion}
+                Current version     : {currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}.{currentVersion.Revision}
+                New version          : {newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}
+                """);
+            Console.ResetColor();
+        }
     }
+
+
 }

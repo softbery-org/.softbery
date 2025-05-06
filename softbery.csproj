@@ -10,6 +10,8 @@
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <UserSecretsId>cc220ed7-38a3-4278-b818-e8a1c23e2e37</UserSecretsId>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
