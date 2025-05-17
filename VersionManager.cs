@@ -207,6 +207,21 @@ namespace VerberyCore
 
         [GeneratedRegex(@"^//.*Version:", RegexOptions.IgnoreCase)]
         private static partial Regex VersionRegex();
+
+        internal static DebugVersion GetCurrentVersion()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void UpdateVersionFile(DebugVersion newVersion)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static DebugVersion ParseVersion(string version)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

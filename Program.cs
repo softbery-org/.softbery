@@ -1,6 +1,6 @@
 // Version: 1.0.0.157
 /* 
- * LICENSE_MIT License
+ * LICENSE MIT License
  * 
  * Copyright (c) 2023-2024 Softbery by Paweł Tobis
  * 

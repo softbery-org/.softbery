@@ -198,5 +198,10 @@ namespace VerberyCore
 
         [GeneratedRegex(@"^//.*Version:")]
         private static partial Regex VersionRegex();
+
+        internal static void CreateDefaultConfig(DirectoryInfo path)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
