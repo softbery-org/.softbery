@@ -147,6 +147,8 @@ namespace VerberyCore
         private static List<Tree> _trees = new List<Tree>();
         private static string[]? _args;
 
+        public static string DirectoryPath { get; set; } = ".sb";
+
         /// <summary>
         /// Konfiguracja aplikacji
         /// </summary>
@@ -179,7 +181,7 @@ namespace VerberyCore
         {
             try
             {
-                var configFile = new FileInfo(".sb/.sbconf");
+                var configFile = new FileInfo($"{DirectoryPath}/.sbconf");
                 var configFiles = new List<FileInfo> { configFile };
 
                 //Config = new Conf(_args);
@@ -203,20 +205,20 @@ namespace VerberyCore
                 return;
             }
 
-            if (!Directory.Exists(".sb"))
+            if (!Directory.Exists($"{DirectoryPath}"))
             {
-                Directory.CreateDirectory(".sb");
+                Directory.CreateDirectory($"{DirectoryPath}");
             }
 
-            if (!File.Exists(".sb/.sbver_files_temp"))
-                File.CreateText(".sb/.sbver_files_temp").Close();
+            if (!File.Exists($"{DirectoryPath}/.sbver_files_temp"))
+                File.CreateText($"{DirectoryPath}/.sbver_files_temp").Close();
 
             try
             {
-                File.WriteAllText(".sb/.sbver_files_temp", tempContent);
+                File.WriteAllText($"{DirectoryPath}/.sbver_files_temp", tempContent);
 
-                var existingContent = File.Exists(".sb/.sbver_files")
-                    ? File.ReadAllText(".sb/.sbver_files")
+                var existingContent = File.Exists($"{DirectoryPath}/.sbver_files")
+                    ? File.ReadAllText($"{DirectoryPath}/.sbver_files")
                     : string.Empty;
 
                 var changes = FindChangedFiles(tempContent, existingContent);
@@ -233,9 +235,9 @@ namespace VerberyCore
                     }
                 }
 
-                if (File.Exists(".sb/.sbver_files"))
+                if (File.Exists($"{DirectoryPath}/.sbver_files"))
                 {
-                    File.Replace(".sb/.sbver_files_temp", ".sb/.sbver_files", null);
+                    File.Replace($"{DirectoryPath}/.sbver_files_temp", $"{DirectoryPath}/.sbver_files", null);
                 }
             }
             catch (Exception ex)
@@ -326,7 +328,7 @@ namespace VerberyCore
         {
             var backupContent = string.Join(Environment.NewLine,
                 changes.Select(c => $"{c.Name}{Environment.NewLine}{c.Hash}"));
-            File.WriteAllText(".sb/.sbver_backup", backupContent);
+            File.WriteAllText($"{DirectoryPath}/.sbver_backup", backupContent);
         }
 
         /// <summary>
@@ -354,11 +356,11 @@ namespace VerberyCore
         private static DebugVersion GetCurrentVersion()
         {
             const string defaultVersion = "0.1.0.0";
-            var versionFile = ".sb/.sbver";
+            var versionFile = $"{DirectoryPath}/.sbver";
 
-            if (!Directory.Exists(".sb/"))
+            if (!Directory.Exists($"{DirectoryPath}"))
             {
-                Directory.CreateDirectory(".sb/");
+                Directory.CreateDirectory($"{DirectoryPath}");
             }
 
             if (!File.Exists(versionFile))
@@ -398,7 +400,7 @@ namespace VerberyCore
         /// <param name="newVersion">Nowy numer wersji</param>
         private static void UpdateVersionFile(DebugVersion newVersion)
         {
-            File.WriteAllText(".sb/.sbver",
+            File.WriteAllText($"{DirectoryPath}/.sbver",
                 $"{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}");
         }
 
