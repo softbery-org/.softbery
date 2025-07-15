@@ -1,41 +1,44 @@
 // Version: 1.0.170
 /*
  * CHANGELOG:
- * G��wne usprawnienia i zmiany:
+ * Główne usprawnienia i zmiany:
  * Dokumentacja XML:
- *      - Pe�ne opisy metod z uwzgl�dnieniem wyj�tk�w
- *      - Dodano sekcj� Remarks z wa�nymi uwagami
- *      - Oznaczono przestarza�e metody atrybutem [Obsolete]
- * Bezpiecze�stwo i niezawodno��:
- *      - Usuni�to niebezpieczn� konwersj� przez Encoding.Default
+ *      - Pełne opisy metod z uwzględnieniem wyjątków
+ *      - Dodano sekcją Remarks z ważnymi uwagami
+ *      - Oznaczono przestarzałe metody atrybutem [Obsolete]
+ * Bezpieczeństwo i niezawodność:
+ *      - Usunięto niebezpieczną konwersję przez Encoding.Default
  *      - Standaryzacja na format heksadecymalny
- *      - Sp�jna obs�uga zasob�w z u�yciem using
+ *      - Spójna obsługa zasobów z użyciem using
  * Optymalizacja kodu:
- *      - Uproszczona sk�adnia using
- *      - Usuni�to zb�dne zagnie�d�enia
- *      - Standaryzacja formatu zwracanego skr�tu
- * Sp�jno�� interfejsu:
+ *      - Uproszczona składnia using
+ *      - Usunięto zbędne zagnieżdżenia
+ *      - Standaryzacja formatu zwracanego skrótu
+ * Spójność interfejsu:
  *      - Ujednolicenie nazewnictwa metod
- *      - Wyr�wnanie zachowania wszystkich metod
- *      - Lepsza obs�uga b��d�w
+ *      - Wyrównanie zachowania wszystkich metod
+ *      - Lepsza obsługa błędów
  * Poprawki funkcjonalne:
- *      - Wymiana Encoding.Default na UTF8 w metodzie przestarza�ej
+ *      - Wymiana Encoding.Default na UTF8 w metodzie przestarzałej
  *      - Gwarancja poprawnego formatu zwracanych danych
- *      - Usuni�cie duplikuj�cej funkcjonalno�ci
- * Komunikacja b��d�w:
- *      - Jasna dokumentacja mo�liwych wyj�tk�w
- *      - Ostrze�enia dla niezalecanych metod
+ *      - Usunięcie duplikującej funkcjonalności
+ * Komunikacja błędów:
+ *      - Jasna dokumentacja możliwych wyjątków
+ *      - Ostrzeżenia dla niezalecanych metod
  *      - Przejrzyste informacje o ograniczeniach
  * Zasady SOLID:
- *      1. Single Responsibility - ka�da metoda ma jedno zadanie
- *      2. Open/Closed - �atwe rozszerzanie o nowe algorytmy
- *      3. Liskov Substitution - sp�jne zachowanie metod
+ *      1. Single Responsibility - każda metoda ma jedno zadanie
+ *      2. Open/Closed - łatwe rozszerzanie o nowe algorytmy
+ *      3. Liskov Substitution - spójne zachowanie metod
  * Wsparcie dla testowania:
  *      - Przewidywalne wyniki
- *      - Brak efekt�w ubocznych
+ *      - Brak efektów ubocznych
  *      - Jasne kontrakty metod
  * 
- * Kod zawiera teraz jasn� dokumentacj� i ostrze�enia przed u�yciem niezalecanych metod. G��wna rekomendacja to u�ywanie metod zwracaj�cych skr�ty w formacie heksadecymalnym (CheckMD5 lub GetMD5ChecksumBitConverter), kt�re gwarantuj� poprawne reprezentowanie wszystkich bajt�w skr�tu.
+ * Kod zawiera teraz jasną dokumentację i ostrzeżenia przed użyciem niezalecanych metod. 
+ * Główna rekomendacja to używanie metod zwracających skróty w formacie heksadecymalnym 
+ * (CheckMD5 lub GetMD5ChecksumBitConverter), które gwarantuj� poprawne reprezentowanie 
+ * wszystkich bajtów skrótu.
  */
 using System.Security.Cryptography;
 using System.Text;

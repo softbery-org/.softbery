@@ -16,10 +16,18 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/softbery-org/.softbery</RepositoryUrl>
     <AssemblyVersion>3.0.9.0</AssemblyVersion>
+    <ApplicationIcon>verbery.ico</ApplicationIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>http://softbery.org/verbery</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Program" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="verbery.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

@@ -34,12 +34,12 @@ namespace VerberyCore
         /// <summary>
         /// Nazwa pliku
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// �cie�ka do pliku
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; set; } = string.Empty;
 
         /// <summary>
         /// Typ pliku (enum FileType)

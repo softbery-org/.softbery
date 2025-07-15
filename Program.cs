@@ -133,6 +133,7 @@
  * 
  */
 
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -162,6 +163,8 @@ namespace VerberyCore
         {
             Console.WriteLine("[VERBERY]: Starting application...");
             _args = args;
+            var cli = new Cli(args);
+           
             try
             {
                 InitializeConfiguration();
@@ -205,10 +208,10 @@ namespace VerberyCore
                 return;
             }
 
-            if (!Directory.Exists($"{DirectoryPath}"))
-            {
-                Directory.CreateDirectory($"{DirectoryPath}");
-            }
+            Console.WriteLine("[VERBERY]: Processing file versions...");
+
+            // Sprawdzenie lub utworzenie katalogu
+            CheckDirectoryOrCreate(DirectoryPath, FileAttributes.Directory | FileAttributes.Hidden);
 
             if (!File.Exists($"{DirectoryPath}/.sbver_files_temp"))
                 File.CreateText($"{DirectoryPath}/.sbver_files_temp").Close();
@@ -358,10 +361,7 @@ namespace VerberyCore
             const string defaultVersion = "0.1.0.0";
             var versionFile = $"{DirectoryPath}/.sbver";
 
-            if (!Directory.Exists($"{DirectoryPath}"))
-            {
-                Directory.CreateDirectory($"{DirectoryPath}");
-            }
+            CheckDirectoryOrCreate(DirectoryPath, FileAttributes.Directory | FileAttributes.Hidden);
 
             if (!File.Exists(versionFile))
             {
@@ -420,16 +420,38 @@ namespace VerberyCore
                 
                 -- VERBERY APPLICATION --
                 
-                Current thread       : {Environment.CurrentManagedThreadId}
+                Current thread      : {Environment.CurrentManagedThreadId}
                 Current process     : {Environment.ProcessId}
-                Current user          : {Environment.UserName}
-                Current OS            : {Environment.OSVersion}
+                Current user        : {Environment.UserName}
+                Current OS          : {Environment.OSVersion}
                 Current version     : {currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}.{currentVersion.Revision}
-                New version          : {newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}
+                New version         : {newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}
                 """);
             Console.ResetColor();
         }
+
+        /// <summary>
+        /// Checks if the directory exists, and creates it with specified attributes if it does not
+        /// </summary>
+        /// <param name="path">Directory path</param>
+        /// <param name="attributes">Directory attributes, like FileAttributes.Encrypted or FileAttributes.Hidden, etc.</param>
+        public static void CheckDirectoryOrCreate(string path, FileAttributes attributes)
+        {
+            var directoryInfo = new DirectoryInfo(path);
+            
+            if (!directoryInfo.Exists)
+            {
+                directoryInfo.Create();
+                directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+            }
+            else {                 
+                // If the directory exists, ensure it has the correct attributes
+                // Check if the directory has the specified attributes and add them if not
+                if ((directoryInfo.Attributes & attributes) != attributes)
+                {
+                    directoryInfo.Attributes |= attributes;
+                }
+            }
+        }
     }
-
-
 }

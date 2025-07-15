@@ -188,7 +188,7 @@ namespace VerberyCore
         }
 
         /// <summary>
-        /// Tworzy domy�lny plik konfiguracyjny je�li nie istnieje
+        /// Tworzy domyślny plik konfiguracyjny jeśli nie istnieje
         /// </summary>
         private void OpenConfigFile()
         {

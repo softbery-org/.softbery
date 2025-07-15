@@ -1,73 +1,78 @@
 // Version: 1.0.0.119
 /*
- * G��wne usprawnienia:
- * 1. Pe�na dokumentacja XML z opisami wyj�tk�w
- * 2. Lepsze nazewnictwo metod i sta�ych
- * 3. Separacja odpowiedzialno�ci:
+ * Główne usprawnienia:
+ * 1. Pełna dokumentacja XML z opisami wyjątków
+ * 2. Lepsze nazewnictwo metod i stałych
+ * 3. Separacja odpowiedzialności:
  *      - Logika inkrementacji w osobnej metodzie
- *      - Przetwarzanie plik�w w wydzielonych metodach
- * 4. Bezpiecze�stwo:
- *      - Obs�uga b��d�w I/O
- *      - Walidacja danych wej�ciowych
+ *      - Przetwarzanie plików w wydzielonych metodach
+ * 4. Bezpieczeństwo:
+ *      - Obsługa błędów I/O
+ *      - Walidacja danych wejściowych
  * 5. Optymalizacja:
- *      - Wygenerowane regexy dla lepszej wydajno�ci
- *      - Sta�e dla warto�ci granicznych
- * 6. Zgodno�� z SEMVER:
+ *      - Wygenerowane regexy dla lepszej wydajności
+ *      - Stałe dla wartości granicznych
+ * 6. Zgodność z SEMVER:
  *      - Jasne zasady inkrementacji wersji
- *      - Ograniczenia warto�ci poszczeg�lnych komponent�w
- * 7. Rozszerzalno��:
- *      - Mo�liwo�� �atwej modyfikacji zasad wersjonowania
- *      - Obs�uga r�nych format�w plik�w
- * 8. Lepsze komunikaty b��d�w:
- *      - Kolorowe wyj�cie diagnostyczne
- *      - Szczeg�owe informacje o b��dach
+ *      - Ograniczenia wartości poszczególnych komponentów
+ * 7. Rozszerzalność:
+ *      - Możliwość łatwej modyfikacji zasad wersjonowania
+ *      - Obsługa różnych formatów plików
+ * 8. Lepsze komunikaty błędów:
+ *      - Kolorowe wyjęcie diagnostyczne
+ *      - Szczegółowe informacje o błędach
  * 
- * Nowe funkcjonalno�ci:
- *      - Obs�uga b��d�w przekroczenia maksymalnych warto�ci
- *      - Automatyczne dodawanie nag��wka wersji je�li brak
- *      - Wsparcie dla r�nych format�w komentarzy
+ * Nowe funkcjonalności:
+ *      - Obsługa błędów przekroczenia maksymalnych wartości
+ *      - Automatyczne dodawanie nagłówka wersji jeśli brak
+ *      - Wsparcie dla różnych formatów komentarzy
  *      - Bezpieczne operacje na plikach
  * 
- * Kod jest teraz bardziej odporny na b��dy i �atwiejszy w
- * utrzymaniu, z zachowaniem pe�nej zgodno�ci wstecznej.
+ * Kod jest teraz bardziej odporny na błędy i łatwiejszy w
+ * utrzymaniu, z zachowaniem pełnej zgodności wstecznej.
  */
 using System.Text.RegularExpressions;
 
 namespace VerberyCore
 {
+    // Reprezentuje numer wersji aplikacji w formacie Major.Minor.Build.Revision
     /// <summary>
     /// Reprezentuje numer wersji aplikacji w formacie Major.Minor.Build.Revision
     /// </summary>
     public class DebugVersion
     {
+        // Główny numer wersji (zmiana oznacza brak kompatybilności wstecznej)
         /// <summary>
-        /// G��wny numer wersji (zmiana oznacza brak kompatybilno�ci wstecznej)
+        /// Main version number (zmiana oznacza brak kompatybilno�ci wstecznej)
         /// </summary>
         public int Major { get; set; }
 
+        // Drugi numer wersji (nowe funkcjonalności przy zachowaniu kompatybilności)
         /// <summary>
-        /// Drugi numer wersji (nowe funkcjonalno�ci przy zachowaniu kompatybilno�ci)
+        /// Second version number (new functionalities while maintaining compatibility)
         /// </summary>
         public int Minor { get; set; }
 
+        // Numer buildu (poprawki błędów i drobne zmiany)
         /// <summary>
-        /// Numer buildu (poprawki b��d�w i drobne zmiany)
+        /// Build number (bug fixes and minor changes)
         /// </summary>
         public int Build { get; set; }
 
+        // Numer rewizji (automatycznie inkrementowany)
         /// <summary>
-        /// Numer rewizji (automatycznie inkrementowany)
+        /// Revision number (automatic increment)
         /// </summary>
         public int Revision { get; set; }
 
         /// <summary>
-        /// Zwraca sformatowan� reprezentacj� wersji
+        /// Returns a formatted representation of the version
         /// </summary>
         public override string ToString() => $"{Major}.{Minor}.{Build}.{Revision}";
     }
 
     /// <summary>
-    /// Klasa odpowiedzialna za zarz�dzanie wersjonowaniem aplikacji
+    /// Manages application versions according to the principles of semantic versioning
     /// </summary>
     public static partial class VersionManager
     {
@@ -138,7 +143,7 @@ namespace VerberyCore
 
             if (newVersion.Major > MAX_MAJOR)
             {
-                throw new OverflowException("Osi�gni�to maksymaln� warto�� wersji g��wnej");
+                throw new OverflowException("Osiągnięto maksymalną wartość wersji głównej");
             }
 
             return newVersion;
@@ -208,12 +213,20 @@ namespace VerberyCore
         [GeneratedRegex(@"^//.*Version:", RegexOptions.IgnoreCase)]
         private static partial Regex VersionRegex();
 
+        /// <summary>
+        /// Returns the current version of the application
+        /// </summary>
+        /// <returns></returns>
         internal static DebugVersion GetCurrentVersion()
         {
             
             return new DebugVersion() { Build = 0, Major=1, Minor=0, Revision=0 };
         }
 
+        /// <summary>
+        /// Update the version file with the new version
+        /// </summary>
+        /// <param name="newVersion"></param>
         internal static void UpdateVersionFile(DebugVersion newVersion)
         {
             var dv = new DebugVersion()
@@ -225,6 +238,11 @@ namespace VerberyCore
             };
         }
 
+        /// <summary>
+        /// Parses a version string in the format Major.Minor.Build.Revision
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         internal static DebugVersion ParseVersion(string version)
         {
             return new DebugVersion()

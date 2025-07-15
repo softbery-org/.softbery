@@ -29,27 +29,40 @@
  * Last Modification Date    : 2025-05-06 22:39:42
  */
 
-using System;
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using System.CommandLine.IO;
 using System.CommandLine.NamingConventionBinder;
-using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
-using VerberyCore;
 
-namespace softbery
+namespace VerberyCore
 {
-    partial class Program
+    /// <summary>
+    /// Command-line interface for managing version control and file metadata.
+    /// </summary>
+    public class Cli
     {
-        static async Task<int> CommandRun(string[] args)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Cli"/> class.
+        /// </summary>
+        public Cli(string[] args)
+        {
+            CommandRun(args).GetAwaiter();
+        }
+
+        /// <summary>
+        /// Runs the command-line interface with the specified arguments.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private static async Task<int> CommandRun(string[] args)
         {
             var rootCommand = new RootCommand("Intelligent version control and file metadata management")
             {
                 new Option<bool>(new[] { "--verbose", "-v" }, "Enable detailed logging"),
                 new Option<bool>(new[] { "--silent", "-s" }, "Suppress all output"),
-                new Option<bool>(new[] { "--version", "-V" }, "Display current version")
+                new Option<bool>(new[] { "--version", "-V" }, "Display current version"),
+                new Option<bool>(new[] { "--help", "-h" }, "Show help information"),
+                new Option<bool>(new[] { "--debug", "-d" }, "Enable debug mode")
             };
 
             rootCommand.AddCommand(BuildInitCommand());
@@ -253,43 +266,79 @@ namespace softbery
         {
             private static bool _verbose;
             private static bool _silent;
-
+            /// <summary>
+            /// Initializes the logger with specified verbosity and silence options.`
+            /// </summary>
+            /// <param name="verbose"></param>
+            /// <param name="silent"></param>
             public static void Initialize(bool verbose, bool silent)
             {
                 _verbose = verbose;
                 _silent = silent;
             }
-
+            /// <summary>
+            /// Logs an informational message to the standard output.
+            /// </summary>
+            /// <param name="message"></param>
             public static void Info(string message)
             {
                 if (!_silent) Console.WriteLine($"[INFO] {message}");
             }
-
+            /// <summary>
+            /// Logs an error message to the standard error output.
+            /// </summary>
+            /// <param name="message"></param>
             public static void Error(string message)
             {
                 if (!_silent) Console.Error.WriteLine($"[ERROR] {message}");
             }
-
+            /// <summary>
+            /// Logs a debug message if verbose mode is enabled.
+            /// </summary>
+            /// <param name="message"></param>
             public static void Debug(string message)
             {
                 if (_verbose && !_silent) Console.WriteLine($"[DEBUG] {message}");
             }
         }
 
+        /// <summary>
+        /// Represents a version number with major, minor, build, and revision components.
+        /// </summary>
         public enum VersionComponent { Major, Minor, Build, Revision }
 
+        /// <summary>
+        /// Represents options for scanning directories and files.
+        /// </summary>
         public class ScanOptions
         {
+            /// <summary>
+            /// Indicates whether the scan should be recursive.
+            /// </summary>
             public bool Recursive { get; set; }
+            /// <summary>
+            /// Indicates whether to generate hashes for files during the scan.
+            /// </summary>
             public bool GenerateHashes { get; set; }
+            /// <summary>
+            /// Specifies the output format for the scan results.
+            /// </summary>
             public string OutputFormat { get; set; }
         }
         #endregion
     }
 
     // Przykładowa implementacja pozostałych klas
+    /// <summary>
+    /// Represents a file manager that handles file operations and metadata.
+    /// </summary>
     public static class VersionControlSystem
     {
+        /// <summary>
+        /// Initializes the version control system for the specified path.
+        /// </summary>
+        /// <param name="vcsType"></param>
+        /// <param name="path"></param>
         public static void Initialize(string vcsType, DirectoryInfo path)
         {
             // Implementacja inicjalizacji VCS
@@ -297,11 +346,23 @@ namespace softbery
     }
 
     // Fix for CS0051: Make Program.ScanOptions public to match the accessibility of FileManager.GetDataTree
+    /// <summary>
+    /// Represents options for scanning directories and files.
+    /// </summary>
     public class ScanOptions
     {
+        /// <summary>
+        /// Indicates whether the scan should be recursive.
+        /// </summary>
         public bool Recursive { get; set; }
+        /// <summary>
+        /// Indicates whether to generate hashes for files during the scan.
+        /// </summary>
         public bool GenerateHashes { get; set; }
-        public string OutputFormat { get; set; }
+        /// <summary>
+        /// Specifies the output format for the scan results.
+        /// </summary>
+        public string OutputFormat { get; set; } = string.Empty;
     
     // Fix for CS1591: Add XML documentation for the public method FileManager.GetDataTree
     /// <summary>
@@ -317,6 +378,13 @@ namespace softbery
         }
 
         // Fix for IDE0060: Ensure parameters are used or explicitly suppress the warning if they are part of the public API
+        /// <summary>
+        /// Retrieves a data tree representation of the specified directory path with API support.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="options"></param>
+        /// <param name="api"></param>
+        /// <returns></returns>
         public static List<Tree> GetDataTree(string path, ScanOptions options, object api)
         {
             // Use the parameters in the implementation or suppress the warning if they are intentionally unused
