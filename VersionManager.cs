@@ -72,7 +72,7 @@ namespace VerberyCore
     public static partial class VersionManager
     {
         #region Constants
-        private const int MAX_REVISION = 9999;
+        private const int MAX_REVISION = 99;
         private const int MAX_BUILD = 99;
         private const int MAX_MINOR = 12;
         private const int MAX_MAJOR = int.MaxValue;
@@ -87,7 +87,7 @@ namespace VerberyCore
         public static void UpdateVersion(string filePath)
         {
             if (!File.Exists(filePath))
-                throw new FileNotFoundException("Plik nie istnieje", filePath);
+                Console.WriteLine(new FileNotFoundException("Plik nie istnieje", filePath).Message);
 
             try
             {
@@ -190,12 +190,12 @@ namespace VerberyCore
             return $"// Version: {newVersion}";
         }
 
-        private static string GenerateNewVersionHeader() => "// Version: 1.0.0.0";
+        private static string GenerateNewVersionHeader() => "// Version: 0.1.0.0";
 
         private static void HandleVersionUpdateError(Exception ex, string filePath)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"B��d aktualizacji wersji w pliku {filePath}:");
+            Console.WriteLine($"Błąd aktualizacji wersji w pliku {filePath}:");
             Console.WriteLine(ex.Message);
             Console.ResetColor();
         }
@@ -210,17 +210,30 @@ namespace VerberyCore
 
         internal static DebugVersion GetCurrentVersion()
         {
-            throw new NotImplementedException();
+            
+            return new DebugVersion() { Build = 0, Major=1, Minor=0, Revision=0 };
         }
 
         internal static void UpdateVersionFile(DebugVersion newVersion)
         {
-            throw new NotImplementedException();
+            var dv = new DebugVersion()
+            {
+                Major = newVersion.Major,
+                Minor = newVersion.Minor,
+                Build = newVersion.Build,
+                Revision = newVersion.Revision
+            };
         }
 
         internal static DebugVersion ParseVersion(string version)
         {
-            throw new NotImplementedException();
+            return new DebugVersion()
+            {
+                Major = int.Parse(version.Split('.')[0]),
+                Minor = int.Parse(version.Split('.')[1]),
+                Build = int.Parse(version.Split('.')[2]),
+                Revision = int.Parse(version.Split('.')[3])
+            };
         }
         #endregion
     }

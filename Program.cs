@@ -158,6 +158,7 @@ namespace VerberyCore
         /// <param name="args">Argumenty wiersza poleceń</param>
         public static void Main(string[] args)
         {
+            Console.WriteLine("[VERBERY]: Starting application...");
             _args = args;
             try
             {
@@ -176,9 +177,16 @@ namespace VerberyCore
         /// </summary>
         private static void InitializeConfiguration()
         {
-            var configFile = new FileInfo(".sbconf");
-            var configFiles = new List<FileInfo> { configFile };
-            //Config = new Conf(_args);
+            try
+            {
+                var configFile = new FileInfo(".sb/.sbconf");
+                var configFiles = new List<FileInfo> { configFile };
+
+                //Config = new Conf(_args);
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.ToString()}");
+            }
         }
 
         /// <summary>
@@ -187,22 +195,53 @@ namespace VerberyCore
         private static void ProcessFileVersioning()
         {
             _trees = FileManager.GetDataTree("./");
-
+            
             var tempContent = GenerateFileTreeContent();
-            File.WriteAllText(".sbver_files_temp", tempContent);
-
-            var existingContent = File.Exists(".sbver_files")
-                ? File.ReadAllText(".sbver_files")
-                : string.Empty;
-
-            var changes = FindChangedFiles(tempContent, existingContent);
-
-            if (changes.Any())
+            if (string.IsNullOrEmpty(tempContent))
             {
-                CreateBackupFile(changes);
+                Console.WriteLine("[VERBERY]: No files to process.");
+                return;
             }
 
-            File.Replace(".sbver_files_temp", ".sbver_files", null);
+            if (!Directory.Exists(".sb"))
+            {
+                Directory.CreateDirectory(".sb");
+            }
+
+            if (!File.Exists(".sb/.sbver_files_temp"))
+                File.CreateText(".sb/.sbver_files_temp").Close();
+
+            try
+            {
+                File.WriteAllText(".sb/.sbver_files_temp", tempContent);
+
+                var existingContent = File.Exists(".sb/.sbver_files")
+                    ? File.ReadAllText(".sb/.sbver_files")
+                    : string.Empty;
+
+                var changes = FindChangedFiles(tempContent, existingContent);
+
+                if (changes.Any())
+                {
+                    try
+                    {
+                        CreateBackupFile(changes);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.ToString()}");
+                    }
+                }
+
+                if (File.Exists(".sb/.sbver_files"))
+                {
+                    File.Replace(".sb/.sbver_files_temp", ".sb/.sbver_files", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message} {ex.StackTrace}");
+            }            
         }
 
         /// <summary>
@@ -287,7 +326,7 @@ namespace VerberyCore
         {
             var backupContent = string.Join(Environment.NewLine,
                 changes.Select(c => $"{c.Name}{Environment.NewLine}{c.Hash}"));
-            File.WriteAllText(".sbver_backup", backupContent);
+            File.WriteAllText(".sb/.sbver_backup", backupContent);
         }
 
         /// <summary>
@@ -298,8 +337,14 @@ namespace VerberyCore
             var versionInfo = GetCurrentVersion();
             var newVersion = VersionManager.IncrementVersion(versionInfo);
 
-            UpdateVersionFile(newVersion);
-            DisplayVersionInfo(versionInfo, newVersion);
+            try
+            {
+                UpdateVersionFile(newVersion);
+                DisplayVersionInfo(versionInfo, newVersion);
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"{ex.Message}");
+            }
         }
 
         /// <summary>
@@ -308,8 +353,13 @@ namespace VerberyCore
         /// <returns>Obiekt DebugVersion z aktualną wersją</returns>
         private static DebugVersion GetCurrentVersion()
         {
-            const string defaultVersion = "1.0.0.0";
-            var versionFile = ".sbver";
+            const string defaultVersion = "0.1.0.0";
+            var versionFile = ".sb/.sbver";
+
+            if (!Directory.Exists(".sb/"))
+            {
+                Directory.CreateDirectory(".sb/");
+            }
 
             if (!File.Exists(versionFile))
             {
@@ -334,12 +384,21 @@ namespace VerberyCore
         }
 
         /// <summary>
+        /// Pobiera aktualną wersję aplikacji
+        /// </summary>
+        /// <returns>Aktualna wersja</returns>
+        public static DebugVersion GetVersion() 
+        {
+            return GetCurrentVersion();
+        }
+
+        /// <summary>
         /// Aktualizuje plik z wersją aplikacji
         /// </summary>
         /// <param name="newVersion">Nowy numer wersji</param>
         private static void UpdateVersionFile(DebugVersion newVersion)
         {
-            File.WriteAllText(".sbver",
+            File.WriteAllText(".sb/.sbver",
                 $"{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}");
         }
 

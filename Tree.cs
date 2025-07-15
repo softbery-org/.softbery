@@ -49,23 +49,23 @@ namespace VerberyCore
         /// <summary>
         /// Skr�t pliku (hash)
         /// </summary>
-        public string Hash { get; set; }
+        public string? Hash { get; set; }
         /// <summary>
         /// Drzewo katalog�w
         /// </summary>
-        public DirectoryTree Directory { get; set; }
+        public DirectoryTree? Directory { get; set; }
         /// <summary>
         /// Informacje o pliku
         /// </summary>
-        public FileInfo Info { get; set; }
+        public FileInfo? Info { get; set; }
         /// <summary>
         /// Pe�na �cie�ka do pliku
         /// </summary>
-        public string FullPath { get; set; }
+        public string? FullPath { get; set; }
         /// <summary>
         /// Wersja pliku
         /// </summary>
-        public string Version { get; set; }
+        public string? Version { get; set; }
     }
 
     /// <summary>

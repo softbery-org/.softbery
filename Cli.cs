@@ -187,7 +187,8 @@ namespace softbery
                 try
                 {
                     var currentVersion = VersionManager.GetCurrentVersion();
-                    var newVersion = VersionManager.IncrementVersion(currentVersion);/*,
+                    var newVersion = VersionManager.IncrementVersion(currentVersion);
+                    /*,
                         major ? VersionComponent.Major :
                         minor ? VersionComponent.Minor :
                         build ? VersionComponent.Build :

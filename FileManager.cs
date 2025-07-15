@@ -1,69 +1,107 @@
-// Version: 1.0.0.328
-
-/*
- * CHANGELOG:
- * G��wne usprawnienia:
- * 1. Struktura klas
- *      - Wydzielenie klas pomocniczych (DirectoryTree)
- *      - Lepsze zarz�dzanie zale�no�ciami
- * 2. Bezpiecze�stwo
- *      - Obs�uga b��d�w w ka�dej operacji I/O
- *      - Walidacja istnienia plik�w/katalog�w
- *      - Bezpieczne operacje na kolekcjach
- * 3. Wydajno��
- *      - Optymalizacja zapyta� LINQ
- *      - Cz�ciowe metody dla regex�w
- *      - Lepsze zarz�dzanie pami�ci�
- * 4. Rozszerzalno��
- *      - Jasno zdefiniowane punkty rozszerze�
- *      - Mo�liwo�� �atwego dodawania nowych format�w plik�w
- * 5. Czytelno��
- *      - Logiczny podzia� metod
- *      - Sp�jne nazewnictwo
- *      - Usuni�cie zb�dnych zagnie�d�e�
- * 6. Dokumentacja
- *      - Pe�ne opisy XML
- *      - Przyk�ady u�ycia
- *      - Dokumentacja wyj�tk�w
- * 7. Zasady SOLID
- *      - Single Responsibility dla metod
- *      - Open/Closed dla nowych typ�w plik�w
- *      - Liskov Substitution dla hierarchii plik�w
- * 8. Wsparcie wielow�tkowo�ci
- *      - Thread-safe operacje na kolekcjach
- *      - Stateless metody pomocnicze
- * 
- * Dodatkowe funkcjonalno�ci:
- *      - Bezpieczne por�wnywanie �cie�ek
- *      - Obs�uga r�nych system�w plik�w
- *      - Rozszerzalny system wersjonowania
- *      - Wsparcie dla r�nych strategii hashowania
- */
+using System.IO;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace VerberyCore
 {
     /// <summary>
-    /// Manager plik�w odpowiedzialny za operacje na drzewie katalog�w i wersjonowanie plik�w
+    /// Manager plików odpowiedzialny za operacje na drzewie katalogów i wersjonowanie plików
     /// </summary>
     public static partial class FileManager
     {
         private static readonly List<Tree> _trees = new();
+        private static readonly List<string> _ignorePatterns = new();
 
         /// <summary>
-        /// Lista plik�w i katalog�w w drzewie
+        /// Lista plików i katalogów w drzewie
         /// </summary>
         public static List<Tree> FileList => new(_trees);
 
         /// <summary>
-        /// Pobiera hierarchi� plik�w i katalog�w
+        /// Pobiera hierarchię plików i katalogów
         /// </summary>
-        /// <param name="path">�cie�ka startowa</param>
-        /// <returns>Lista element�w drzewa</returns>
+        /// <param name="path">Ścieżka startowa</param>
+        /// <returns>Lista elementów drzewa</returns>
         public static List<Tree> GetDataTree(string path)
         {
             _trees.Clear();
-            return ProcessDirectory(path);
+            LoadIgnorePatterns(path);
+            if (!IgnoreDirectory(new DirectoryInfo(path)))
+            {
+                return ProcessDirectory(path);
+            }
+            return _trees;
+        }
+
+        /// <summary>
+        /// Loads ignore patterns from the .sb/.ignore file
+        /// </summary>
+        /// <param name="basePath">Base path where the ignore file is located</param>
+        private static void LoadIgnorePatterns(string basePath)
+        {
+            try
+            {
+                string ignoreFilePath = Path.Combine(basePath, ".sb", ".ignore");
+                _ignorePatterns.Clear();
+
+                if (File.Exists(ignoreFilePath))
+                {
+                    var patterns = File.ReadAllLines(ignoreFilePath)
+                        .Select(line => line.Trim())
+                        .Where(line => !string.IsNullOrEmpty(line) && !line.StartsWith("#"));
+
+                    foreach (var pattern in patterns)
+                    {
+                        string normalizedPattern = pattern;
+                        if (!pattern.StartsWith("/") && !pattern.StartsWith("\\"))
+                        {
+                            normalizedPattern = Path.Combine(basePath, pattern);
+                        }
+                        else
+                        {
+                            normalizedPattern = Path.Combine(basePath, pattern.Substring(1));
+                        }
+                        _ignorePatterns.Add(normalizedPattern.Replace("/", "\\"));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+        }
+
+        private static bool IgnoreDirectory(DirectoryInfo dir)
+        {
+            try
+            {
+                string normalizedDirPath = dir.FullName.Replace("/", "\\");
+
+                foreach (var pattern in _ignorePatterns)
+                {
+                    if (normalizedDirPath.Equals(pattern, StringComparison.OrdinalIgnoreCase) ||
+                        normalizedDirPath.StartsWith(pattern + "\\", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine($"Ignoring directory: {dir.FullName}");
+                        return true;
+                    }
+
+                    if (pattern.Contains("*") || pattern.Contains("?"))
+                    {
+                        string regexPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "$";
+                        if (Regex.IsMatch(normalizedDirPath, regexPattern, RegexOptions.IgnoreCase))
+                        {
+                            Console.WriteLine($"Ignoring directory (pattern match): {dir.FullName}");
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+            return false;
         }
 
         private static List<Tree> ProcessDirectory(string path)
@@ -71,6 +109,7 @@ namespace VerberyCore
             try
             {
                 var directoryInfo = new DirectoryInfo(path);
+
                 ProcessFiles(directoryInfo);
                 ProcessSubdirectories(directoryInfo);
             }
@@ -83,18 +122,80 @@ namespace VerberyCore
 
         private static void ProcessFiles(DirectoryInfo directory)
         {
-            foreach (var file in directory.GetFiles().Where(f => f.Exists))
+            foreach (var file in directory.GetFiles().Where(f => f.Exists && !IgnoreFile(f) && IsFileAccessible(f)))
             {
                 var fileTree = CreateFileTreeItem(file, directory);
                 AddTreeItem(fileTree, isCsFile: file.Extension.Equals(".cs", StringComparison.OrdinalIgnoreCase));
             }
         }
 
+        /// <summary>
+        /// Checks if a file is accessible (not locked by another process)
+        /// </summary>
+        /// <param name="file">FileInfo object to check</param>
+        /// <returns>True if the file is accessible, false otherwise</returns>
+        private static bool IsFileAccessible(FileInfo file)
+        {
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+                return true;
+            }
+            catch (IOException)
+            {
+                Console.WriteLine($"Skipping file (in use by another process): {file.FullName}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+                return false;
+            }
+        }
+
+        private static bool IgnoreFile(FileInfo file)
+        {
+            try
+            {
+                string normalizedFilePath = file.FullName.Replace("/", "\\");
+
+                foreach (var pattern in _ignorePatterns)
+                {
+                    if (normalizedFilePath.Equals(pattern, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine($"Ignoring file: {file.FullName}");
+                        return true;
+                    }
+
+                    if (pattern.Contains("*") || pattern.Contains("?"))
+                    {
+                        string regexPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "$";
+                        if (Regex.IsMatch(normalizedFilePath, regexPattern, RegexOptions.IgnoreCase))
+                        {
+                            Console.WriteLine($"Ignoring file (pattern match): {file.FullName}");
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+            return false;
+        }
+
         private static void ProcessSubdirectories(DirectoryInfo directory)
         {
-            foreach (var subDir in directory.GetDirectories().Where(d => d.Exists))
+            if (!IgnoreDirectory(directory))
             {
-                ProcessDirectory(subDir.FullName);
+                foreach (var subDir in directory.GetDirectories().Where(d => d.Exists))
+                {
+                    ProcessDirectory(subDir.FullName);
+                }
             }
         }
 
@@ -107,7 +208,7 @@ namespace VerberyCore
                 FileType = info is FileInfo ? FileType.file : FileType.directory,
                 Info = info,
                 Directory = new DirectoryTree(parent.FullName),
-                Hash = (info is FileInfo file) ? file.CheckMD5() : string.Empty
+                Hash = (info is FileInfo file && IsFileAccessible(file)) ? file.CheckMD5() : string.Empty
             };
         }
 
@@ -123,13 +224,20 @@ namespace VerberyCore
         }
 
         /// <summary>
-        /// Aktualizuje wersj� w pliku
+        /// Aktualizuje wersję w pliku
         /// </summary>
-        /// <param name="filePath">�cie�ka do pliku</param>
+        /// <param name="filePath">Ścieżka do pliku</param>
         public static void UpdateFileVersion(string filePath)
         {
             try
             {
+                var fileInfo = new FileInfo(filePath);
+                if (!IsFileAccessible(fileInfo))
+                {
+                    Console.WriteLine($"Cannot update version for {filePath}: File is in use.");
+                    return;
+                }
+
                 var lines = File.ReadAllLines(filePath);
                 var updatedLines = ProcessVersionLines(lines).ToArray();
 
@@ -180,7 +288,7 @@ namespace VerberyCore
 
         private static string GenerateNewVersionLine()
         {
-            var defaultVersion = new DebugVersion { Major = 1, Minor = 0, Build = 0, Revision = 0 };
+            var defaultVersion = new DebugVersion { Major = 0, Minor = 1, Build = 0, Revision = 0 };
             return $"// Version: {defaultVersion.Major}.{defaultVersion.Minor}.{defaultVersion.Build}.{defaultVersion.Revision}";
         }
 
@@ -189,8 +297,6 @@ namespace VerberyCore
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Error: {ex.Message}");
             Console.ResetColor();
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
         }
 
         [GeneratedRegex(@"^//.*Version:\s*(\d+)\.(\d+)\.(\d+)\.(\d+)")]

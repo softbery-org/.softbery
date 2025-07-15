@@ -192,7 +192,7 @@ namespace VerberyCore
         /// </summary>
         private void OpenConfigFile()
         {
-            const string configFile = ".sbconf";
+            const string configFile = ".sb/.sbconf";
 
             if (!File.Exists(configFile))
             {
