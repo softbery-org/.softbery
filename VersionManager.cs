@@ -31,35 +31,31 @@
  * Kod jest teraz bardziej odporny na błędy i łatwiejszy w
  * utrzymaniu, z zachowaniem pełnej zgodności wstecznej.
  */
+
 using System.Text.RegularExpressions;
 
 namespace VerberyCore
 {
-    // Reprezentuje numer wersji aplikacji w formacie Major.Minor.Build.Revision
     /// <summary>
     /// Reprezentuje numer wersji aplikacji w formacie Major.Minor.Build.Revision
     /// </summary>
     public class DebugVersion
     {
-        // Główny numer wersji (zmiana oznacza brak kompatybilności wstecznej)
         /// <summary>
-        /// Main version number (zmiana oznacza brak kompatybilno�ci wstecznej)
+        /// Main version number (zmiana oznacza brak kompatybilności wstecznej)
         /// </summary>
         public int Major { get; set; }
 
-        // Drugi numer wersji (nowe funkcjonalności przy zachowaniu kompatybilności)
         /// <summary>
         /// Second version number (new functionalities while maintaining compatibility)
         /// </summary>
         public int Minor { get; set; }
 
-        // Numer buildu (poprawki błędów i drobne zmiany)
         /// <summary>
         /// Build number (bug fixes and minor changes)
         /// </summary>
         public int Build { get; set; }
 
-        // Numer rewizji (automatycznie inkrementowany)
         /// <summary>
         /// Revision number (automatic increment)
         /// </summary>
@@ -86,18 +82,31 @@ namespace VerberyCore
         /// <summary>
         /// Aktualizuje numer wersji w podanym pliku
         /// </summary>
-        /// <param name="filePath">�cie�ka do pliku</param>
+        /// <param name="filePath">Ścieżka do pliku</param>
         /// <exception cref="FileNotFoundException">Gdy plik nie istnieje</exception>
-        /// <exception cref="UnauthorizedAccessException">Brak uprawnie� do zapisu</exception>
+        /// <exception cref="UnauthorizedAccessException">Brak uprawnień do zapisu</exception>
         public static void UpdateVersion(string filePath)
         {
             if (!File.Exists(filePath))
+            {
                 Console.WriteLine(new FileNotFoundException("Plik nie istnieje", filePath).Message);
+                return;
+            }
 
             try
             {
-                var lines = File.ReadAllLines(filePath);
-                var updatedLines = ProcessVersionLines(lines);
+                var originalLines = File.ReadAllLines(filePath);
+                var originalContent = string.Join(Environment.NewLine, originalLines);
+                var updatedLines = ProcessVersionLines(originalLines);
+                var updatedContent = string.Join(Environment.NewLine, updatedLines);
+
+                // Sprawdzenie, czy zawartość się zmieniła
+                if (originalContent == updatedContent)
+                {
+                    Console.WriteLine($"[VERBERY]: No changes detected in version file {filePath}. Skipping update.");
+                    return;
+                }
+
                 File.WriteAllLines(filePath, updatedLines);
             }
             catch (Exception ex)
@@ -219,8 +228,7 @@ namespace VerberyCore
         /// <returns></returns>
         internal static DebugVersion GetCurrentVersion()
         {
-            
-            return new DebugVersion() { Build = 0, Major=1, Minor=0, Revision=0 };
+            return new DebugVersion() { Build = 0, Major = 1, Minor = 0, Revision = 0 };
         }
 
         /// <summary>

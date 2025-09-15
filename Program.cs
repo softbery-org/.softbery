@@ -164,7 +164,7 @@ namespace VerberyCore
             Console.WriteLine("[VERBERY]: Starting application...");
             _args = args;
             var cli = new Cli(args);
-           
+
             try
             {
                 InitializeConfiguration();
@@ -189,7 +189,8 @@ namespace VerberyCore
 
                 //Config = new Conf(_args);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine($"Error: {ex.ToString()}");
             }
         }
@@ -200,7 +201,7 @@ namespace VerberyCore
         private static void ProcessFileVersioning()
         {
             _trees = FileManager.GetDataTree("./");
-            
+
             var tempContent = GenerateFileTreeContent();
             if (string.IsNullOrEmpty(tempContent))
             {
@@ -224,6 +225,14 @@ namespace VerberyCore
                     ? File.ReadAllText($"{DirectoryPath}/.sbver_files")
                     : string.Empty;
 
+                // Sprawdzenie, czy zawartość się zmieniła
+                if (tempContent == existingContent)
+                {
+                    Console.WriteLine("[VERBERY]: No changes detected in file versions. Skipping update.");
+                    File.Delete($"{DirectoryPath}/.sbver_files_temp"); // Usunięcie tymczasowego pliku
+                    return;
+                }
+
                 var changes = FindChangedFiles(tempContent, existingContent);
 
                 if (changes.Any())
@@ -242,11 +251,15 @@ namespace VerberyCore
                 {
                     File.Replace($"{DirectoryPath}/.sbver_files_temp", $"{DirectoryPath}/.sbver_files", null);
                 }
+                else
+                {
+                    File.Move($"{DirectoryPath}/.sbver_files_temp", $"{DirectoryPath}/.sbver_files");
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message} {ex.StackTrace}");
-            }            
+            }
         }
 
         /// <summary>
@@ -303,10 +316,6 @@ namespace VerberyCore
                 @"file hash: (.*)"
             };
 
-            /*var matches = patterns
-                .Select(p => Regex.Matches(content, p, RegexOptions.Multiline)
-                .Select(m => m.Cast<Match>().Select(x => x.Groups[1].Value.Trim()).ToList()).ToList());*/
-
             var matches = patterns
                 .Select(p => Regex.Matches(content, p, RegexOptions.Multiline)
                     .Cast<Match>()
@@ -347,7 +356,8 @@ namespace VerberyCore
                 UpdateVersionFile(newVersion);
                 DisplayVersionInfo(versionInfo, newVersion);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine($"{ex.Message}");
             }
         }
@@ -389,7 +399,7 @@ namespace VerberyCore
         /// Pobiera aktualną wersję aplikacji
         /// </summary>
         /// <returns>Aktualna wersja</returns>
-        public static DebugVersion GetVersion() 
+        public static DebugVersion GetVersion()
         {
             return GetCurrentVersion();
         }
@@ -438,13 +448,14 @@ namespace VerberyCore
         public static void CheckDirectoryOrCreate(string path, FileAttributes attributes)
         {
             var directoryInfo = new DirectoryInfo(path);
-            
+
             if (!directoryInfo.Exists)
             {
                 directoryInfo.Create();
                 directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
             }
-            else {                 
+            else
+            {
                 // If the directory exists, ensure it has the correct attributes
                 // Check if the directory has the specified attributes and add them if not
                 if ((directoryInfo.Attributes & attributes) != attributes)
