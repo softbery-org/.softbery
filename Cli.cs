@@ -1,4 +1,4 @@
-﻿
+
 /* 
  * LICENSE_MIT License
  * 
@@ -396,3 +396,4 @@ namespace VerberyCore
         }
     }
 }
+// Version: 0.1.0.0

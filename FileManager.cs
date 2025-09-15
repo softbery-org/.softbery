@@ -218,7 +218,7 @@ namespace VerberyCore
 
             if (isCsFile)
             {
-                VersionManager.UpdateVersion(item.Path);
+                UpdateFileVersion(item.Path);
             }
             _trees.Add(item);
         }
@@ -238,8 +238,17 @@ namespace VerberyCore
                     return;
                 }
 
-                var lines = File.ReadAllLines(filePath);
-                var updatedLines = ProcessVersionLines(lines).ToArray();
+                var originalLines = File.ReadAllLines(filePath);
+                var originalContent = string.Join(Environment.NewLine, originalLines);
+                var updatedLines = ProcessVersionLines(originalLines).ToArray();
+                var updatedContent = string.Join(Environment.NewLine, updatedLines);
+
+                // Sprawdzenie, czy zawartość się zmieniła
+                if (originalContent == updatedContent)
+                {
+                    Console.WriteLine($"[VERBERY]: No changes detected in version file {filePath}. Skipping update.");
+                    return;
+                }
 
                 File.WriteAllLines(filePath, updatedLines);
             }
@@ -311,3 +320,4 @@ namespace VerberyCore
         }
     }
 }
+// Version: 0.1.0.0

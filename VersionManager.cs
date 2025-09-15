@@ -1,4 +1,4 @@
-// Version: 1.0.0.119
+// Version: 1.0.1.0
 /*
  * Główne usprawnienia:
  * 1. Pełna dokumentacja XML z opisami wyjątków
