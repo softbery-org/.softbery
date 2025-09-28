@@ -1,3 +1,6 @@
+// Version: 0.1.0.5
+using System.Text.RegularExpressions;
+
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Linq;
@@ -218,16 +221,17 @@ namespace VerberyCore
 
             if (isCsFile)
             {
-                UpdateFileVersion(item.Path);
+                UpdateFileVersion(item.Path, item.Hash);
             }
             _trees.Add(item);
         }
 
         /// <summary>
-        /// Aktualizuje wersję w pliku
+        /// Aktualizuje wersję w pliku tylko jeśli zawartość pliku się zmieniła
         /// </summary>
         /// <param name="filePath">Ścieżka do pliku</param>
-        public static void UpdateFileVersion(string filePath)
+        /// <param name="currentHash">Aktualny hash pliku</param>
+        public static void UpdateFileVersion(string filePath, string currentHash)
         {
             try
             {
@@ -238,6 +242,21 @@ namespace VerberyCore
                     return;
                 }
 
+                // Sprawdź, czy plik istnieje w .sbver_files i pobierz poprzedni hash
+                var existingContent = File.Exists($"{Program.DirectoryPath}/.sbver_files")
+                    ? File.ReadAllText($"{Program.DirectoryPath}/.sbver_files")
+                    : string.Empty;
+                var existingFiles = Program.ParseFileContent(existingContent);
+                var previousFile = existingFiles.FirstOrDefault(f => f.Path == filePath);
+
+                // Jeśli hash się nie zmienił, pomiń aktualizację wersji
+                if (previousFile != null && previousFile.Hash == currentHash)
+                {
+                    Console.WriteLine($"[VERBERY]: No content changes detected in {filePath}. Skipping version update.");
+                    return;
+                }
+
+                // Aktualizuj wersję, jeśli wykryto zmiany
                 var originalLines = File.ReadAllLines(filePath);
                 var originalContent = string.Join(Environment.NewLine, originalLines);
                 var updatedLines = ProcessVersionLines(originalLines).ToArray();
@@ -320,4 +339,3 @@ namespace VerberyCore
         }
     }
 }
-// Version: 0.1.0.0

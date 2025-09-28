@@ -1,4 +1,4 @@
-// Version: 1.0.1.0
+// Version: 1.0.1.5
 /*
  * Główne usprawnienia:
  * 1. Pełna dokumentacja XML z opisami wyjątków
@@ -31,7 +31,6 @@
  * Kod jest teraz bardziej odporny na błędy i łatwiejszy w
  * utrzymaniu, z zachowaniem pełnej zgodności wstecznej.
  */
-
 using System.Text.RegularExpressions;
 
 namespace VerberyCore

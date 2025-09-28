@@ -1,4 +1,4 @@
-// Version: 1.0.1.0
+// Version: 1.0.1.5
 /* 
  * LICENSE MIT License
  * 
@@ -304,7 +304,7 @@ namespace VerberyCore
         /// </summary>
         /// <param name="content">Zawartość pliku do parsowania</param>
         /// <returns>Lista obiektów Tree reprezentujących pliki</returns>
-        private static List<Tree> ParseFileContent(string content)
+        public static List<Tree> ParseFileContent(string content)
         {
             if (string.IsNullOrEmpty(content))
                 return new List<Tree>();

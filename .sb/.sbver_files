@@ -8,13 +8,13 @@ ID: 1
 file name: Cli.cs
 file path: F:\dev\.softbery\Cli.cs
 file type: file
-file hash: 8a53cfb523a7be29b98bf463ae0883d2
+file hash: ec9f731ac052b36da41a56be6c25a90a
 
 ID: 2
 file name: Conf.cs
 file path: F:\dev\.softbery\Conf.cs
 file type: file
-file hash: 5bae8bd81b26188fe0af6f5fbbd975de
+file hash: 9e83fe44f62daf98984ffc5afe59da15
 
 ID: 3
 file name: FileHash.cs
@@ -26,13 +26,13 @@ ID: 4
 file name: FileHeader.cs
 file path: F:\dev\.softbery\FileHeader.cs
 file type: file
-file hash: 320e91238e3a0beb81300f46ed169b99
+file hash: 6d9d959ccd94716166e69cb387909741
 
 ID: 5
 file name: FileManager.cs
 file path: F:\dev\.softbery\FileManager.cs
 file type: file
-file hash: d9dc6300416f2fc7ac232860478872ae
+file hash: c3c00b6f90253fd1875095f19d87d623
 
 ID: 6
 file name: LICENSE.md
@@ -50,7 +50,7 @@ ID: 8
 file name: Program.cs
 file path: F:\dev\.softbery\Program.cs
 file type: file
-file hash: 46d163b9cb2d372b9d706fa8d0cf678d
+file hash: 6365a282efaa39fbb473605056df1eca
 
 ID: 9
 file name: README.md
@@ -80,7 +80,7 @@ ID: 13
 file name: Tree.cs
 file path: F:\dev\.softbery\Tree.cs
 file type: file
-file hash: 5df0c94d67821716230e8794d70bda3c
+file hash: 4862b29cc4cb5607a9124fb1949516c5
 
 ID: 14
 file name: verbery.ico
@@ -95,1868 +95,1994 @@ file type: file
 file hash: 78c799c97e301cc1ee23c0f758cf2a62
 
 ID: 16
+file name: verbery.txt
+file path: F:\dev\.softbery\verbery.txt
+file type: file
+file hash: c01d1061c1b78280a001aa0d7ee9a8c5
+
+ID: 17
 file name: verbery_2.ico
 file path: F:\dev\.softbery\verbery_2.ico
 file type: file
 file hash: b6a2ae6d0ccf652fe70baffaf394e476
 
-ID: 17
+ID: 18
 file name: VersionManager.cs
 file path: F:\dev\.softbery\VersionManager.cs
 file type: file
-file hash: 262e11ba1aaadb083540698180393af5
+file hash: 73d93a13ad31bfbe33258983394e3338
 
-ID: 18
+ID: 19
 file name: COMMIT_EDITMSG
 file path: F:\dev\.softbery\.git\COMMIT_EDITMSG
 file type: file
-file hash: 91925af48332444d24033e10ae5a9a72
+file hash: 129e3c44d1c0d09a343fc59ec786c7fb
 
-ID: 19
+ID: 20
 file name: config
 file path: F:\dev\.softbery\.git\config
 file type: file
 file hash: f5be520fe72308f116f8fadec4affcca
 
-ID: 20
+ID: 21
 file name: description
 file path: F:\dev\.softbery\.git\description
 file type: file
 file hash: a0a7c3fff21f2aea3cfa1d0316dd816c
 
-ID: 21
+ID: 22
 file name: FETCH_HEAD
 file path: F:\dev\.softbery\.git\FETCH_HEAD
 file type: file
-file hash: f8ec2d2462b97afd0fbe3fc1674fe6ed
+file hash: 6ea7eafafcf6d1372038f3534395a15f
 
-ID: 22
+ID: 23
 file name: HEAD
 file path: F:\dev\.softbery\.git\HEAD
 file type: file
 file hash: 4cf2d64e44205fe628ddd534e1151b58
 
-ID: 23
+ID: 24
 file name: index
 file path: F:\dev\.softbery\.git\index
 file type: file
-file hash: 8c2f2b46e8954eb687f4cabbbee76dba
+file hash: 958894862ec57f14ebc37edf13b18087
 
-ID: 24
+ID: 25
 file name: ms-persist.xml
 file path: F:\dev\.softbery\.git\ms-persist.xml
 file type: file
 file hash: bd7abf1f52ebefae3682e418e5edf33c
 
-ID: 25
+ID: 26
 file name: ORIG_HEAD
 file path: F:\dev\.softbery\.git\ORIG_HEAD
 file type: file
-file hash: cd2a1dd37c19df41004b309547a27e03
+file hash: 339c5db37575f6b06e62790c6c235f86
 
-ID: 26
+ID: 27
 file name: packed-refs
 file path: F:\dev\.softbery\.git\packed-refs
 file type: file
 file hash: 81343dd9ed47758bfd3e0735566d4319
 
-ID: 27
+ID: 28
 file name: applypatch-msg.sample
 file path: F:\dev\.softbery\.git\hooks\applypatch-msg.sample
 file type: file
 file hash: ce562e08d8098926a3862fc6e7905199
 
-ID: 28
+ID: 29
 file name: commit-msg.sample
 file path: F:\dev\.softbery\.git\hooks\commit-msg.sample
 file type: file
 file hash: 579a3c1e12a1e74a98169175fb913012
 
-ID: 29
+ID: 30
 file name: fsmonitor-watchman.sample
 file path: F:\dev\.softbery\.git\hooks\fsmonitor-watchman.sample
 file type: file
 file hash: a0b2633a2c8e97501610bd3f73da66fc
 
-ID: 30
+ID: 31
 file name: post-update.sample
 file path: F:\dev\.softbery\.git\hooks\post-update.sample
 file type: file
 file hash: 2b7ea5cee3c49ff53d41e00785eb974c
 
-ID: 31
+ID: 32
 file name: pre-applypatch.sample
 file path: F:\dev\.softbery\.git\hooks\pre-applypatch.sample
 file type: file
 file hash: 054f9ffb8bfe04a599751cc757226dda
 
-ID: 32
+ID: 33
 file name: pre-commit.sample
 file path: F:\dev\.softbery\.git\hooks\pre-commit.sample
 file type: file
 file hash: 5029bfab85b1c39281aa9697379ea444
 
-ID: 33
+ID: 34
 file name: pre-merge-commit.sample
 file path: F:\dev\.softbery\.git\hooks\pre-merge-commit.sample
 file type: file
 file hash: 39cb268e2a85d436b9eb6f47614c3cbc
 
-ID: 34
+ID: 35
 file name: pre-push.sample
 file path: F:\dev\.softbery\.git\hooks\pre-push.sample
 file type: file
 file hash: 2c642152299a94e05ea26eae11993b13
 
-ID: 35
+ID: 36
 file name: pre-rebase.sample
 file path: F:\dev\.softbery\.git\hooks\pre-rebase.sample
 file type: file
 file hash: 56e45f2bcbc8226d2b4200f7c46371bf
 
-ID: 36
+ID: 37
 file name: pre-receive.sample
 file path: F:\dev\.softbery\.git\hooks\pre-receive.sample
 file type: file
 file hash: 2ad18ec82c20af7b5926ed9cea6aeedd
 
-ID: 37
+ID: 38
 file name: prepare-commit-msg.sample
 file path: F:\dev\.softbery\.git\hooks\prepare-commit-msg.sample
 file type: file
 file hash: 2b5c047bdb474555e1787db32b2d2fc5
 
-ID: 38
+ID: 39
 file name: push-to-checkout.sample
 file path: F:\dev\.softbery\.git\hooks\push-to-checkout.sample
 file type: file
 file hash: c7ab00c7784efeadad3ae9b228d4b4db
 
-ID: 39
+ID: 40
 file name: sendemail-validate.sample
 file path: F:\dev\.softbery\.git\hooks\sendemail-validate.sample
 file type: file
 file hash: 4d67df3a8d5c98cb8565c07e42be0b04
 
-ID: 40
+ID: 41
 file name: update.sample
 file path: F:\dev\.softbery\.git\hooks\update.sample
 file type: file
 file hash: 647ae13c682f7827c22f5fc08a03674e
 
-ID: 41
+ID: 42
 file name: exclude
 file path: F:\dev\.softbery\.git\info\exclude
 file type: file
 file hash: 036208b4a1ab4a235d75c181e685e5a3
 
-ID: 42
+ID: 43
 file name: HEAD
 file path: F:\dev\.softbery\.git\logs\HEAD
 file type: file
-file hash: 36f37bca13f4d69a7de96d096b7c9e8c
+file hash: 42e35d3898c8943ef6dc03c5da640d96
 
-ID: 43
+ID: 44
 file name: master
 file path: F:\dev\.softbery\.git\logs\refs\heads\master
 file type: file
-file hash: 36f37bca13f4d69a7de96d096b7c9e8c
+file hash: 42e35d3898c8943ef6dc03c5da640d96
 
-ID: 44
+ID: 45
 file name: HEAD
 file path: F:\dev\.softbery\.git\logs\refs\remotes\origin\HEAD
 file type: file
 file hash: 8b7b6a5ad53f2255ea8af7bcb4781d9b
 
-ID: 45
+ID: 46
 file name: master
 file path: F:\dev\.softbery\.git\logs\refs\remotes\origin\master
 file type: file
-file hash: 3d4484e7e6bc168e9b84d17947ff51c2
+file hash: 0a4fdcd91cdf18c96898e32feec5a0b4
 
-ID: 46
+ID: 47
+file name: c20af5aeb17a5d7742c104647e50b2123dae99
+file path: F:\dev\.softbery\.git\objects\03\c20af5aeb17a5d7742c104647e50b2123dae99
+file type: file
+file hash: f1d4b76bcc91edb660b7dce159d5180e
+
+ID: 48
 file name: c61f1f6db8df3036e7ad56987a7b5e92fbfba5
 file path: F:\dev\.softbery\.git\objects\03\c61f1f6db8df3036e7ad56987a7b5e92fbfba5
 file type: file
 file hash: ffe60e54c32f79d38f8bfda807988a7a
 
-ID: 47
+ID: 49
 file name: 3d6cc4c87857ac4381e96c6d86c7c7df10bfec
 file path: F:\dev\.softbery\.git\objects\06\3d6cc4c87857ac4381e96c6d86c7c7df10bfec
 file type: file
 file hash: 7f244000edb878fc7dee961733f0bb94
 
-ID: 48
+ID: 50
 file name: ce42f82f48f636e970daf2d11cf3e96be78557
 file path: F:\dev\.softbery\.git\objects\09\ce42f82f48f636e970daf2d11cf3e96be78557
 file type: file
 file hash: a2d4f0139b5f3e1bd865acbae7dcac85
 
-ID: 49
+ID: 51
 file name: 65606b5704b9e566685069e9c54160c8e306be
 file path: F:\dev\.softbery\.git\objects\0a\65606b5704b9e566685069e9c54160c8e306be
 file type: file
 file hash: 843249c64f6c7bd2d3336bf55d88154a
 
-ID: 50
+ID: 52
 file name: d404bb9b18a4cb7530702168de04a31967084b
 file path: F:\dev\.softbery\.git\objects\0d\d404bb9b18a4cb7530702168de04a31967084b
 file type: file
 file hash: f6f925b4a93f050e41f27842f8c2502f
 
-ID: 51
+ID: 53
 file name: ae59708e2f3384609eb7c113082b5b53941a9d
 file path: F:\dev\.softbery\.git\objects\11\ae59708e2f3384609eb7c113082b5b53941a9d
 file type: file
 file hash: a46f22db7b9fc7d62513cee0874a9812
 
-ID: 52
+ID: 54
 file name: f4729eb84de515c9ffa104cad08a18506972d8
 file path: F:\dev\.softbery\.git\objects\15\f4729eb84de515c9ffa104cad08a18506972d8
 file type: file
 file hash: dc50120979b80704cff2f48fe34fa3a1
 
-ID: 53
+ID: 55
 file name: c311a85bdef9e8fff78d82aefd5a3e5538b1b8
 file path: F:\dev\.softbery\.git\objects\17\c311a85bdef9e8fff78d82aefd5a3e5538b1b8
 file type: file
 file hash: 95e0509eee5f4825d20aa1399ac07ef5
 
-ID: 54
+ID: 56
 file name: cc1039022e75892870a5043091068fbb33d54d
 file path: F:\dev\.softbery\.git\objects\17\cc1039022e75892870a5043091068fbb33d54d
 file type: file
 file hash: e84e9e7b1f409357fbb3c7f70bb8e92d
 
-ID: 55
+ID: 57
 file name: aa3b7286d081503b5f9755c04e1c3eee0a2abb
 file path: F:\dev\.softbery\.git\objects\1a\aa3b7286d081503b5f9755c04e1c3eee0a2abb
 file type: file
 file hash: 71469513a0f89363a44423567ded1001
 
-ID: 56
+ID: 58
 file name: 9fb7f7a1fe57d1f658da1ecbbc792f78c383b1
 file path: F:\dev\.softbery\.git\objects\1f\9fb7f7a1fe57d1f658da1ecbbc792f78c383b1
 file type: file
 file hash: c0aea27899ffa9deaefcb58f5fff0f0b
 
-ID: 57
+ID: 59
+file name: b4001a15b0fc64989d23432493632adb93d373
+file path: F:\dev\.softbery\.git\objects\23\b4001a15b0fc64989d23432493632adb93d373
+file type: file
+file hash: e2fe2af8a296df161569e7fa93fab7e4
+
+ID: 60
 file name: dc6cc16510705dd9680ed471666cc6158a9682
 file path: F:\dev\.softbery\.git\objects\24\dc6cc16510705dd9680ed471666cc6158a9682
 file type: file
 file hash: 4f6809d2563916bea7535ffaf5f9593f
 
-ID: 58
+ID: 61
 file name: 7c295eb85d95b95a716401568780e409825b34
 file path: F:\dev\.softbery\.git\objects\29\7c295eb85d95b95a716401568780e409825b34
 file type: file
 file hash: 23d864c5a4fb2c562b5db36898f4b40c
 
-ID: 59
+ID: 62
+file name: 4573b5b8091cac7e325ad4c84c6ab64cba7223
+file path: F:\dev\.softbery\.git\objects\2c\4573b5b8091cac7e325ad4c84c6ab64cba7223
+file type: file
+file hash: c529a3be1802d8d194f06964d3c9d898
+
+ID: 63
 file name: e846f116fa925365694163ef4f98bc8c674ab5
 file path: F:\dev\.softbery\.git\objects\30\e846f116fa925365694163ef4f98bc8c674ab5
 file type: file
 file hash: 0bd8eb575aba59fd5fc7421f566d202c
 
-ID: 60
+ID: 64
 file name: aef78b3d9ca337c4a5c71025da6bbd31c03c0f
 file path: F:\dev\.softbery\.git\objects\32\aef78b3d9ca337c4a5c71025da6bbd31c03c0f
 file type: file
 file hash: 262d1a52e3ea9e401b72c00ae09477bb
 
-ID: 61
+ID: 65
 file name: c67e7d1fb9403a7001bdc49cecb2a7b07fc407
 file path: F:\dev\.softbery\.git\objects\34\c67e7d1fb9403a7001bdc49cecb2a7b07fc407
 file type: file
 file hash: 4d0e39afdf55e5d5f5847e8705c7df21
 
-ID: 62
+ID: 66
+file name: 8d25af562608abf9535617e214803e81141b6b
+file path: F:\dev\.softbery\.git\objects\35\8d25af562608abf9535617e214803e81141b6b
+file type: file
+file hash: 2e2b448a9d606b51304578d8a223080e
+
+ID: 67
 file name: 19cbfc0d8aa322ccf314d44054a44f7327c4ed
 file path: F:\dev\.softbery\.git\objects\36\19cbfc0d8aa322ccf314d44054a44f7327c4ed
 file type: file
 file hash: c2961d6c594d9ed3e7cab160ae7660a8
 
-ID: 63
+ID: 68
+file name: f2e786c56d271e2873e74fde9cdb7ccb1f3cc2
+file path: F:\dev\.softbery\.git\objects\41\f2e786c56d271e2873e74fde9cdb7ccb1f3cc2
+file type: file
+file hash: db263c3bd6aabfa16e7fbf1235ba5ec9
+
+ID: 69
 file name: f08511e83487d2fed60a748708e596edf5d178
 file path: F:\dev\.softbery\.git\objects\42\f08511e83487d2fed60a748708e596edf5d178
 file type: file
 file hash: 0d9290dce1f788acf41aeb0038dcf3e3
 
-ID: 64
+ID: 70
 file name: fae7ffec9c54274b6fed80a21489980d438115
 file path: F:\dev\.softbery\.git\objects\42\fae7ffec9c54274b6fed80a21489980d438115
 file type: file
 file hash: 5b4ab922e4852a92a0fbdcb6ee70d753
 
-ID: 65
+ID: 71
 file name: 71eced5c510e707ceb8f112aae875fdf79e68b
 file path: F:\dev\.softbery\.git\objects\43\71eced5c510e707ceb8f112aae875fdf79e68b
 file type: file
 file hash: 38ffb82f3f154c2f39ca60fd7c0668ce
 
-ID: 66
+ID: 72
 file name: 9f8048701dfdc40e0613cd0a5b0a215b374da4
 file path: F:\dev\.softbery\.git\objects\48\9f8048701dfdc40e0613cd0a5b0a215b374da4
 file type: file
 file hash: 1c6a99a418c27c53e1689e64d1a5a382
 
-ID: 67
+ID: 73
 file name: e2c9006106428cd3169c28420e6c1d9d4e9671
 file path: F:\dev\.softbery\.git\objects\54\e2c9006106428cd3169c28420e6c1d9d4e9671
 file type: file
 file hash: 385abaf22943a8cde0b6c5fe280f6967
 
-ID: 68
+ID: 74
 file name: 5939d5a3b4640991d9d801ce1485f03f6c3f93
 file path: F:\dev\.softbery\.git\objects\56\5939d5a3b4640991d9d801ce1485f03f6c3f93
 file type: file
 file hash: 9bdff5d004b1726072aec1795b0f6bad
 
-ID: 69
+ID: 75
+file name: 118b59a553ad0687b6577295493fe7054e4c58
+file path: F:\dev\.softbery\.git\objects\58\118b59a553ad0687b6577295493fe7054e4c58
+file type: file
+file hash: c620ecb74b5501c57da9a1cd6068defa
+
+ID: 76
+file name: 63060fbe07b81791e9de39479ff948a889a901
+file path: F:\dev\.softbery\.git\objects\5b\63060fbe07b81791e9de39479ff948a889a901
+file type: file
+file hash: ed38500c93c79a20749405fc46900674
+
+ID: 77
 file name: ddc499ce5bda16e7317eab90c9ab625b474182
 file path: F:\dev\.softbery\.git\objects\5c\ddc499ce5bda16e7317eab90c9ab625b474182
 file type: file
 file hash: 61d5c5a56b2fcdcb6bb5ed08c0e28c25
 
-ID: 70
+ID: 78
 file name: 647c9cd53129377a7fa84e014ad0c6742a933f
 file path: F:\dev\.softbery\.git\objects\5d\647c9cd53129377a7fa84e014ad0c6742a933f
 file type: file
 file hash: 7bd1a4ee334f2c517d5bdbd7996de4ac
 
-ID: 71
+ID: 79
 file name: 1c2498b6fd24f08fea51333b14c1a8a2f687c7
 file path: F:\dev\.softbery\.git\objects\5e\1c2498b6fd24f08fea51333b14c1a8a2f687c7
 file type: file
 file hash: 71ea811c49835f5c66c6e4489e5fcbe1
 
-ID: 72
+ID: 80
 file name: 06b7bf33c51538b434528162d7b5c5d2769515
 file path: F:\dev\.softbery\.git\objects\62\06b7bf33c51538b434528162d7b5c5d2769515
 file type: file
 file hash: 8be4ab7182feb229f3f42cb92efa6b47
 
-ID: 73
+ID: 81
 file name: 00a5241653508b2f9b9f6c8a7ad9f09e0f1cba
 file path: F:\dev\.softbery\.git\objects\64\00a5241653508b2f9b9f6c8a7ad9f09e0f1cba
 file type: file
 file hash: 504db6c683607a3ee6a4cc40072f9664
 
-ID: 74
+ID: 82
 file name: ba8d3f120339785c2c38ae3335541592c96693
 file path: F:\dev\.softbery\.git\objects\66\ba8d3f120339785c2c38ae3335541592c96693
 file type: file
 file hash: 37f9a969ed875092990dba35c1ffcb22
 
-ID: 75
+ID: 83
+file name: 3df6d0ed98dc76ad414735c168d204bebc4eb2
+file path: F:\dev\.softbery\.git\objects\6c\3df6d0ed98dc76ad414735c168d204bebc4eb2
+file type: file
+file hash: daabae8b286b50654c4e4b286715e6a2
+
+ID: 84
+file name: 17028d975357c6adc8927e49de473d87f269e6
+file path: F:\dev\.softbery\.git\objects\6f\17028d975357c6adc8927e49de473d87f269e6
+file type: file
+file hash: 06c2385fbe97288549bb32c4e3bd2720
+
+ID: 85
 file name: d7ffde5c837e4b9a6a4d65b2fce33c4b073d9b
 file path: F:\dev\.softbery\.git\objects\70\d7ffde5c837e4b9a6a4d65b2fce33c4b073d9b
 file type: file
 file hash: 721c6511f2e70a61c3695a663f22b238
 
-ID: 76
+ID: 86
 file name: bf685b46aa2f1e3cedd4ebe8cc19f87edfd921
 file path: F:\dev\.softbery\.git\objects\71\bf685b46aa2f1e3cedd4ebe8cc19f87edfd921
 file type: file
 file hash: 62eb40127644f087670ba7a20d3d3deb
 
-ID: 77
+ID: 87
 file name: 135700c23622906cfc0040a200b7d9cad81831
 file path: F:\dev\.softbery\.git\objects\78\135700c23622906cfc0040a200b7d9cad81831
 file type: file
 file hash: 8b2091f4ac345be013c39801ff761361
 
-ID: 78
+ID: 88
 file name: 2a32d157464dfa088a333a5848bbd47fd52017
 file path: F:\dev\.softbery\.git\objects\7c\2a32d157464dfa088a333a5848bbd47fd52017
 file type: file
 file hash: 50374e8a70829f97dd99ae25873d4ba9
 
-ID: 79
+ID: 89
 file name: cf359b01bf680f3ffbae2ede0cfd759c5d90d3
 file path: F:\dev\.softbery\.git\objects\7d\cf359b01bf680f3ffbae2ede0cfd759c5d90d3
 file type: file
 file hash: 1143f8ece479f094c9b4451d450dd206
 
-ID: 80
+ID: 90
 file name: d0a05d8e9690dd1600218d596a984ded5471de
 file path: F:\dev\.softbery\.git\objects\80\d0a05d8e9690dd1600218d596a984ded5471de
 file type: file
 file hash: 98b06939a450253a4e16bdc37669f55e
 
-ID: 81
+ID: 91
 file name: d6ece83e3eb25560eef9db9bd448efc653d8b3
 file path: F:\dev\.softbery\.git\objects\85\d6ece83e3eb25560eef9db9bd448efc653d8b3
 file type: file
 file hash: 8031095ae276a5e01d8748edfdc46ff2
 
-ID: 82
+ID: 92
 file name: f89f4d9bb1df7ea2ba762dc98669c302a42829
 file path: F:\dev\.softbery\.git\objects\88\f89f4d9bb1df7ea2ba762dc98669c302a42829
 file type: file
 file hash: e8c5e7880307aa0bf01999be7cfcd8f5
 
-ID: 83
+ID: 93
 file name: c8acbc09a9f2bb714e5eaff448844f861c23ed
 file path: F:\dev\.softbery\.git\objects\95\c8acbc09a9f2bb714e5eaff448844f861c23ed
 file type: file
 file hash: d36ef0f312c35602acfd2c300f99891a
 
-ID: 84
+ID: 94
 file name: 484d00c67319a9063da389df6d964b179f982e
 file path: F:\dev\.softbery\.git\objects\97\484d00c67319a9063da389df6d964b179f982e
 file type: file
 file hash: 1944776366941ee44d4889150e3f2e35
 
-ID: 85
+ID: 95
+file name: bef05f5df9c6058fff0d1172a4149e9a9206b0
+file path: F:\dev\.softbery\.git\objects\97\bef05f5df9c6058fff0d1172a4149e9a9206b0
+file type: file
+file hash: 3ead81c05e8d947791de103478d3696c
+
+ID: 96
 file name: d8b02ef8f098d74510a0c44b916992bf97eb78
 file path: F:\dev\.softbery\.git\objects\98\d8b02ef8f098d74510a0c44b916992bf97eb78
 file type: file
 file hash: df36ec14579bfe92d23e7bfeb818053f
 
-ID: 86
+ID: 97
 file name: 19be60211796194ca185b896b7ee82901cb40b
 file path: F:\dev\.softbery\.git\objects\a0\19be60211796194ca185b896b7ee82901cb40b
 file type: file
 file hash: 88a291cbc800e5ea5a0247c454a75286
 
-ID: 87
+ID: 98
 file name: 32d281c352057c7b09a8165762b9e3d4757c2a
 file path: F:\dev\.softbery\.git\objects\a0\32d281c352057c7b09a8165762b9e3d4757c2a
 file type: file
 file hash: 7b66a9b01b0edfc483daf85586bbe48d
 
-ID: 88
+ID: 99
 file name: 45d62a56a02ddf7295fec8f9748f957856ddfe
 file path: F:\dev\.softbery\.git\objects\a4\45d62a56a02ddf7295fec8f9748f957856ddfe
 file type: file
 file hash: a269359dce2932fc7f9a0ae627bb12b1
 
-ID: 89
+ID: 100
+file name: 6c3fc7885218cc77084bddbcc1942a51217d17
+file path: F:\dev\.softbery\.git\objects\a9\6c3fc7885218cc77084bddbcc1942a51217d17
+file type: file
+file hash: b1e3d35b411260f00bec810b4f7d6c13
+
+ID: 101
 file name: 1d7df41d3f464d094246a23998126da9497377
 file path: F:\dev\.softbery\.git\objects\ae\1d7df41d3f464d094246a23998126da9497377
 file type: file
 file hash: 688e75f047c358cd557ed10e95f60b4f
 
-ID: 90
+ID: 102
 file name: 1fe38f363215a1ddbca77abb21845bd6a3b3a7
 file path: F:\dev\.softbery\.git\objects\b3\1fe38f363215a1ddbca77abb21845bd6a3b3a7
 file type: file
 file hash: 884143646c4c482dba99127b72390be5
 
-ID: 91
+ID: 103
 file name: 7b9c3a0c309c15d67e32ca81f898dadec2a055
 file path: F:\dev\.softbery\.git\objects\b6\7b9c3a0c309c15d67e32ca81f898dadec2a055
 file type: file
 file hash: 92d74210b7819b02c1f771b86698edbc
 
-ID: 92
+ID: 104
 file name: efb8edefa7389bf41011325a82e92cc9b4da04
 file path: F:\dev\.softbery\.git\objects\b9\efb8edefa7389bf41011325a82e92cc9b4da04
 file type: file
 file hash: b2b49fba0e5f0f9666b0825182e05131
 
-ID: 93
+ID: 105
 file name: 7d404759438d94b1ab48fa499fae0dabed727e
 file path: F:\dev\.softbery\.git\objects\bc\7d404759438d94b1ab48fa499fae0dabed727e
 file type: file
 file hash: cdc1443d59f5432919380966ca7b2e4f
 
-ID: 94
+ID: 106
 file name: cbff3708898cead699ac272e6055671be22850
 file path: F:\dev\.softbery\.git\objects\bd\cbff3708898cead699ac272e6055671be22850
 file type: file
 file hash: e3b3010eb19c0ff4cf286b2e9ec80d0a
 
-ID: 95
+ID: 107
 file name: b69cbf9b315232511cdf5777867643ae18404f
 file path: F:\dev\.softbery\.git\objects\be\b69cbf9b315232511cdf5777867643ae18404f
 file type: file
 file hash: d17540c06a1ae151725157655b9c80f4
 
-ID: 96
+ID: 108
 file name: fb84512d42b73325ba9ae0b0c73c1105a55169
 file path: F:\dev\.softbery\.git\objects\c0\fb84512d42b73325ba9ae0b0c73c1105a55169
 file type: file
 file hash: 432fa71f192bf9d0c5a1768019e9cd32
 
-ID: 97
+ID: 109
 file name: e26ff99918edb4d91c0404012260ebf23cd055
 file path: F:\dev\.softbery\.git\objects\c2\e26ff99918edb4d91c0404012260ebf23cd055
 file type: file
 file hash: bd37ed430ab6dc4e7287abfb66a78063
 
-ID: 98
+ID: 110
 file name: 7e9edf0e6999b222b2b13e3626d057b17f80ca
 file path: F:\dev\.softbery\.git\objects\c6\7e9edf0e6999b222b2b13e3626d057b17f80ca
 file type: file
 file hash: 9b43491db04fda1d29f2ad52ae9b12f4
 
-ID: 99
+ID: 111
 file name: 05a2cde22ef614dacbdb012df8761f9e3ac2d7
 file path: F:\dev\.softbery\.git\objects\cc\05a2cde22ef614dacbdb012df8761f9e3ac2d7
 file type: file
 file hash: 2d26183988c4329bfb3213f317b33eb2
 
-ID: 100
+ID: 112
 file name: 77ce24e5c1deaaa1cdd3a3b78ecf6436070702
 file path: F:\dev\.softbery\.git\objects\cc\77ce24e5c1deaaa1cdd3a3b78ecf6436070702
 file type: file
 file hash: 955188eb980b3cb49e4155c6b039a028
 
-ID: 101
+ID: 113
 file name: 36cd558a2966251e0c75797405e9c545b3fd4a
 file path: F:\dev\.softbery\.git\objects\ce\36cd558a2966251e0c75797405e9c545b3fd4a
 file type: file
 file hash: 98a9e59b1086c504ce45250eae5435b2
 
-ID: 102
+ID: 114
 file name: 31d1108a9d262f283205a6574ddfbd2cb4adc5
 file path: F:\dev\.softbery\.git\objects\d3\31d1108a9d262f283205a6574ddfbd2cb4adc5
 file type: file
 file hash: 84256e7e93a54959e31c35d4a3db5294
 
-ID: 103
+ID: 115
+file name: c433e5b42421b28b14b75273a922c57502521a
+file path: F:\dev\.softbery\.git\objects\d4\c433e5b42421b28b14b75273a922c57502521a
+file type: file
+file hash: 8f0c2439e0c0e6a14e719f013602a00d
+
+ID: 116
 file name: d10a9ba10da66fd5915605a2cc0cf8950e9360
 file path: F:\dev\.softbery\.git\objects\d7\d10a9ba10da66fd5915605a2cc0cf8950e9360
 file type: file
 file hash: c8ad0498aa3f82033e9c1edee8fbf78d
 
-ID: 104
+ID: 117
 file name: d4a1519781a90c8b85fd1a998f681c50a033dc
 file path: F:\dev\.softbery\.git\objects\d7\d4a1519781a90c8b85fd1a998f681c50a033dc
 file type: file
 file hash: d005a5b46e11de521a7f85a4024243f6
 
-ID: 105
+ID: 118
 file name: b28ce86c094855475c00eca96195d5b563d4e1
 file path: F:\dev\.softbery\.git\objects\da\b28ce86c094855475c00eca96195d5b563d4e1
 file type: file
 file hash: 8f4ebf4e5ee2c934007b0538e565b883
 
-ID: 106
+ID: 119
 file name: 868d01b8381be3e9bd223ee3d5bedd12e1bbf0
 file path: F:\dev\.softbery\.git\objects\db\868d01b8381be3e9bd223ee3d5bedd12e1bbf0
 file type: file
 file hash: ae6022b3aa7525282416392e7388a30c
 
-ID: 107
+ID: 120
 file name: 5347baac1c0e52b547f76dc82fd41f2f0cc970
 file path: F:\dev\.softbery\.git\objects\dd\5347baac1c0e52b547f76dc82fd41f2f0cc970
 file type: file
 file hash: 4911f9dbb4a827d722c86796ee5d93f8
 
-ID: 108
+ID: 121
 file name: f2acb4b9003039caf97c513dc0d79c5c3f0f05
 file path: F:\dev\.softbery\.git\objects\e1\f2acb4b9003039caf97c513dc0d79c5c3f0f05
 file type: file
 file hash: a01a06e0be89826ed9e19ef2d2316187
 
-ID: 109
+ID: 122
 file name: 4b3254857984fa55d14f2234e6cfdedd0d8ee7
 file path: F:\dev\.softbery\.git\objects\e2\4b3254857984fa55d14f2234e6cfdedd0d8ee7
 file type: file
 file hash: 697d7e790841a70678192d065988bf3a
 
-ID: 110
+ID: 123
+file name: 14bc963f1dc2a94c8ce0212dd5899254fc78bf
+file path: F:\dev\.softbery\.git\objects\ec\14bc963f1dc2a94c8ce0212dd5899254fc78bf
+file type: file
+file hash: 5bbc5740d617b2cc36c288a470367cfc
+
+ID: 124
 file name: d1dc31fe2d82e245af38f37f03d52e50a410f8
 file path: F:\dev\.softbery\.git\objects\ec\d1dc31fe2d82e245af38f37f03d52e50a410f8
 file type: file
 file hash: 4d828a08517bb1e85937293351b65517
 
-ID: 111
+ID: 125
 file name: f05f626a39887e2ac548f0567bd32a26cad967
 file path: F:\dev\.softbery\.git\objects\f3\f05f626a39887e2ac548f0567bd32a26cad967
 file type: file
 file hash: 9190654cc9c0902ce48dca0d2e24d978
 
-ID: 112
+ID: 126
 file name: 69da3ad51b2a68a8db7134f73bdee8410f434b
 file path: F:\dev\.softbery\.git\objects\f6\69da3ad51b2a68a8db7134f73bdee8410f434b
 file type: file
 file hash: 5464775db50aa04f17f386b231e5ad30
 
-ID: 113
+ID: 127
 file name: 6b7c123dbabf66c868f693e0c9d4727301fb5a
 file path: F:\dev\.softbery\.git\objects\fb\6b7c123dbabf66c868f693e0c9d4727301fb5a
 file type: file
 file hash: 46978010b2e6451a1d1c4f487b421ea9
 
-ID: 114
+ID: 128
 file name: c234e408287fdf63efedd67c9c9b26377ce143
 file path: F:\dev\.softbery\.git\objects\fb\c234e408287fdf63efedd67c9c9b26377ce143
 file type: file
 file hash: cb213ec8ff0b74696f83177691a7a0fc
 
-ID: 115
+ID: 129
 file name: pack-21449e9bf15ecef9004a656e44d1ddd39a41c511.idx
 file path: F:\dev\.softbery\.git\objects\pack\pack-21449e9bf15ecef9004a656e44d1ddd39a41c511.idx
 file type: file
 file hash: aca70c8655eecfe26c99c3f3314e2b2f
 
-ID: 116
+ID: 130
 file name: pack-21449e9bf15ecef9004a656e44d1ddd39a41c511.pack
 file path: F:\dev\.softbery\.git\objects\pack\pack-21449e9bf15ecef9004a656e44d1ddd39a41c511.pack
 file type: file
 file hash: b33fac821819684a03051787c764d0f4
 
-ID: 117
+ID: 131
 file name: pack-21449e9bf15ecef9004a656e44d1ddd39a41c511.rev
 file path: F:\dev\.softbery\.git\objects\pack\pack-21449e9bf15ecef9004a656e44d1ddd39a41c511.rev
 file type: file
 file hash: 4894a7a6c810baca052f167a910466ef
 
-ID: 118
+ID: 132
 file name: master
 file path: F:\dev\.softbery\.git\refs\heads\master
 file type: file
-file hash: c84526400c2606efb9924d7380c4664f
+file hash: 339c5db37575f6b06e62790c6c235f86
 
-ID: 119
+ID: 133
 file name: HEAD
 file path: F:\dev\.softbery\.git\refs\remotes\origin\HEAD
 file type: file
 file hash: 73a00957034783b7b5c8294c54cd3e12
 
-ID: 120
+ID: 134
 file name: master
 file path: F:\dev\.softbery\.git\refs\remotes\origin\master
 file type: file
-file hash: c84526400c2606efb9924d7380c4664f
+file hash: 339c5db37575f6b06e62790c6c235f86
 
-ID: 121
+ID: 135
+file name: .sbver
+file path: F:\dev\.softbery\.sb\.sbver
+file type: file
+file hash: 94c2fe3de6327b1cf9a989b5914165a0
+
+ID: 136
+file name: .sbver_backup
+file path: F:\dev\.softbery\.sb\.sbver_backup
+file type: file
+file hash: eaff284d17d9135fc1d84b85cf1aef31
+
+ID: 137
+file name: .sbver_files
+file path: F:\dev\.softbery\.sb\.sbver_files
+file type: file
+file hash: 2b12ff4392a9f1435dbf071dc37e5375
+
+ID: 138
+file name: softbery.metadata.v9.bin
+file path: F:\dev\.softbery\.vs\ProjectEvaluation\softbery.metadata.v9.bin
+file type: file
+file hash: 1360c74da461f4d16755ee4edeb1e918
+
+ID: 139
+file name: softbery.projects.v9.bin
+file path: F:\dev\.softbery\.vs\ProjectEvaluation\softbery.projects.v9.bin
+file type: file
+file hash: 35720941a321114960cd77d408f7b546
+
+ID: 140
+file name: softbery.strings.v9.bin
+file path: F:\dev\.softbery\.vs\ProjectEvaluation\softbery.strings.v9.bin
+file type: file
+file hash: 96d8ca020e557e6fd8172a79f1ecde06
+
+ID: 141
+file name: ColorByRegexConfig.txt
+file path: F:\dev\.softbery\.vs\softbery\ColorByRegexConfig.txt
+file type: file
+file hash: 73e3d4af6ac220704cc060a50c9040d2
+
+ID: 142
 file name: .dtbcache.v2
 file path: F:\dev\.softbery\.vs\softbery\DesignTimeBuild\.dtbcache.v2
 file type: file
-file hash: 6e7d0ce17e5c87b68b151151c3930dec
+file hash: b9c78796398d759ecf56bb99821c64e0
 
-ID: 122
+ID: 143
 file name: .futdcache.v2
 file path: F:\dev\.softbery\.vs\softbery\v17\.futdcache.v2
 file type: file
-file hash: fa5146f2da13b85eaf8c8a71c541235f
+file hash: e62a55719d6afc457f26a7b61ae880b5
 
-ID: 123
+ID: 144
 file name: .suo
 file path: F:\dev\.softbery\.vs\softbery\v17\.suo
 file type: file
-file hash: 9273c6b4ccb344df42d111c49915df17
+file hash: f71b2a057b2b220a8c34f368ab389bcf
 
-ID: 124
+ID: 145
 file name: DocumentLayout.backup.json
 file path: F:\dev\.softbery\.vs\softbery\v17\DocumentLayout.backup.json
 file type: file
-file hash: bf30fb38e0da919690e9a8ac4ccbc929
+file hash: 40c8fec69541cf26cc3a985b27e198fc
 
-ID: 125
+ID: 146
 file name: DocumentLayout.json
 file path: F:\dev\.softbery\.vs\softbery\v17\DocumentLayout.json
 file type: file
-file hash: 231e5bba6c6654b3e385535b96fbc213
+file hash: ec96c74c0418591b01e5418c3cd0fa0e
 
-ID: 126
+ID: 147
 file name: softbery.1.0.0.nupkg
 file path: F:\dev\.softbery\bin\Debug\softbery.1.0.0.nupkg
 file type: file
-file hash: eccc184a8d96f92899c29ffe3a133fae
+file hash: c17f540a75739586bc78627d0f08aa84
 
-ID: 127
+ID: 148
 file name: .sbver
 file path: F:\dev\.softbery\bin\Debug\net9.0\.sbver
 file type: file
 file hash: 94c2fe3de6327b1cf9a989b5914165a0
 
-ID: 128
+ID: 149
 file name: .sbver_files_temp
 file path: F:\dev\.softbery\bin\Debug\net9.0\.sbver_files_temp
 file type: file
 file hash: 7ea6013862da05113d79bbe7b10651eb
 
-ID: 129
+ID: 150
 file name: Microsoft.Extensions.Configuration.Abstractions.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Abstractions.dll
 file type: file
 file hash: ca5e04f447c59c90543a42335a412f4c
 
-ID: 130
+ID: 151
 file name: Microsoft.Extensions.Configuration.Binder.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Binder.dll
 file type: file
 file hash: d10949c6f9c873ce3cdb8e9ef2e9d97d
 
-ID: 131
+ID: 152
 file name: Microsoft.Extensions.Configuration.CommandLine.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.CommandLine.dll
 file type: file
 file hash: 501da175e94abf84c5fedd9f3a07baeb
 
-ID: 132
+ID: 153
 file name: Microsoft.Extensions.Configuration.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.dll
 file type: file
 file hash: f01fce3f23246b5ed5093f32aa732a4b
 
-ID: 133
+ID: 154
 file name: Microsoft.Extensions.Configuration.EnvironmentVariables.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
 file type: file
 file hash: d5885a361476dd5693cf1be97e5633d1
 
-ID: 134
+ID: 155
 file name: Microsoft.Extensions.Configuration.FileExtensions.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.FileExtensions.dll
 file type: file
 file hash: ad18baf849a213e39a915dbdeeff5f55
 
-ID: 135
+ID: 156
 file name: Microsoft.Extensions.Configuration.Ini.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Ini.dll
 file type: file
 file hash: 5bc1ce3aa28d9c1ef7fefe5600771b37
 
-ID: 136
+ID: 157
 file name: Microsoft.Extensions.Configuration.Json.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Json.dll
 file type: file
 file hash: c158a7db5e976f58dc93cb7a8249cacf
 
-ID: 137
+ID: 158
 file name: Microsoft.Extensions.Configuration.UserSecrets.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Configuration.UserSecrets.dll
 file type: file
 file hash: 38f740e88b092ff52116a5c909c86066
 
-ID: 138
+ID: 159
 file name: Microsoft.Extensions.DependencyInjection.Abstractions.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 file type: file
 file hash: f74d49bfca0b2ad398beacb4cca8848e
 
-ID: 139
+ID: 160
 file name: Microsoft.Extensions.DependencyInjection.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
 file type: file
 file hash: 78e7aba13c2177e8245443402d657a93
 
-ID: 140
+ID: 161
 file name: Microsoft.Extensions.Diagnostics.Abstractions.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
 file type: file
 file hash: 13ba4247ae505811c9bd960b1665fc64
 
-ID: 141
+ID: 162
 file name: Microsoft.Extensions.Diagnostics.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.dll
 file type: file
 file hash: 2f7651d269abbea2cc01de91e235c609
 
-ID: 142
+ID: 163
 file name: Microsoft.Extensions.FileProviders.Abstractions.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.FileProviders.Abstractions.dll
 file type: file
 file hash: 0688274b389945211b4f398c38e0743d
 
-ID: 143
+ID: 164
 file name: Microsoft.Extensions.FileProviders.Physical.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.FileProviders.Physical.dll
 file type: file
 file hash: b5b6391ecbbf948843a5b865ad07b875
 
-ID: 144
+ID: 165
 file name: Microsoft.Extensions.FileSystemGlobbing.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.FileSystemGlobbing.dll
 file type: file
 file hash: 3f0f2345d8adbc6ffd7cf8e9fcb02be9
 
-ID: 145
+ID: 166
 file name: Microsoft.Extensions.Hosting.Abstractions.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Hosting.Abstractions.dll
 file type: file
 file hash: 21994666e70001b7e942375de1c6e90e
 
-ID: 146
+ID: 167
 file name: Microsoft.Extensions.Hosting.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Hosting.dll
 file type: file
 file hash: f6a0e9b4844078b0e8950a2e0661cc05
 
-ID: 147
+ID: 168
 file name: Microsoft.Extensions.Logging.Abstractions.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 file type: file
 file hash: eac7af77ceff5b73a22d9e5f2730e731
 
-ID: 148
+ID: 169
 file name: Microsoft.Extensions.Logging.Configuration.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Logging.Configuration.dll
 file type: file
 file hash: c93ade934f98fb9ef9eda3c107a09917
 
-ID: 149
+ID: 170
 file name: Microsoft.Extensions.Logging.Console.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Logging.Console.dll
 file type: file
 file hash: 145df8fa73293ec058768b5599ea9cac
 
-ID: 150
+ID: 171
 file name: Microsoft.Extensions.Logging.Debug.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Logging.Debug.dll
 file type: file
 file hash: bb3681820860315f3ad4cccbc838e298
 
-ID: 151
+ID: 172
 file name: Microsoft.Extensions.Logging.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Logging.dll
 file type: file
 file hash: 9529adc1a21f8a30a50e55e9b0082ffc
 
-ID: 152
+ID: 173
 file name: Microsoft.Extensions.Logging.EventLog.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Logging.EventLog.dll
 file type: file
 file hash: 1c7370a0f8541095b4c8aa5dd8c35080
 
-ID: 153
+ID: 174
 file name: Microsoft.Extensions.Logging.EventSource.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Logging.EventSource.dll
 file type: file
 file hash: 9a88cd9ac68579546a580ea34b9e009c
 
-ID: 154
+ID: 175
 file name: Microsoft.Extensions.Options.ConfigurationExtensions.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 file type: file
 file hash: a2d6af194df19486c2be7f677f31a6df
 
-ID: 155
+ID: 176
 file name: Microsoft.Extensions.Options.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
 file type: file
 file hash: becefa5642da3ab9b6b0087c9b80cc56
 
-ID: 156
+ID: 177
 file name: Microsoft.Extensions.Primitives.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
 file type: file
 file hash: c7011b23e3b2818b2fe3e9585a73271b
 
-ID: 157
+ID: 178
 file name: Newtonsoft.Json.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\Newtonsoft.Json.dll
 file type: file
 file hash: adf3e3eecde20b7c9661e9c47106a14a
 
-ID: 158
+ID: 179
 file name: softbery.deps.json
 file path: F:\dev\.softbery\bin\Debug\net9.0\softbery.deps.json
 file type: file
 file hash: b267254726f2fca46ef09b90a6c02ca9
 
-ID: 159
+ID: 180
 file name: softbery.exe
 file path: F:\dev\.softbery\bin\Debug\net9.0\softbery.exe
 file type: file
-file hash: 1f2f57bde6987c396e191c21f7f605dc
+file hash: d22d5b0d2642da1f1d1c7ece92fb11dc
 
-ID: 160
+ID: 181
 file name: softbery.pdb
 file path: F:\dev\.softbery\bin\Debug\net9.0\softbery.pdb
 file type: file
-file hash: bc089df9916aee8c3a4e733d71dfdf27
+file hash: 55d03b33729493d1a6a97111c217848b
 
-ID: 161
+ID: 182
 file name: softbery.runtimeconfig.json
 file path: F:\dev\.softbery\bin\Debug\net9.0\softbery.runtimeconfig.json
 file type: file
 file hash: 736f910c5e3628eb081902af0baac09d
 
-ID: 162
+ID: 183
 file name: System.Configuration.ConfigurationManager.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
 file type: file
 file hash: 834293785ca71199d6827b75a417f11f
 
-ID: 163
+ID: 184
 file name: System.Diagnostics.EventLog.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\System.Diagnostics.EventLog.dll
 file type: file
 file hash: c9fad7c142285a8113d37c7335bf8a12
 
-ID: 164
+ID: 185
 file name: System.Security.Cryptography.ProtectedData.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
 file type: file
 file hash: 41f1db1cb3d8aa2f0a8f8476f6bdf226
 
-ID: 165
+ID: 186
 file name: .sbver
 file path: F:\dev\.softbery\bin\Debug\net9.0\.sb\.sbver
 file type: file
-file hash: aaca3f371718030f5681d83d2affaebd
+file hash: 4a80568ed482cac7a7831478a0f27115
 
-ID: 166
+ID: 187
 file name: .sbver_backup
 file path: F:\dev\.softbery\bin\Debug\net9.0\.sb\.sbver_backup
 file type: file
-file hash: 3ab2668d5673866bd6020cd75ae5cf29
+file hash: 4ed4e89fa858b9ba472b04b1be56811e
 
-ID: 167
+ID: 188
 file name: .sbver_files
 file path: F:\dev\.softbery\bin\Debug\net9.0\.sb\.sbver_files
 file type: file
-file hash: d1f5839d2577b4f310b769714f897bd2
+file hash: babeb1c3d71be404c490fcc349ad2e76
 
-ID: 168
+ID: 189
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\cs\System.CommandLine.resources.dll
 file type: file
 file hash: 8266e07354a4d4d605d0f7b28e875c9f
 
-ID: 169
+ID: 190
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\de\System.CommandLine.resources.dll
 file type: file
 file hash: 16c430b5a383f35e4d21272110ae7715
 
-ID: 170
+ID: 191
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\es\System.CommandLine.resources.dll
 file type: file
 file hash: 95d74cb212b62743aace5890bfa31d2f
 
-ID: 171
+ID: 192
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\fr\System.CommandLine.resources.dll
 file type: file
 file hash: b28b2480e9ca78ca784bce37799bfc2e
 
-ID: 172
+ID: 193
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\it\System.CommandLine.resources.dll
 file type: file
 file hash: 2f885af73e4530f9bcfc2fad0c795f21
 
-ID: 173
+ID: 194
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\ja\System.CommandLine.resources.dll
 file type: file
 file hash: bbaa5f365d1a1f9cf290df3e91386148
 
-ID: 174
+ID: 195
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\ko\System.CommandLine.resources.dll
 file type: file
 file hash: 7417ceb2ebfa3eed81c7a9267c03fd78
 
-ID: 175
+ID: 196
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\pl\System.CommandLine.resources.dll
 file type: file
 file hash: 052f5532ea41a2e5616eeb99e376d1cc
 
-ID: 176
+ID: 197
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\pt-BR\System.CommandLine.resources.dll
 file type: file
 file hash: 74dc8d1a0b07a19415416202916546bd
 
-ID: 177
+ID: 198
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\ru\System.CommandLine.resources.dll
 file type: file
 file hash: 8e11be34888ff87d5cf901d3ab41d4e3
 
-ID: 178
+ID: 199
 file name: System.Diagnostics.EventLog.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\runtimes\win\lib\net9.0\System.Diagnostics.EventLog.dll
 file type: file
 file hash: 036ea0b1784e3fa9fc683c4be31998fc
 
-ID: 179
+ID: 200
 file name: System.Diagnostics.EventLog.Messages.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\runtimes\win\lib\net9.0\System.Diagnostics.EventLog.Messages.dll
 file type: file
 file hash: ce7a27e8775f2bf4491f6b6668ed375c
 
-ID: 180
+ID: 201
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\tr\System.CommandLine.resources.dll
 file type: file
 file hash: 6c450f4fb13bd1df591ca6533e005dc6
 
-ID: 181
+ID: 202
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\zh-Hans\System.CommandLine.resources.dll
 file type: file
 file hash: 812f3a101cd757a2f682d79e54a25391
 
-ID: 182
+ID: 203
 file name: System.CommandLine.resources.dll
 file path: F:\dev\.softbery\bin\Debug\net9.0\zh-Hant\System.CommandLine.resources.dll
 file type: file
 file hash: 03ce69f4b74f1aa789f0a7b99296ea96
 
-ID: 183
+ID: 204
 file name: Microsoft.Extensions.Configuration.Abstractions.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.Abstractions.dll
 file type: file
 file hash: 645d3460c0c88c21ae008b9e6057f448
 
-ID: 184
+ID: 205
 file name: Microsoft.Extensions.Configuration.Binder.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.Binder.dll
 file type: file
 file hash: 2a668da0f44871df0b4829109f4f0273
 
-ID: 185
+ID: 206
 file name: Microsoft.Extensions.Configuration.CommandLine.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.CommandLine.dll
 file type: file
 file hash: d0179e5d033111b0b4f9122da275410d
 
-ID: 186
+ID: 207
 file name: Microsoft.Extensions.Configuration.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.dll
 file type: file
 file hash: 65a0e092f072cd090d9fa14a4bdb01f2
 
-ID: 187
+ID: 208
 file name: Microsoft.Extensions.Configuration.EnvironmentVariables.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
 file type: file
 file hash: 95f67d208c25c3a4b0ca8e7f4a8b7c1e
 
-ID: 188
+ID: 209
 file name: Microsoft.Extensions.Configuration.FileExtensions.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.FileExtensions.dll
 file type: file
 file hash: f31f6a7d0de77eb0e433cf190e98d8d9
 
-ID: 189
+ID: 210
 file name: Microsoft.Extensions.Configuration.Ini.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.Ini.dll
 file type: file
 file hash: e268e3d4e72264ba40a4c4db1e8721a0
 
-ID: 190
+ID: 211
 file name: Microsoft.Extensions.Configuration.Json.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.Json.dll
 file type: file
 file hash: 6af77132e6585ebb9f8fe920e5bcf2d0
 
-ID: 191
+ID: 212
 file name: Microsoft.Extensions.Configuration.UserSecrets.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Configuration.UserSecrets.dll
 file type: file
 file hash: cdc3a3808911fc42d04b544a6b017507
 
-ID: 192
+ID: 213
 file name: Microsoft.Extensions.DependencyInjection.Abstractions.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 file type: file
 file hash: b2d610ff51fde67ea18a530450956a98
 
-ID: 193
+ID: 214
 file name: Microsoft.Extensions.DependencyInjection.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.DependencyInjection.dll
 file type: file
 file hash: 39993ad40ab8af95bc91dc70d216e088
 
-ID: 194
+ID: 215
 file name: Microsoft.Extensions.Diagnostics.Abstractions.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
 file type: file
 file hash: 4652924ebca8d2b74d9d0707fcc72843
 
-ID: 195
+ID: 216
 file name: Microsoft.Extensions.Diagnostics.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Diagnostics.dll
 file type: file
 file hash: 24411dcd25b2ad73873fa30d1a623d52
 
-ID: 196
+ID: 217
 file name: Microsoft.Extensions.FileProviders.Abstractions.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.FileProviders.Abstractions.dll
 file type: file
 file hash: 3f726128c30ed569687c8d5d42183bd9
 
-ID: 197
+ID: 218
 file name: Microsoft.Extensions.FileProviders.Physical.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.FileProviders.Physical.dll
 file type: file
 file hash: 4582a355138fd6c70109e36192538527
 
-ID: 198
+ID: 219
 file name: Microsoft.Extensions.FileSystemGlobbing.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.FileSystemGlobbing.dll
 file type: file
 file hash: 83bb4aa20fad639b736fb7258ba8b70e
 
-ID: 199
+ID: 220
 file name: Microsoft.Extensions.Hosting.Abstractions.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Hosting.Abstractions.dll
 file type: file
 file hash: b55a453f3f4d3bd38ce24c99f114a6b4
 
-ID: 200
+ID: 221
 file name: Microsoft.Extensions.Hosting.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Hosting.dll
 file type: file
 file hash: 0ca0e5e127b360778d3cd037ab7f5900
 
-ID: 201
+ID: 222
 file name: Microsoft.Extensions.Logging.Abstractions.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Logging.Abstractions.dll
 file type: file
 file hash: c96f73ad457418edd3d3170692b8399b
 
-ID: 202
+ID: 223
 file name: Microsoft.Extensions.Logging.Configuration.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Logging.Configuration.dll
 file type: file
 file hash: 1f3652a1de23d88aacd6475f80283bd6
 
-ID: 203
+ID: 224
 file name: Microsoft.Extensions.Logging.Console.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Logging.Console.dll
 file type: file
 file hash: 5f087007139025908b680589054ad373
 
-ID: 204
+ID: 225
 file name: Microsoft.Extensions.Logging.Debug.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Logging.Debug.dll
 file type: file
 file hash: 5678caceca5f5559a1d8e7ba9917df42
 
-ID: 205
+ID: 226
 file name: Microsoft.Extensions.Logging.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Logging.dll
 file type: file
 file hash: f10f81a537bac1a8726775f258c881ed
 
-ID: 206
+ID: 227
 file name: Microsoft.Extensions.Logging.EventLog.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Logging.EventLog.dll
 file type: file
 file hash: 1268ed921b3e55a7f3bb9516f915fcd7
 
-ID: 207
+ID: 228
 file name: Microsoft.Extensions.Logging.EventSource.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Logging.EventSource.dll
 file type: file
 file hash: d87c26f8051e7e7fbb3a39c277916820
 
-ID: 208
+ID: 229
 file name: Microsoft.Extensions.Options.ConfigurationExtensions.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 file type: file
 file hash: 5e0d488ed4470f830ffca3a52d1d4908
 
-ID: 209
+ID: 230
 file name: Microsoft.Extensions.Options.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Options.dll
 file type: file
 file hash: 12ca7314240f1ccb99afaf4ffbaec149
 
-ID: 210
+ID: 231
 file name: Microsoft.Extensions.Primitives.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Microsoft.Extensions.Primitives.dll
 file type: file
 file hash: ca4faba863609d37971c5aac7efe3bbf
 
-ID: 211
+ID: 232
 file name: Newtonsoft.Json.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\Newtonsoft.Json.dll
 file type: file
 file hash: adf3e3eecde20b7c9661e9c47106a14a
 
-ID: 212
+ID: 233
 file name: softbery.deps.json
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\softbery.deps.json
 file type: file
 file hash: 063b191f44fbd96fb64e839ad7992265
 
-ID: 213
+ID: 234
 file name: softbery.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\softbery.dll
 file type: file
 file hash: d943248478ae13752e89f59c2f136c67
 
-ID: 214
+ID: 235
 file name: softbery.exe
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\softbery.exe
 file type: file
 file hash: b91833275cdc04a13f7315d61db0c663
 
-ID: 215
+ID: 236
 file name: softbery.pdb
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\softbery.pdb
 file type: file
 file hash: fd44dff0b792d353c17d2056ed96da85
 
-ID: 216
+ID: 237
 file name: softbery.runtimeconfig.json
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\softbery.runtimeconfig.json
 file type: file
 file hash: 9fcdf880f73e74cf6347f8194b9f3509
 
-ID: 217
+ID: 238
 file name: System.Configuration.ConfigurationManager.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\System.Configuration.ConfigurationManager.dll
 file type: file
 file hash: 400183c4c2ebde42951ba32e4913743d
 
-ID: 218
+ID: 239
 file name: System.Diagnostics.DiagnosticSource.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\System.Diagnostics.DiagnosticSource.dll
 file type: file
 file hash: 8f10a6aa1f919659a6efa89335720d1d
 
-ID: 219
+ID: 240
 file name: System.Diagnostics.EventLog.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\System.Diagnostics.EventLog.dll
 file type: file
 file hash: d75cd22627972d31d75fd68adbafd658
 
-ID: 220
+ID: 241
 file name: System.IO.Pipelines.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\System.IO.Pipelines.dll
 file type: file
 file hash: 4459c5977a7f555cce23a851835c3d42
 
-ID: 221
+ID: 242
 file name: System.Security.Cryptography.ProtectedData.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\System.Security.Cryptography.ProtectedData.dll
 file type: file
 file hash: fda921fb799406eb3f8f68b23a4690a4
 
-ID: 222
+ID: 243
 file name: System.Text.Encodings.Web.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\System.Text.Encodings.Web.dll
 file type: file
 file hash: cea5e70bf59a0c493517ad3f006f7791
 
-ID: 223
+ID: 244
 file name: System.Text.Json.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\System.Text.Json.dll
 file type: file
 file hash: fbdb5710b0215290197ac6058cb1c2aa
 
-ID: 224
+ID: 245
 file name: System.Text.Encodings.Web.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 file type: file
 file hash: 37bd928fa2b9a99ac774e734e1a66edc
 
-ID: 225
+ID: 246
 file name: System.Diagnostics.EventLog.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 file type: file
 file hash: fbd961cbbf04c45472c7194e2a317b9b
 
-ID: 226
+ID: 247
 file name: System.Diagnostics.EventLog.Messages.dll
 file path: F:\dev\.softbery\bin\x64\Debug\net8.0-windows7.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
 file type: file
 file hash: ce7a27e8775f2bf4491f6b6668ed375c
 
-ID: 227
+ID: 248
 file name: project.assets.json
 file path: F:\dev\.softbery\obj\project.assets.json
 file type: file
 file hash: 8ca541dd4ab1150c7d837a83ac192fec
 
-ID: 228
+ID: 249
 file name: project.nuget.cache
 file path: F:\dev\.softbery\obj\project.nuget.cache
 file type: file
 file hash: 83445d662e37fb5f4dbe706bf43fdc6e
 
-ID: 229
+ID: 250
 file name: project.packagespec.json
 file path: F:\dev\.softbery\obj\project.packagespec.json
 file type: file
 file hash: ab68e2e7a0fd674eff4eafd484868033
 
-ID: 230
+ID: 251
 file name: rider.project.model.nuget.info
 file path: F:\dev\.softbery\obj\rider.project.model.nuget.info
 file type: file
 file hash: 1e9ce897b2e8f2bf749a7bf077db5d62
 
-ID: 231
+ID: 252
 file name: rider.project.restore.info
 file path: F:\dev\.softbery\obj\rider.project.restore.info
 file type: file
 file hash: 7b6c55453509e5d001512c05511eaca6
 
-ID: 232
+ID: 253
 file name: softbery.csproj.nuget.dgspec.json
 file path: F:\dev\.softbery\obj\softbery.csproj.nuget.dgspec.json
 file type: file
 file hash: 582c3a0f0a233dadca04d40923ffe097
 
-ID: 233
+ID: 254
 file name: softbery.csproj.nuget.g.props
 file path: F:\dev\.softbery\obj\softbery.csproj.nuget.g.props
 file type: file
 file hash: 212fea8aa8e43b51b2baf33ece7ca6d2
 
-ID: 234
+ID: 255
 file name: softbery.csproj.nuget.g.targets
 file path: F:\dev\.softbery\obj\softbery.csproj.nuget.g.targets
 file type: file
 file hash: da5cf296f5a795cfa9305872cb2b5b29
 
-ID: 235
+ID: 256
 file name: .AssemblyReference.cache
 file path: F:\dev\.softbery\obj\Debug\.AssemblyReference.cache
 file type: file
 file hash: 1ed3e058a59c46df87902bc0e5bd824c
 
-ID: 236
+ID: 257
 file name: softbery.1.0.0.nuspec
 file path: F:\dev\.softbery\obj\Debug\softbery.1.0.0.nuspec
 file type: file
-file hash: 4ac18548b1822d4aeda37b2bf3cd1f08
+file hash: 42bf4a4e9b194ad571c7a0df14c421f1
 
-ID: 237
+ID: 258
 file name: .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
 file type: file
-file hash: 9b225453b5a8008eefb62f6c5c66ce15
+file hash: 7304bcfb112454cb5a6240aedf9be326
 
-ID: 238
+ID: 259
 file name: apphost.exe
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\apphost.exe
 file type: file
 file hash: 387a51f68844979a01bdaa66b66677a9
 
-ID: 239
+ID: 260
 file name: softbery.AssemblyInfo.cs
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.AssemblyInfo.cs
 file type: file
-file hash: 8e8e34b427726eebf616da1a2de3b954
+file hash: acfcd32bc39ce0ba1d53e25d763cd6aa
 
-ID: 240
+ID: 261
 file name: softbery.AssemblyInfoInputs.cache
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.AssemblyInfoInputs.cache
 file type: file
 file hash: 72619add4da635acbdbd88f3ec976902
 
-ID: 241
+ID: 262
 file name: softbery.assets.cache
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.assets.cache
 file type: file
 file hash: f85f51130d5ce45208b16f60fcb52e08
 
-ID: 242
+ID: 263
 file name: softbery.csproj.AssemblyReference.cache
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.csproj.AssemblyReference.cache
 file type: file
 file hash: ab3346efc0e8bd1c2cdf563a159a0d61
 
-ID: 243
+ID: 264
 file name: softbery.csproj.BuildWithSkipAnalyzers
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.csproj.BuildWithSkipAnalyzers
 file type: file
 file hash: d41d8cd98f00b204e9800998ecf8427e
 
-ID: 244
+ID: 265
 file name: softbery.csproj.CoreCompileInputs.cache
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.csproj.CoreCompileInputs.cache
 file type: file
 file hash: 320b4fb9e103e313fdd9d0a484aa525d
 
-ID: 245
+ID: 266
 file name: softbery.csproj.FileListAbsolute.txt
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.csproj.FileListAbsolute.txt
 file type: file
 file hash: a6975759745e880a665cc04344fecd36
 
-ID: 246
+ID: 267
 file name: softbery.csproj.Up2Date
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.csproj.Up2Date
 file type: file
 file hash: d41d8cd98f00b204e9800998ecf8427e
 
-ID: 247
+ID: 268
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.dll
 file type: file
 file hash: 68f346c42e35d78019e7df19bc146a19
 
-ID: 248
+ID: 269
 file name: softbery.GeneratedMSBuildEditorConfig.editorconfig
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.GeneratedMSBuildEditorConfig.editorconfig
 file type: file
 file hash: b704a2b5f8262b83997461ada5d791c9
 
-ID: 249
+ID: 270
 file name: softbery.genruntimeconfig.cache
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.genruntimeconfig.cache
 file type: file
 file hash: 413b67e2c9fb108cd1260052e949c894
 
-ID: 250
+ID: 271
 file name: softbery.GlobalUsings.g.cs
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.GlobalUsings.g.cs
 file type: file
-file hash: 0ca42cbc4f22da0578a209aaeb544bf8
+file hash: e4b5fa646c74dc589e260223985e0e8b
 
-ID: 251
+ID: 272
 file name: softbery.pdb
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.pdb
 file type: file
 file hash: b8c79c88a68ed9b40ec4159781a0011d
 
-ID: 252
+ID: 273
 file name: softbery.Program.g.cs
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.Program.g.cs
 file type: file
-file hash: e226300677f55d09ea0a4dba3670f805
+file hash: d5b0353f8274be4d45e1b2fb714ae208
 
-ID: 253
+ID: 274
 file name: softbery.sourcelink.json
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.sourcelink.json
 file type: file
 file hash: 62752fadc2512f1136239782e633bfb2
 
-ID: 254
+ID: 275
 file name: softbery.xml
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\softbery.xml
 file type: file
 file hash: d59b026ad72dd9c0a3fa3103fa7fe2a3
 
-ID: 255
+ID: 276
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\ref\softbery.dll
 file type: file
 file hash: 3775a83903dafd187c608d5f213b4abf
 
-ID: 256
+ID: 277
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net8.0-windows7.0\refint\softbery.dll
 file type: file
 file hash: 3775a83903dafd187c608d5f213b4abf
 
-ID: 257
+ID: 278
 file name: .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
 file type: file
-file hash: ff3517b1163003098ee37a1a6f1dc08d
+file hash: 632689d5f85f797459d5af3e8327bb48
 
-ID: 258
+ID: 279
 file name: apphost.exe
 file path: F:\dev\.softbery\obj\Debug\net9.0\apphost.exe
 file type: file
-file hash: 1f2f57bde6987c396e191c21f7f605dc
+file hash: d22d5b0d2642da1f1d1c7ece92fb11dc
 
-ID: 259
+ID: 280
 file name: softbery.AssemblyInfo.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.AssemblyInfo.cs
 file type: file
-file hash: 9dd1a86c0323c8530aec53e3fd3f015a
+file hash: 4884ef5d1fd96adcd42af2778a1bf870
 
-ID: 260
+ID: 281
 file name: softbery.AssemblyInfoInputs.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.AssemblyInfoInputs.cache
 file type: file
-file hash: ce9a9dae9289145c13ea959b46c0b55e
+file hash: 4e9cabdfd687b9b3a7e9b91968d9dbab
 
-ID: 261
+ID: 282
 file name: softbery.assets.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.assets.cache
 file type: file
 file hash: e985a233a1b6d8644ddf386a5515d7b3
 
-ID: 262
+ID: 283
 file name: softbery.csproj.AssemblyReference.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.csproj.AssemblyReference.cache
 file type: file
 file hash: 119b84b2a57996e84122c8977b5d58c3
 
-ID: 263
+ID: 284
 file name: softbery.csproj.BuildWithSkipAnalyzers
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.csproj.BuildWithSkipAnalyzers
 file type: file
 file hash: d41d8cd98f00b204e9800998ecf8427e
 
-ID: 264
+ID: 285
 file name: softbery.csproj.CoreCompileInputs.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.csproj.CoreCompileInputs.cache
 file type: file
 file hash: 0f0deaafe14c10ed5937264346a7eea6
 
-ID: 265
+ID: 286
 file name: softbery.csproj.FileListAbsolute.txt
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.csproj.FileListAbsolute.txt
 file type: file
 file hash: 70832347c0d0c0902fd48ffd33932704
 
-ID: 266
+ID: 287
 file name: softbery.csproj.Up2Date
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.csproj.Up2Date
 file type: file
 file hash: d41d8cd98f00b204e9800998ecf8427e
 
-ID: 267
+ID: 288
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.dll
 file type: file
-file hash: 94edafd57e39b914425875fb18e623ee
+file hash: b07465d5fc22f70825f1101d86ceac78
 
-ID: 268
+ID: 289
 file name: softbery.GeneratedMSBuildEditorConfig.editorconfig
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.GeneratedMSBuildEditorConfig.editorconfig
 file type: file
 file hash: dca2c0f5b9be9d96bfb9f9a2005d80dd
 
-ID: 269
+ID: 290
 file name: softbery.genruntimeconfig.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.genruntimeconfig.cache
 file type: file
 file hash: d23482333a9ff5cb87a906f69f0e75a2
 
-ID: 270
+ID: 291
 file name: softbery.GlobalUsings.g.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.GlobalUsings.g.cs
 file type: file
 file hash: 0ca42cbc4f22da0578a209aaeb544bf8
 
-ID: 271
+ID: 292
 file name: softbery.pdb
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.pdb
 file type: file
-file hash: bc089df9916aee8c3a4e733d71dfdf27
+file hash: 55d03b33729493d1a6a97111c217848b
 
-ID: 272
+ID: 293
 file name: softbery.Program.g.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.Program.g.cs
 file type: file
-file hash: e226300677f55d09ea0a4dba3670f805
+file hash: d5b0353f8274be4d45e1b2fb714ae208
 
-ID: 273
+ID: 294
 file name: softbery.sourcelink.json
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.sourcelink.json
 file type: file
-file hash: 95b6782901f9f2cd515f04625482c96e
+file hash: 1f9fefe30d0c47fc03791f7bd6ddc28f
 
-ID: 274
+ID: 295
 file name: softbery.xml
 file path: F:\dev\.softbery\obj\Debug\net9.0\softbery.xml
 file type: file
 file hash: 7863a5be3f82a4a720fa055cf2aeb38d
 
-ID: 275
+ID: 296
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net9.0\ref\softbery.dll
 file type: file
-file hash: 7edc408951257fe44290686269e83eec
+file hash: 3b3a5a2ad9f5a125c29046e300fc93a9
 
-ID: 276
+ID: 297
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net9.0\refint\softbery.dll
 file type: file
-file hash: 7edc408951257fe44290686269e83eec
+file hash: 3b3a5a2ad9f5a125c29046e300fc93a9
 
-ID: 277
+ID: 298
 file name: .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
 file type: file
-file hash: ff3517b1163003098ee37a1a6f1dc08d
+file hash: 632689d5f85f797459d5af3e8327bb48
 
-ID: 278
+ID: 299
 file name: softbery.AssemblyInfo.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows\softbery.AssemblyInfo.cs
 file type: file
-file hash: 29b74e266413e97801f9d37e8354e251
+file hash: 74eee427f78b4f738e17c418971b6bd5
 
-ID: 279
+ID: 300
 file name: softbery.AssemblyInfoInputs.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows\softbery.AssemblyInfoInputs.cache
 file type: file
 file hash: 8650b3ff8b4a918e37372391d1b6dfa3
 
-ID: 280
+ID: 301
 file name: softbery.assets.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows\softbery.assets.cache
 file type: file
 file hash: 9ac07451b651751f29daf49b7c1206a3
 
-ID: 281
+ID: 302
 file name: softbery.GeneratedMSBuildEditorConfig.editorconfig
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows\softbery.GeneratedMSBuildEditorConfig.editorconfig
 file type: file
 file hash: 22e7ec8de24de9ba168192f5792d71b7
 
-ID: 282
+ID: 303
 file name: softbery.GlobalUsings.g.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows\softbery.GlobalUsings.g.cs
 file type: file
-file hash: 0ca42cbc4f22da0578a209aaeb544bf8
+file hash: e4b5fa646c74dc589e260223985e0e8b
 
-ID: 283
+ID: 304
 file name: softbery.Program.g.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows\softbery.Program.g.cs
 file type: file
-file hash: e226300677f55d09ea0a4dba3670f805
+file hash: d5b0353f8274be4d45e1b2fb714ae208
 
-ID: 284
+ID: 305
 file name: .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
 file type: file
-file hash: ff3517b1163003098ee37a1a6f1dc08d
+file hash: 632689d5f85f797459d5af3e8327bb48
 
-ID: 285
+ID: 306
 file name: apphost.exe
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\apphost.exe
 file type: file
 file hash: 6356d7ac7fba4694e7b3cad3f3a1a6bd
 
-ID: 286
+ID: 307
 file name: softbery.AssemblyInfo.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.AssemblyInfo.cs
 file type: file
-file hash: 8e8e34b427726eebf616da1a2de3b954
+file hash: acfcd32bc39ce0ba1d53e25d763cd6aa
 
-ID: 287
+ID: 308
 file name: softbery.AssemblyInfoInputs.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.AssemblyInfoInputs.cache
 file type: file
 file hash: 72619add4da635acbdbd88f3ec976902
 
-ID: 288
+ID: 309
 file name: softbery.assets.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.assets.cache
 file type: file
 file hash: e5db4f9ead144646b477e6fa6160092f
 
-ID: 289
+ID: 310
 file name: softbery.csproj.AssemblyReference.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.csproj.AssemblyReference.cache
 file type: file
 file hash: 25994f10d207b0eab89a877f46146300
 
-ID: 290
+ID: 311
 file name: softbery.csproj.CoreCompileInputs.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.csproj.CoreCompileInputs.cache
 file type: file
 file hash: 442dad8acd833d175d2492eb8f2ba27f
 
-ID: 291
+ID: 312
 file name: softbery.csproj.FileListAbsolute.txt
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.csproj.FileListAbsolute.txt
 file type: file
 file hash: aad15ff3ffbe1ac70eb096f0bf7a39c0
 
-ID: 292
+ID: 313
 file name: softbery.csproj.Up2Date
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.csproj.Up2Date
 file type: file
 file hash: d41d8cd98f00b204e9800998ecf8427e
 
-ID: 293
+ID: 314
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.dll
 file type: file
 file hash: af617b8f107126ac233a4cfef5f5928b
 
-ID: 294
+ID: 315
 file name: softbery.GeneratedMSBuildEditorConfig.editorconfig
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.GeneratedMSBuildEditorConfig.editorconfig
 file type: file
 file hash: 7f67f40782dfe3977df639e783b860f0
 
-ID: 295
+ID: 316
 file name: softbery.genruntimeconfig.cache
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.genruntimeconfig.cache
 file type: file
 file hash: 4c0c03d2cb3757db869ed2b6751874de
 
-ID: 296
+ID: 317
 file name: softbery.GlobalUsings.g.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.GlobalUsings.g.cs
 file type: file
-file hash: 0ca42cbc4f22da0578a209aaeb544bf8
+file hash: e4b5fa646c74dc589e260223985e0e8b
 
-ID: 297
+ID: 318
 file name: softbery.pdb
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.pdb
 file type: file
 file hash: 1f806334972ed200958cbd43cda0b216
 
-ID: 298
+ID: 319
 file name: softbery.Program.g.cs
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.Program.g.cs
 file type: file
-file hash: e226300677f55d09ea0a4dba3670f805
+file hash: d5b0353f8274be4d45e1b2fb714ae208
 
-ID: 299
+ID: 320
 file name: softbery.sourcelink.json
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.sourcelink.json
 file type: file
 file hash: 62752fadc2512f1136239782e633bfb2
 
-ID: 300
+ID: 321
 file name: softbery.xml
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\softbery.xml
 file type: file
 file hash: d59b026ad72dd9c0a3fa3103fa7fe2a3
 
-ID: 301
+ID: 322
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\ref\softbery.dll
 file type: file
 file hash: e61e0ea2ecb21a9bca17c5b35b66a63e
 
-ID: 302
+ID: 323
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\Debug\net9.0-windows7.0\refint\softbery.dll
 file type: file
 file hash: e61e0ea2ecb21a9bca17c5b35b66a63e
 
-ID: 303
+ID: 324
 file name: .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
 file type: file
-file hash: 9b225453b5a8008eefb62f6c5c66ce15
+file hash: 7304bcfb112454cb5a6240aedf9be326
 
-ID: 304
+ID: 325
 file name: apphost.exe
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\apphost.exe
 file type: file
 file hash: b91833275cdc04a13f7315d61db0c663
 
-ID: 305
+ID: 326
 file name: softbery.AssemblyInfo.cs
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.AssemblyInfo.cs
 file type: file
-file hash: 99c81e5bc0b3177e085e604fce297cf6
+file hash: a1bd6a43a25354ec899e7911de3f6bf9
 
-ID: 306
+ID: 327
 file name: softbery.AssemblyInfoInputs.cache
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.AssemblyInfoInputs.cache
 file type: file
 file hash: 3d3369d0d1379464ee2c7b2453b9f625
 
-ID: 307
+ID: 328
 file name: softbery.assets.cache
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.assets.cache
 file type: file
 file hash: 17012a43e19369e7c8769b06370b992b
 
-ID: 308
+ID: 329
 file name: softbery.csproj.AssemblyReference.cache
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.csproj.AssemblyReference.cache
 file type: file
 file hash: 018055eb423cd3568d0b03c5f90e2d9b
 
-ID: 309
+ID: 330
 file name: softbery.csproj.CoreCompileInputs.cache
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.csproj.CoreCompileInputs.cache
 file type: file
 file hash: 5da69f5e0a3bdd93504e9a8460cd97fc
 
-ID: 310
+ID: 331
 file name: softbery.csproj.FileListAbsolute.txt
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.csproj.FileListAbsolute.txt
 file type: file
 file hash: 28b6e1588ee5264f3b0579b08fdd543f
 
-ID: 311
+ID: 332
 file name: softbery.csproj.Up2Date
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.csproj.Up2Date
 file type: file
 file hash: d41d8cd98f00b204e9800998ecf8427e
 
-ID: 312
+ID: 333
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.dll
 file type: file
 file hash: d943248478ae13752e89f59c2f136c67
 
-ID: 313
+ID: 334
 file name: softbery.GeneratedMSBuildEditorConfig.editorconfig
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.GeneratedMSBuildEditorConfig.editorconfig
 file type: file
 file hash: b704a2b5f8262b83997461ada5d791c9
 
-ID: 314
+ID: 335
 file name: softbery.genruntimeconfig.cache
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.genruntimeconfig.cache
 file type: file
 file hash: 99d0e61120107918284343c8ea0973ad
 
-ID: 315
+ID: 336
 file name: softbery.GlobalUsings.g.cs
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.GlobalUsings.g.cs
 file type: file
-file hash: 0ca42cbc4f22da0578a209aaeb544bf8
+file hash: e4b5fa646c74dc589e260223985e0e8b
 
-ID: 316
+ID: 337
 file name: softbery.pdb
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.pdb
 file type: file
 file hash: fd44dff0b792d353c17d2056ed96da85
 
-ID: 317
+ID: 338
 file name: softbery.sourcelink.json
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\softbery.sourcelink.json
 file type: file
 file hash: 9b46e8db87a4c8ccfb8a0618da276af9
 
-ID: 318
+ID: 339
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\ref\softbery.dll
 file type: file
 file hash: 2e0dafd79821d4d26b6fc3c56137b5cb
 
-ID: 319
+ID: 340
 file name: softbery.dll
 file path: F:\dev\.softbery\obj\x64\Debug\net8.0-windows7.0\refint\softbery.dll
 file type: file
 file hash: 2e0dafd79821d4d26b6fc3c56137b5cb
 
-ID: 320
+ID: 341
 file name: .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
 file path: F:\dev\.softbery\obj\x86\Debug\net8.0-windows7.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
 file type: file
-file hash: 9b225453b5a8008eefb62f6c5c66ce15
+file hash: 7304bcfb112454cb5a6240aedf9be326
 
-ID: 321
+ID: 342
 file name: softbery.AssemblyInfo.cs
 file path: F:\dev\.softbery\obj\x86\Debug\net8.0-windows7.0\softbery.AssemblyInfo.cs
 file type: file
-file hash: 99c81e5bc0b3177e085e604fce297cf6
+file hash: a1bd6a43a25354ec899e7911de3f6bf9
 
-ID: 322
+ID: 343
 file name: softbery.AssemblyInfoInputs.cache
 file path: F:\dev\.softbery\obj\x86\Debug\net8.0-windows7.0\softbery.AssemblyInfoInputs.cache
 file type: file
 file hash: 3d3369d0d1379464ee2c7b2453b9f625
 
-ID: 323
+ID: 344
 file name: softbery.assets.cache
 file path: F:\dev\.softbery\obj\x86\Debug\net8.0-windows7.0\softbery.assets.cache
 file type: file
 file hash: d5452b96719ba5a42fc7a6408c831a8d
 
-ID: 324
+ID: 345
 file name: softbery.csproj.AssemblyReference.cache
 file path: F:\dev\.softbery\obj\x86\Debug\net8.0-windows7.0\softbery.csproj.AssemblyReference.cache
 file type: file
 file hash: 297e539be074e196a10458f8a3e8e246
 
-ID: 325
+ID: 346
 file name: softbery.GeneratedMSBuildEditorConfig.editorconfig
 file path: F:\dev\.softbery\obj\x86\Debug\net8.0-windows7.0\softbery.GeneratedMSBuildEditorConfig.editorconfig
 file type: file
 file hash: b704a2b5f8262b83997461ada5d791c9
 
-ID: 326
+ID: 347
 file name: softbery.GlobalUsings.g.cs
 file path: F:\dev\.softbery\obj\x86\Debug\net8.0-windows7.0\softbery.GlobalUsings.g.cs
 file type: file
-file hash: 0ca42cbc4f22da0578a209aaeb544bf8
+file hash: e4b5fa646c74dc589e260223985e0e8b
 

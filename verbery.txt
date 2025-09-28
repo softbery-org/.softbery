@@ -1,0 +1,2236 @@
+// OtherInformation: Compare this snippet from F:\dev\.softbery\Cli.cs
+// Version: 0.1.0.2
+/* 
+ * LICENSE_MIT License
+ * 
+ * Copyright (c) 2023-2024 Softbery by Paweł Tobis
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Author						        : Paweł Tobis
+ * Email							    : VerberyCore@softbery.org
+ * Description					    : 
+ * Create						        : 2025-05-06 22:39:42
+ * Last Modification Date    : 2025-05-06 22:39:42
+ */
+
+using System.CommandLine;
+using System.CommandLine.IO;
+using System.CommandLine.NamingConventionBinder;
+using System.Reflection;
+
+namespace VerberyCore
+{
+    /// <summary>
+    /// Command-line interface for managing version control and file metadata.
+    /// </summary>
+    public class Cli
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Cli"/> class.
+        /// </summary>
+        public Cli(string[] args)
+        {
+            CommandRun(args).GetAwaiter();
+        }
+
+        /// <summary>
+        /// Runs the command-line interface with the specified arguments.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private static async Task<int> CommandRun(string[] args)
+        {
+            var rootCommand = new RootCommand("Intelligent version control and file metadata management")
+            {
+                new Option<bool>(new[] { "--verbose", "-v" }, "Enable detailed logging"),
+                new Option<bool>(new[] { "--silent", "-s" }, "Suppress all output"),
+                new Option<bool>(new[] { "--version", "-V" }, "Display current version"),
+                new Option<bool>(new[] { "--help", "-h" }, "Show help information"),
+                new Option<bool>(new[] { "--debug", "-d" }, "Enable debug mode")
+            };
+
+            rootCommand.AddCommand(BuildInitCommand());
+            rootCommand.AddCommand(BuildScanCommand());
+            rootCommand.AddCommand(BuildVersionCommand());
+            rootCommand.AddCommand(BuildHashCommand());
+            rootCommand.AddCommand(BuildBackupCommand());
+
+            rootCommand.Handler = CommandHandler.Create<bool, bool, bool, IConsole>((verbose, silent, version, console) =>
+            {
+                Logger.Initialize(verbose, silent);
+
+                if (version)
+                {
+                    Logger.Info($"Version: {Assembly.GetExecutingAssembly().GetName().Version}");
+                    return 0;
+                }
+                if (console != null)
+                {
+                    console.Error.WriteLine("Specify a command");
+                }
+                return 1;
+            });
+
+            return await rootCommand.InvokeAsync(args);
+        }
+
+        private static Command BuildBackupCommand()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static Command BuildHashCommand()
+        {
+            throw new NotImplementedException();
+        }
+
+        #region Command Builders
+        private static Command BuildInitCommand()
+        {
+            var command = new Command("init", "Initialize new project")
+            {
+                new Argument<DirectoryInfo>("path", "Project directory"),
+                new Option<string>(new[] { "--template", "-t" }, "Use predefined template"),
+                new Option<bool>(new[] { "--force", "-f" }, "Overwrite existing config"),
+                new Option<string>(new[] { "--vcs", "-c" }, "Initialize version control (git/svn)")
+            };
+
+            command.Handler = CommandHandler.Create<DirectoryInfo, string, bool, string>((path, template, force, vcs) =>
+            {
+                try
+                {
+                    Logger.Info($"Initializing project at: {path.FullName}");
+
+                    if (!path.Exists) Directory.CreateDirectory(path.FullName);
+
+                    if (force || !File.Exists(Path.Combine(path.FullName, ".sbconf")))
+                    {
+                        FileManager.CreateDefaultConfig(path);
+                        Logger.Info("Configuration file created");
+                    }
+
+                    if (!string.IsNullOrEmpty(vcs))
+                    {
+                        VersionControlSystem.Initialize(vcs, path);
+                        Logger.Info($"{vcs.ToUpper()} repository initialized");
+                    }
+
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Initialization failed: {ex.Message}");
+                    return ex.HResult;
+                }
+            });
+
+            return command;
+        }
+
+        private static Command BuildScanCommand()
+        {
+            var command = new Command("scan", "Analyze directory structure")
+            {
+                new Argument<DirectoryInfo>("path", () => new DirectoryInfo(Directory.GetCurrentDirectory())),
+                new Option<bool>(new[] { "--deep", "-d" }, "Recursive directory analysis"),
+                new Option<bool>(new[] { "--hash", "-h" }, "Generate file hashes"),
+                new Option<bool>(new[] { "--tree", "-t" }, "Display directory tree"),
+                new Option<string>(new[] { "--format", "-f" }, () => "text", "Output format")
+            };
+
+            command.Handler = CommandHandler.Create<DirectoryInfo, bool, bool, bool, string>((path, deep, hash, tree, format) =>
+            {
+                try
+                {
+                    Logger.Info($"Scanning directory: {path.FullName}");
+                    var scanOptions = new ScanOptions
+                    {
+                        Recursive = deep,
+                        GenerateHashes = hash,
+                        OutputFormat = format
+                    };
+
+                    var result = FileManager.GetDataTree(path.FullName);
+
+                    if (tree)
+                    {
+                        Console.WriteLine(result);
+                    }
+
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Scan failed: {ex.Message}");
+                    return ex.HResult;
+                }
+            });
+
+            return command;
+        }
+
+        private static Command BuildVersionCommand()
+        {
+            var bumpCommand = new Command("bump", "Increment version number")
+            {
+                new Option<bool>("--major", "Increment major version"),
+                new Option<bool>("--minor", "Increment minor version"),
+                new Option<bool>("--build", "Increment build number"),
+                new Option<bool>("--revision", "Auto-increment revision")
+            };
+
+            bumpCommand.Handler = CommandHandler.Create<bool, bool, bool, bool>((major, minor, build, revision) =>
+            {
+                try
+                {
+                    var currentVersion = VersionManager.GetCurrentVersion();
+                    var newVersion = VersionManager.IncrementVersion(currentVersion);
+                    /*,
+                        major ? VersionComponent.Major :
+                        minor ? VersionComponent.Minor :
+                        build ? VersionComponent.Build :
+                        VersionComponent.Revision);*/
+                    VersionManager.UpdateVersionFile(newVersion);
+                    Logger.Info($"New version: {newVersion}");
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Version bump failed: {ex.Message}");
+                    return ex.HResult;
+                }
+            });
+
+            // Use constructor overload to add the argument
+            var setCommand = new Command("set", "Manually set version")
+            {
+                 new Argument<string>("version", "New version in format X.Y.Z.W")
+            };
+            {
+                var handler = CommandHandler.Create<string>(version =>
+                {
+                    try
+                    {
+                        var newVersion = VersionManager.ParseVersion(version);
+                        VersionManager.UpdateVersionFile(newVersion);
+                        Logger.Info($"Version set to: {newVersion}");
+                        return 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error($"Invalid version: {ex.Message}");
+                        return 1;
+                    }
+                });
+            };
+
+            var showCommand = new Command("show", "Display current version")
+            {
+                Handler = CommandHandler.Create(() =>
+                {
+                    var version = VersionManager.GetCurrentVersion();
+                    Console.WriteLine(version);
+                    return 0;
+                })
+            };
+
+            var versionCommand = new Command("version", "Manage versioning operations")
+            {
+                bumpCommand,
+                setCommand,
+                showCommand
+            };
+
+            return versionCommand;
+        }
+        #endregion
+
+        #region Helper Classes
+        private static class Logger
+        {
+            private static bool _verbose;
+            private static bool _silent;
+            /// <summary>
+            /// Initializes the logger with specified verbosity and silence options.`
+            /// </summary>
+            /// <param name="verbose"></param>
+            /// <param name="silent"></param>
+            public static void Initialize(bool verbose, bool silent)
+            {
+                _verbose = verbose;
+                _silent = silent;
+            }
+            /// <summary>
+            /// Logs an informational message to the standard output.
+            /// </summary>
+            /// <param name="message"></param>
+            public static void Info(string message)
+            {
+                if (!_silent) Console.WriteLine($"[INFO] {message}");
+            }
+            /// <summary>
+            /// Logs an error message to the standard error output.
+            /// </summary>
+            /// <param name="message"></param>
+            public static void Error(string message)
+            {
+                if (!_silent) Console.Error.WriteLine($"[ERROR] {message}");
+            }
+            /// <summary>
+            /// Logs a debug message if verbose mode is enabled.
+            /// </summary>
+            /// <param name="message"></param>
+            public static void Debug(string message)
+            {
+                if (_verbose && !_silent) Console.WriteLine($"[DEBUG] {message}");
+            }
+        }
+
+        /// <summary>
+        /// Represents a version number with major, minor, build, and revision components.
+        /// </summary>
+        public enum VersionComponent { Major, Minor, Build, Revision }
+
+        /// <summary>
+        /// Represents options for scanning directories and files.
+        /// </summary>
+        public class ScanOptions
+        {
+            /// <summary>
+            /// Indicates whether the scan should be recursive.
+            /// </summary>
+            public bool Recursive { get; set; }
+            /// <summary>
+            /// Indicates whether to generate hashes for files during the scan.
+            /// </summary>
+            public bool GenerateHashes { get; set; }
+            /// <summary>
+            /// Specifies the output format for the scan results.
+            /// </summary>
+            public string OutputFormat { get; set; }
+        }
+        #endregion
+    }
+
+    // Przykładowa implementacja pozostałych klas
+    /// <summary>
+    /// Represents a file manager that handles file operations and metadata.
+    /// </summary>
+    public static class VersionControlSystem
+    {
+        /// <summary>
+        /// Initializes the version control system for the specified path.
+        /// </summary>
+        /// <param name="vcsType"></param>
+        /// <param name="path"></param>
+        public static void Initialize(string vcsType, DirectoryInfo path)
+        {
+            // Implementacja inicjalizacji VCS
+        }
+    }
+
+    // Fix for CS0051: Make Program.ScanOptions public to match the accessibility of FileManager.GetDataTree
+    /// <summary>
+    /// Represents options for scanning directories and files.
+    /// </summary>
+    public class ScanOptions
+    {
+        /// <summary>
+        /// Indicates whether the scan should be recursive.
+        /// </summary>
+        public bool Recursive { get; set; }
+        /// <summary>
+        /// Indicates whether to generate hashes for files during the scan.
+        /// </summary>
+        public bool GenerateHashes { get; set; }
+        /// <summary>
+        /// Specifies the output format for the scan results.
+        /// </summary>
+        public string OutputFormat { get; set; } = string.Empty;
+    
+    // Fix for CS1591: Add XML documentation for the public method FileManager.GetDataTree
+    /// <summary>
+    /// Retrieves a data tree representation of the specified directory path.
+    /// </summary>
+    /// <param name="path">The directory path to scan.</param>
+    /// <param name="options">Options for scanning, such as recursion and hash generation.</param>
+    /// <returns>A list of Tree objects representing the directory structure.</returns>
+    public static List<Tree> GetDataTree(string path, ScanOptions options)
+        {
+            // Implementation of directory scanning
+            return new List<Tree>();
+        }
+
+        // Fix for IDE0060: Ensure parameters are used or explicitly suppress the warning if they are part of the public API
+        /// <summary>
+        /// Retrieves a data tree representation of the specified directory path with API support.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="options"></param>
+        /// <param name="api"></param>
+        /// <returns></returns>
+        public static List<Tree> GetDataTree(string path, ScanOptions options, object api)
+        {
+            // Use the parameters in the implementation or suppress the warning if they are intentionally unused
+            _ = path; // Suppress IDE0060 for 'path'
+            _ = options; // Suppress IDE0060 for 'options'
+
+            // Implementation of directory scanning
+            return new List<Tree>();
+        }
+    }
+}
+
+// OtherInformation: Compare this snippet from F:\dev\.softbery\Conf.cs
+// Version: 10.0.1.2
+/*
+ * CHANGES:
+ * G��wne zmiany i usprawnienia:
+ * Struktura klas:
+ *     - Wyodr�bnienie nowych metod dla zachowania zasady pojedynczej odpowiedzialno�ci
+ * 	    - Lepsze rozdzielenie logiki inicjalizacji i uruchamiania
+ * Dokumentacja XML:
+ *      - Pe�ne opisy wszystkich klas i metod
+ * 	    - Dokumentacja parametr�w i zwracanych warto�ci
+ * 	    - Opisy wyj�tk�w i b��d�w
+ * Bezpiecze�stwo:
+ *      - Poprawiona obs�uga wyj�tk�w
+ * 	    - W�a�ciwe zarz�dzanie zasobami (using dla strumieni plik�w)
+ *  	- Walidacja wej��
+ * Czytelno�� kodu:
+ *      - Sp�jne formatowanie
+ *      - Opisowe nazwy metod
+ *      - Logiczny podzia� funkcjonalno�ci
+ * Rozszerzalno��:
+ *      - Oznaczone miejsca do dalszego rozwoju (TODO)
+ * 	    - Mo�liwo�� �atwego dodawania nowych format�w konfiguracji
+ * Zasady SOLID:
+ *      1. Single Responsibility - ka�da metoda ma jedno zadanie
+ * 	     2. Open/Closed - �atwe rozszerzanie przez dziedziczenie
+ * 	     3. Dependency Inversion - abstrakcja konfiguracji
+ * Optymalizacja:
+ * - Unikanie powtarzaj�cego si� kodu
+ * 	- Efektywne wykorzystanie zasob�w
+ * 	- Asynchroniczne operacje
+ * 	
+ * Kod wymaga jeszcze implementacji brakuj�cych funkcjonalno�ci 
+ * (klasa Template, domy�lna zawarto�� konfiguracji), ale g��wna 
+ * struktura jest przygotowana pod dalszy rozw�j.
+**/
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+
+namespace VerberyCore
+{
+    /// <summary>
+    /// Reprezentuje g��wn� klas� konfiguracyjn� aplikacji odpowiedzialn� za zarz�dzanie plikami konfiguracyjnymi i hostem
+    /// </summary>
+    public class Conf
+    {
+        private HostApplicationBuilder? _builder;
+        private IHostEnvironment? _environment;
+        private IConfiguration? _config;
+        private IHost? _host;
+        private List<FileInfo> _files;
+        private readonly Template _default = new();
+
+        /// <summary>
+        /// Aktualna konfiguracja aplikacji
+        /// </summary>
+        public IConfiguration? Configuration => _config;
+
+        /// <summary>
+        /// Dost�pne us�ugi hosta
+        /// </summary>
+        public IHost? Services => _host;
+
+        /// <summary>
+        /// Inicjalizuje now� instancj� klasy Conf z podanymi plikami konfiguracyjnymi
+        /// </summary>
+        /// <param name="files">Lista �cie�ek do plik�w konfiguracyjnych</param>
+        public Conf(string[] files)
+        {
+            _files = new List<FileInfo>();
+            if (files != null)
+            {
+                InitializeConfigurationFiles(files);
+            }
+        }
+
+        /// <summary>
+        /// G��wna metoda uruchamiaj�ca proces konfiguracji
+        /// </summary>
+        /// <param name="args">Argumenty wiersza polece�</param>
+        /// <returns>Zadanie asynchroniczne</returns>
+        public async Task Run(string[] args)
+        {
+            if (_files != null && _files.Any())
+            {
+                await ProcessConfigurationFiles(args);
+            }
+        }
+
+        /// <summary>
+        /// Inicjalizuje pliki konfiguracyjne z podanych �cie�ek
+        /// </summary>
+        /// <param name="filePaths">Tablica �cie�ek do plik�w</param>
+        private void InitializeConfigurationFiles(string[] filePaths)
+        {
+            foreach (var filePath in filePaths)
+            {
+                try
+                {
+                    _files.Add(new FileInfo(filePath));
+                }
+                catch (Exception ex)
+                {
+                    HandleConfigurationError(ex, filePath);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Przetwarza wszystkie pliki konfiguracyjne
+        /// </summary>
+        /// <param name="args">Argumenty wiersza polece�</param>
+        /// <returns>Zadanie asynchroniczne</returns>
+        private async Task ProcessConfigurationFiles(string[] args)
+        {
+            foreach (var file in _files)
+            {
+                await InitializeHostForFile(args, file);
+            }
+        }
+
+        /// <summary>
+        /// Inicjalizuje host dla pojedynczego pliku konfiguracyjnego
+        /// </summary>
+        /// <param name="args">Argumenty wiersza polece�</param>
+        /// <param name="file">Plik konfiguracyjny</param>
+        /// <returns>Zadanie asynchroniczne</returns>
+        private async Task InitializeHostForFile(string[] args, FileInfo file)
+        {
+            try
+            {
+                _builder = Host.CreateApplicationBuilder(args);
+                await ConfigureAndRunHost(args, file);
+            }
+            catch (Exception ex)
+            {
+                HandleHostInitializationError(ex, file);
+            }
+        }
+
+        /// <summary>
+        /// Konfiguruje i uruchamia hosta
+        /// </summary>
+        /// <param name="args">Argumenty wiersza polece�</param>
+        /// <param name="file">Plik konfiguracyjny</param>
+        /// <returns>Zadanie asynchroniczne</returns>
+        private async Task ConfigureAndRunHost(string[] args, FileInfo file)
+        {
+            ConfigureBuilder(file);
+            BuildHost();
+            await RunHostAsync();
+        }
+
+        /// <summary>
+        /// Konfiguruje builder hosta
+        /// </summary>
+        /// <param name="file">Plik konfiguracyjny</param>
+        private void ConfigureBuilder(FileInfo file)
+        {
+            if (_builder == null) return;
+
+            _builder.Configuration.Sources.Clear();
+            _environment = _builder.Environment;
+
+            _builder.Configuration
+                .AddIniFile($"{file.Name}.ini", optional: true, reloadOnChange: true)
+                .AddIniFile($"{file.Name}.{_environment.EnvironmentName}.ini", true, true);
+        }
+
+        /// <summary>
+        /// Buduje hosta
+        /// </summary>
+        private void BuildHost()
+        {
+            _host = _builder?.Build();
+        }
+
+        /// <summary>
+        /// Uruchamia hosta
+        /// </summary>
+        /// <returns>Zadanie asynchroniczne</returns>
+        private async Task RunHostAsync()
+        {
+            if (_host != null)
+            {
+                await _host.RunAsync();
+            }
+        }
+
+        /// <summary>
+        /// Tworzy domyślny plik konfiguracyjny jeśli nie istnieje
+        /// </summary>
+        private void OpenConfigFile()
+        {
+            const string configFile = ".sb/.sbconf";
+
+            if (!File.Exists(configFile))
+            {
+                try
+                {
+                    using var fileStream = File.Create(configFile);
+                    // TODO: Doda� domy�ln� zawarto�� konfiguracyjn�
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error creating config file: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obs�uguje b��dy inicjalizacji konfiguracji
+        /// </summary>
+        /// <param name="ex">Wyj�tek</param>
+        /// <param name="filePath">�cie�ka pliku</param>
+        private void HandleConfigurationError(Exception ex, string filePath)
+        {
+            Console.WriteLine($"[{ex.GetType().Name}] Error loading config file '{filePath}': {ex.Message}");
+        }
+
+        /// <summary>
+        /// Obs�uguje b��dy inicjalizacji hosta
+        /// </summary>
+        /// <param name="ex">Wyj�tek</param>
+        /// <param name="file">Plik konfiguracyjny</param>
+        private void HandleHostInitializationError(Exception ex, FileInfo file)
+        {
+            Console.WriteLine($"[{ex.GetType().Name}] Error initializing host for '{file.Name}': {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Klasa pomocnicza dla domy�lnych ustawie� konfiguracyjnych
+    /// </summary>
+    public class Template
+    {
+        // TODO: Doda� implementacj� domy�lnego szablonu konfiguracji
+        /// <summary>
+        /// Domy�lny szablon licencji LICENSE_MIT
+        /// </summary>
+        public string Value = "/* " +
+                                               " * LICENSE_MIT License" +
+                                               " * " +
+                                               " * Copyright (c) {year} {company} by {author}" +
+                                               " * " +
+                                               " * Permission is hereby granted, free of charge, to any person obtaining a copy" +
+                                               " * of this software and associated documentation files (the \"Software\"), to deal" +
+                                               " * in the Software without restriction, including without limitation the rights" +
+                                               " * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" +
+                                               " * copies of the Software, and to permit persons to whom the Software is" +
+                                               " * furnished to do so, subject to the following conditions:" +
+                                               " * " +
+                                               " * The above copyright notice and this permission notice shall be included in all" +
+                                               " * copies or substantial portions of the Software." +
+                                               " * " +
+                                               " * THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" +
+                                               " * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," +
+                                               " * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" +
+                                               " * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" +
+                                               " * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," +
+                                               " * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE" +
+                                               " * SOFTWARE." +
+                                               " *" +
+                                               " * Project						    : {project} " +
+                                               " * " +
+                                               " * file							    : {file}" +
+                                               " * Description				    : {description}" +
+                                               " *" +
+                                               " *" +
+                                               " * Author						    : {author}" +
+                                               " * Email							: {email}" +
+                                               " * Website						: {website}" +
+                                               " * Create	    				    : {create}" +
+                                               " * Last Modification Date: {modified}" +
+                                               " */";
+        /// <summary>
+        /// Domy�lny szablon licencji LICENSE_MIT
+        /// </summary>
+        public string LICENSE_MIT =
+               "/* \r\n * LICENSE_MIT License\r\n " +
+                "* \r\n " +
+                "* Copyright (c) {year} {company} by {author}\r\n " +
+                "* \r\n " +
+                "* Permission is hereby granted, free of charge, to any person obtaining a copy\r\n " +
+                "* of this software and associated documentation files (the \"Software\"), to deal\r\n " +
+                "* in the Software without restriction, including without limitation the rights\r\n " +
+                "* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\r\n " +
+                "* copies of the Software, and to permit persons to whom the Software is\r\n " +
+                "* furnished to do so, subject to the following conditions:\r\n * \r\n " +
+                "* The above copyright notice and this permission notice shall be included in all\r\n " +
+                "* copies or substantial portions of the Software.\r\n * \r\n " +
+                "* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n " +
+                "* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\n " +
+                "* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\n " +
+                "* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\n " +
+                "* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n " +
+                "* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n " +
+                "* SOFTWARE.\r\n " +
+                "* \r\n " +
+                "* Author\t\t\t\t\t\t: {author}\r\n " +
+                "* Email\t\t\t\t\t\t\t: {email}\r\n " +
+                "* Description\t\t\t\t\t: {description}\r\n " +
+                "* Create\t\t\t\t\t\t: {create}\r\n " +
+                "* Last Modification Date: {modified} \r\n " +
+                "*/";
+    }
+}
+
+// OtherInformation: Compare this snippet from F:\dev\.softbery\FileHash.cs
+// Version: 1.0.170
+/*
+ * CHANGELOG:
+ * Główne usprawnienia i zmiany:
+ * Dokumentacja XML:
+ *      - Pełne opisy metod z uwzględnieniem wyjątków
+ *      - Dodano sekcją Remarks z ważnymi uwagami
+ *      - Oznaczono przestarzałe metody atrybutem [Obsolete]
+ * Bezpieczeństwo i niezawodność:
+ *      - Usunięto niebezpieczną konwersję przez Encoding.Default
+ *      - Standaryzacja na format heksadecymalny
+ *      - Spójna obsługa zasobów z użyciem using
+ * Optymalizacja kodu:
+ *      - Uproszczona składnia using
+ *      - Usunięto zbędne zagnieżdżenia
+ *      - Standaryzacja formatu zwracanego skrótu
+ * Spójność interfejsu:
+ *      - Ujednolicenie nazewnictwa metod
+ *      - Wyrównanie zachowania wszystkich metod
+ *      - Lepsza obsługa błędów
+ * Poprawki funkcjonalne:
+ *      - Wymiana Encoding.Default na UTF8 w metodzie przestarzałej
+ *      - Gwarancja poprawnego formatu zwracanych danych
+ *      - Usunięcie duplikującej funkcjonalności
+ * Komunikacja błędów:
+ *      - Jasna dokumentacja możliwych wyjątków
+ *      - Ostrzeżenia dla niezalecanych metod
+ *      - Przejrzyste informacje o ograniczeniach
+ * Zasady SOLID:
+ *      1. Single Responsibility - każda metoda ma jedno zadanie
+ *      2. Open/Closed - łatwe rozszerzanie o nowe algorytmy
+ *      3. Liskov Substitution - spójne zachowanie metod
+ * Wsparcie dla testowania:
+ *      - Przewidywalne wyniki
+ *      - Brak efektów ubocznych
+ *      - Jasne kontrakty metod
+ * 
+ * Kod zawiera teraz jasną dokumentację i ostrzeżenia przed użyciem niezalecanych metod. 
+ * Główna rekomendacja to używanie metod zwracających skróty w formacie heksadecymalnym 
+ * (CheckMD5 lub GetMD5ChecksumBitConverter), które gwarantuj� poprawne reprezentowanie 
+ * wszystkich bajtów skrótu.
+ */
+using System.Security.Cryptography;
+using System.Text;
+
+namespace VerberyCore
+{
+    /// <summary>
+    /// Klasa pomocnicza zapewniaj�ca funkcjonalno�� obliczania skr�t�w MD5 dla plik�w
+    /// </summary>
+    internal static class FileHash
+    {
+        /// <summary>
+        /// Oblicza skr�t MD5 pliku u�ywaj�c konwersji bitowej
+        /// </summary>
+        /// <param name="file">Plik do obliczenia skr�tu</param>
+        /// <returns>Skr�t MD5 w formacie heksadecymalnym</returns>
+        /// <exception cref="FileNotFoundException">Gdy plik nie istnieje</exception>
+        /// <exception cref="IOException">B��d dost�pu do pliku</exception>
+        public static string CheckMD5(this FileInfo file)
+        {
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(file.FullName);
+            var hash = md5.ComputeHash(stream);
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+
+        /// <summary>
+        /// Oblicza skr�t MD5 pliku u�ywaj�c konwersji bitowej (wersja alternatywna)
+        /// </summary>
+        /// <param name="file">Plik do obliczenia skr�tu</param>
+        /// <returns>Skr�t MD5 w formacie heksadecymalnym</returns>
+        /// <exception cref="FileNotFoundException">Gdy plik nie istnieje</exception>
+        /// <exception cref="IOException">B��d dost�pu do pliku</exception>
+        public static string GetMD5ChecksumBitConverter(this FileInfo file)
+        {
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(file.FullName);
+            var hash = md5.ComputeHash(stream);
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+
+        /// <summary>
+        /// Oblicza skr�t MD5 pliku u�ywaj�c kodowania znak�w (przestarza�e)
+        /// </summary>
+        /// <remarks>
+        /// Metoda niezalecana - konwersja bajt�w na string przez Encoding mo�e powodowa� utrat� danych.
+        /// Preferuj u�ycie metod zwracaj�cych reprezentacj� heksadecymaln�.
+        /// </remarks>
+        /// <param name="file">Plik do obliczenia skr�tu</param>
+        /// <returns>Skr�t MD5 jako string</returns>
+        /// <exception cref="FileNotFoundException">Gdy plik nie istnieje</exception>
+        /// <exception cref="IOException">B��d dost�pu do pliku</exception>
+        [Obsolete("This method may produce unreliable results. Use CheckMD5 or GetMD5ChecksumBitConverter instead.")]
+        public static string GetMD5ChecksumEncoding(this FileInfo file)
+        {
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(file.FullName);
+            var hash = md5.ComputeHash(stream);
+            return Encoding.UTF8.GetString(hash);
+        }
+    }
+}
+
+// OtherInformation: Compare this snippet from F:\dev\.softbery\FileHeader.cs
+// Version: 10.0.1.2
+/* 
+ * LICENSE_MIT License
+ * 
+ * Copyright (c) 2023 Softbery by Paweł Tobis
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Author						: Paweł Tobis
+ * Email							: VerberyCore@gmail.com
+ * Description					:
+ * Create						: 2023-02-24 04:31:42
+ * Last Modification Date: 2024-01-30 19:58:04
+ */
+
+/*
+ * CHANGELOG:
+ * Główne usprawnienia:
+ *      1. Pełna dokumentacja XML dla wszystkich elementów
+ *      2. Walidacja danych wejściowych z użyciem atrybutów
+ *      3. Lepsze nazewnictwo pól i właściwości
+ *      4. Obsługa wyjątków z odpowiednimi komunikatami
+ *      5. Struktura klas podzielona na regiony
+ *      6. Metody pomocnicze do generowania nagłówków
+ *      7. Zastosowanie atrybutów z przestrzeni nazw ComponentModel.DataAnnotations
+ *      8. Zgodność z SOLID poprzez wydzielenie odpowiedzialności
+ *      9. Bezpieczne zarządzanie datami z walidacją
+ *      10. Wsparcie dla przyszłego rozwoju przez oznaczone TODO
+ * 
+ * Dodatkowe funkcjonalności:
+ *      - Konstruktor przyjmujący ścieżkę do istniejącego pliku
+ *      - Metoda generująca gotowy nagłówek
+ *      - Automatyczna aktualizacja daty modyfikacji
+ *      - Walidacja formatu email i URL
+ *      - Obsługa szablonów przez klasę Template
+ * 
+ * Kod jest teraz bardziej bezpieczny, czytelny i gotowy do dalszej rozbudowy.
+ */
+
+using System.ComponentModel.DataAnnotations;
+
+/// <summary>
+/// Reprezentuje nagłówek pliku z metadanymi projektu
+/// </summary>
+internal class FileHeader
+{
+    #region Fields
+    private DateTime _create = DateTime.Now;
+    private DateTime _modified = DateTime.Now;
+    private int _year = DateTime.Now.Year;
+    private string _author = "Author";
+    private string _email = "author@example.com";
+    private string _website = "https://example.com/";
+    private string _project = "Project";
+    private string _description = "Example description for file header";
+    private string _template = new Template().Value;
+    private bool _includeHash = true;
+    private bool _includeFileName = true;
+
+    // Wzorce regex dla parsowania nagłówków
+    private const string CopyrightPattern = @"^.*\*.*Copyright \([Cc]\).*";
+    private const string AuthorPattern = @"(^.*\*.*Author.*): (.*)";
+    private const string EmailPattern = @"(^.*\*.*Email.*): (.*)";
+    private const string DescriptionPattern = @"(^.*\*.*Description.*): (.*)";
+    private const string CreateDatePattern = @"(^.*\*.*Create.*): (.*)";
+    private const string ModifiedDatePattern = @"(^.*\*.*Modified.*): (.*)";
+    #endregion
+
+    #region Properties
+    /// <summary>
+    /// Imię i nazwisko autora
+    /// </summary>
+    /// <exception cref="ArgumentException">W przypadku próby ustawienia pustej wartości</exception>
+    public string Author
+    {
+        get => _author;
+        set => _author = !string.IsNullOrWhiteSpace(value) ? value
+            : throw new ArgumentException("Author cannot be empty");
+    }
+
+    /// <summary>
+    /// Adres email autora
+    /// </summary>
+    /// <exception cref="FormatException">W przypadku niepoprawnego formatu emaila</exception>
+    [EmailAddress]
+    public string Email
+    {
+        get => _email;
+        set => _email = IsValidEmail(value) ? value
+            : throw new FormatException("Invalid email format");
+    }
+
+    /// <summary>
+    /// Strona internetowa projektu
+    /// </summary>
+    /// <exception cref="UriFormatException">W przypadku niepoprawnego formatu URL</exception>
+    public string Website
+    {
+        get => _website;
+        set => _website = Uri.IsWellFormedUriString(value, UriKind.Absolute) ? value
+            : throw new UriFormatException("Invalid website URL");
+    }
+
+    /// <summary>
+    /// Nazwa projektu
+    /// </summary>
+    public string Project { get; set; }
+
+    /// <summary>
+    /// Opis projektu
+    /// </summary>
+    public string Description { get; set; }
+
+    /// <summary>
+    /// Określa czy dodawać hash pliku do nagłówka
+    /// </summary>
+    public bool IncludeHash { get; set; }
+
+    /// <summary>
+    /// Określa czy dodawać nazwę pliku do nagłówka
+    /// </summary>
+    public bool IncludeFileName { get; set; }
+
+    /// <summary>
+    /// Szablon nagłówka
+    /// </summary>
+    public string Template { get; set; }
+
+    /// <summary>
+    /// Data utworzenia pliku
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">Data nie może być z przyszłości</exception>
+    public DateTime CreateDate
+    {
+        get => _create;
+        set => _create = value <= DateTime.Now ? value
+            : throw new ArgumentOutOfRangeException("Create date cannot be in the future");
+    }
+
+    /// <summary>
+    /// Data ostatniej modyfikacji
+    /// </summary>
+    public DateTime ModifiedDate
+    {
+        get => _modified;
+        set => _modified = value;
+    }
+
+    /// <summary>
+    /// Rok copyrightu
+    /// </summary>
+    public int CopyrightYear { get; set; }
+    #endregion
+
+    #region Constructors
+    /// <summary>
+    /// Inicjalizuje domyślny nagłówek pliku
+    /// </summary>
+    public FileHeader() { }
+
+    /// <summary>
+    /// Inicjalizuje nagłówek na podstawie istniejącego pliku
+    /// </summary>
+    /// <param name="filePath">Ścieżka do pliku z nagłówkiem</param>
+    /// <exception cref="FileNotFoundException">Gdy plik nie istnieje</exception>
+    public FileHeader(string filePath)
+    {
+        if (!File.Exists(filePath))
+            throw new FileNotFoundException("Source file not found", filePath);
+
+        // TODO: Implementacja parsowania istniejącego nagłówka
+    }
+    #endregion
+
+    #region Public Methods
+    /// <summary>
+    /// Generuje tekst nagłówka na podstawie właściwości
+    /// </summary>
+    /// <returns>Sformatowany nagłówek</returns>
+    public string GenerateHeaderText()
+    {
+        return $"""
+                // Version: 0.1.0.0
+                /*
+                 * MIT License
+                 * 
+                 * Copyright (c) {CopyrightYear} {Project}
+                 * Author: {Author} <{Email}>
+                 * Website: {Website}
+                 * 
+                 * {Description}
+                 * 
+                 * Created: {CreateDate:yyyy-MM-dd HH:mm:ss}
+                 * Modified: {ModifiedDate:yyyy-MM-dd HH:mm:ss}
+                 */
+                """;
+    }
+
+    /// <summary>
+    /// Aktualizuje datę modyfikacji
+    /// </summary>
+    public void UpdateModificationDate()
+    {
+        ModifiedDate = DateTime.Now;
+    }
+    #endregion
+
+    #region Private Methods
+    private bool IsValidEmail(string email)
+    {
+        return new EmailAddressAttribute().IsValid(email);
+    }
+
+    /// <summary>
+    /// Parsuje istniejący nagłówek pliku
+    /// </summary>
+    /// <param name="headerContent">Zawartość nagłówka</param>
+    /// <returns>True jeśli parsowanie się powiodło</returns>
+    private bool TryParseHeader(string headerContent)
+    {
+        // TODO: Implementacja parsowania z użyciem regex
+        return false;
+    }
+    #endregion
+}
+
+/// <summary>
+/// Klasa pomocnicza dla szablonów nagłówków
+/// </summary>
+internal class Template
+{
+    public string Value { get; } = "Default template";
+}
+
+// OtherInformation: Compare this snippet from F:\dev\.softbery\FileManager.cs
+// Version: 0.1.0.2
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Linq;
+
+namespace VerberyCore
+{
+    /// <summary>
+    /// Manager plików odpowiedzialny za operacje na drzewie katalogów i wersjonowanie plików
+    /// </summary>
+    public static partial class FileManager
+    {
+        private static readonly List<Tree> _trees = new();
+        private static readonly List<string> _ignorePatterns = new();
+
+        /// <summary>
+        /// Lista plików i katalogów w drzewie
+        /// </summary>
+        public static List<Tree> FileList => new(_trees);
+
+        /// <summary>
+        /// Pobiera hierarchię plików i katalogów
+        /// </summary>
+        /// <param name="path">Ścieżka startowa</param>
+        /// <returns>Lista elementów drzewa</returns>
+        public static List<Tree> GetDataTree(string path)
+        {
+            _trees.Clear();
+            LoadIgnorePatterns(path);
+            if (!IgnoreDirectory(new DirectoryInfo(path)))
+            {
+                return ProcessDirectory(path);
+            }
+            return _trees;
+        }
+
+        /// <summary>
+        /// Loads ignore patterns from the .sb/.ignore file
+        /// </summary>
+        /// <param name="basePath">Base path where the ignore file is located</param>
+        private static void LoadIgnorePatterns(string basePath)
+        {
+            try
+            {
+                string ignoreFilePath = Path.Combine(basePath, ".sb", ".ignore");
+                _ignorePatterns.Clear();
+
+                if (File.Exists(ignoreFilePath))
+                {
+                    var patterns = File.ReadAllLines(ignoreFilePath)
+                        .Select(line => line.Trim())
+                        .Where(line => !string.IsNullOrEmpty(line) && !line.StartsWith("#"));
+
+                    foreach (var pattern in patterns)
+                    {
+                        string normalizedPattern = pattern;
+                        if (!pattern.StartsWith("/") && !pattern.StartsWith("\\"))
+                        {
+                            normalizedPattern = Path.Combine(basePath, pattern);
+                        }
+                        else
+                        {
+                            normalizedPattern = Path.Combine(basePath, pattern.Substring(1));
+                        }
+                        _ignorePatterns.Add(normalizedPattern.Replace("/", "\\"));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+        }
+
+        private static bool IgnoreDirectory(DirectoryInfo dir)
+        {
+            try
+            {
+                string normalizedDirPath = dir.FullName.Replace("/", "\\");
+
+                foreach (var pattern in _ignorePatterns)
+                {
+                    if (normalizedDirPath.Equals(pattern, StringComparison.OrdinalIgnoreCase) ||
+                        normalizedDirPath.StartsWith(pattern + "\\", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine($"Ignoring directory: {dir.FullName}");
+                        return true;
+                    }
+
+                    if (pattern.Contains("*") || pattern.Contains("?"))
+                    {
+                        string regexPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "$";
+                        if (Regex.IsMatch(normalizedDirPath, regexPattern, RegexOptions.IgnoreCase))
+                        {
+                            Console.WriteLine($"Ignoring directory (pattern match): {dir.FullName}");
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+            return false;
+        }
+
+        private static List<Tree> ProcessDirectory(string path)
+        {
+            try
+            {
+                var directoryInfo = new DirectoryInfo(path);
+
+                ProcessFiles(directoryInfo);
+                ProcessSubdirectories(directoryInfo);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+            return _trees;
+        }
+
+        private static void ProcessFiles(DirectoryInfo directory)
+        {
+            foreach (var file in directory.GetFiles().Where(f => f.Exists && !IgnoreFile(f) && IsFileAccessible(f)))
+            {
+                var fileTree = CreateFileTreeItem(file, directory);
+                AddTreeItem(fileTree, isCsFile: file.Extension.Equals(".cs", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        /// <summary>
+        /// Checks if a file is accessible (not locked by another process)
+        /// </summary>
+        /// <param name="file">FileInfo object to check</param>
+        /// <returns>True if the file is accessible, false otherwise</returns>
+        private static bool IsFileAccessible(FileInfo file)
+        {
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+                return true;
+            }
+            catch (IOException)
+            {
+                Console.WriteLine($"Skipping file (in use by another process): {file.FullName}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+                return false;
+            }
+        }
+
+        private static bool IgnoreFile(FileInfo file)
+        {
+            try
+            {
+                string normalizedFilePath = file.FullName.Replace("/", "\\");
+
+                foreach (var pattern in _ignorePatterns)
+                {
+                    if (normalizedFilePath.Equals(pattern, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine($"Ignoring file: {file.FullName}");
+                        return true;
+                    }
+
+                    if (pattern.Contains("*") || pattern.Contains("?"))
+                    {
+                        string regexPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "$";
+                        if (Regex.IsMatch(normalizedFilePath, regexPattern, RegexOptions.IgnoreCase))
+                        {
+                            Console.WriteLine($"Ignoring file (pattern match): {file.FullName}");
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+            return false;
+        }
+
+        private static void ProcessSubdirectories(DirectoryInfo directory)
+        {
+            if (!IgnoreDirectory(directory))
+            {
+                foreach (var subDir in directory.GetDirectories().Where(d => d.Exists))
+                {
+                    ProcessDirectory(subDir.FullName);
+                }
+            }
+        }
+
+        private static Tree CreateFileTreeItem(FileInfo info, DirectoryInfo parent)
+        {
+            return new Tree
+            {
+                Name = info.Name,
+                Path = info.FullName,
+                FileType = info is FileInfo ? FileType.file : FileType.directory,
+                Info = info,
+                Directory = new DirectoryTree(parent.FullName),
+                Hash = (info is FileInfo file && IsFileAccessible(file)) ? file.CheckMD5() : string.Empty
+            };
+        }
+
+        private static void AddTreeItem(Tree item, bool isCsFile)
+        {
+            if (_trees.Any(t => t.Path == item.Path)) return;
+
+            if (isCsFile)
+            {
+                UpdateFileVersion(item.Path);
+            }
+            _trees.Add(item);
+        }
+
+        /// <summary>
+        /// Aktualizuje wersję w pliku
+        /// </summary>
+        /// <param name="filePath">Ścieżka do pliku</param>
+        public static void UpdateFileVersion(string filePath)
+        {
+            try
+            {
+                var fileInfo = new FileInfo(filePath);
+                if (!IsFileAccessible(fileInfo))
+                {
+                    Console.WriteLine($"Cannot update version for {filePath}: File is in use.");
+                    return;
+                }
+
+                var originalLines = File.ReadAllLines(filePath);
+                var originalContent = string.Join(Environment.NewLine, originalLines);
+                var updatedLines = ProcessVersionLines(originalLines).ToArray();
+                var updatedContent = string.Join(Environment.NewLine, updatedLines);
+
+                // Sprawdzenie, czy zawartość się zmieniła
+                if (originalContent == updatedContent)
+                {
+                    Console.WriteLine($"[VERBERY]: No changes detected in version file {filePath}. Skipping update.");
+                    return;
+                }
+
+                File.WriteAllLines(filePath, updatedLines);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
+        }
+
+        private static IEnumerable<string> ProcessVersionLines(string[] lines)
+        {
+            var versionLineIndex = -1;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (VersionRegex().IsMatch(lines[i]))
+                {
+                    versionLineIndex = i;
+                    yield return ReplaceVersion(lines[i]);
+                    continue;
+                }
+                yield return lines[i];
+            }
+
+            if (versionLineIndex == -1)
+            {
+                yield return GenerateNewVersionLine();
+            }
+        }
+
+        private static string ReplaceVersion(string line)
+        {
+            var versionMatch = VersionNumberRegex().Match(line);
+            if (!versionMatch.Success) return line;
+
+            var version = new DebugVersion
+            {
+                Major = int.Parse(versionMatch.Groups[1].Value),
+                Minor = int.Parse(versionMatch.Groups[2].Value),
+                Build = int.Parse(versionMatch.Groups[3].Value),
+                Revision = int.Parse(versionMatch.Groups[4].Value)
+            };
+
+            var newVersion = VersionManager.IncrementVersion(version);
+            return $"// Version: {newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}";
+        }
+
+        private static string GenerateNewVersionLine()
+        {
+            var defaultVersion = new DebugVersion { Major = 0, Minor = 1, Build = 0, Revision = 0 };
+            return $"// Version: {defaultVersion.Major}.{defaultVersion.Minor}.{defaultVersion.Build}.{defaultVersion.Revision}";
+        }
+
+        private static void HandleError(Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Error: {ex.Message}");
+            Console.ResetColor();
+        }
+
+        [GeneratedRegex(@"^//.*Version:\s*(\d+)\.(\d+)\.(\d+)\.(\d+)")]
+        private static partial Regex VersionNumberRegex();
+
+        [GeneratedRegex(@"^//.*Version:")]
+        private static partial Regex VersionRegex();
+
+        internal static void CreateDefaultConfig(DirectoryInfo path)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+// OtherInformation: Compare this snippet from F:\dev\.softbery\Program.cs
+// Version: 1.0.1.2
+/* 
+ * LICENSE MIT License
+ * 
+ * Copyright (c) 2023-2024 Softbery by Paweł Tobis
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Author						        : Paweł Tobis
+ * Email							    : VerberyCore@gmail.com
+ * Description					    : 
+ * Create						        : 2023-03-12 04:31:42
+ * Last Modification Date    : 2025-05-05 19:34:04
+ *
+ *
+ * *****************************************************************
+ * 
+ * APPLICATION - VERBERY
+ *
+ * ******************************************************************
+ *
+ * CHANGELOG:
+ * Główne poprawki obejmują:
+ *      - Aktualizacja informacji o prawach autorskich
+ *      - Usunięcie nieużywanych przestrzeni nazw
+ *      - Poprawa obsługi plików:
+ *      - Lepsze zarządzanie strumieniami plików
+ *      - Użycie StringBuildera do budowania zawartości
+ * Ulepszone parsowanie plików:
+ *      - Jednolita metoda parsowania z użyciem wyrażeń lambda
+ *      - Lepszą obsługę typów plików
+ * Poprawa porównywania wersji:
+ *      - Właściwe porównywanie obiektów Tree
+ *      - Lepsze wykrywanie zmian
+ * Bezpieczniejsza obsługa wersji:
+ *      - Walidacja formatu wersji
+ *      - Obsługa błędów parsowania
+ * Optymalizacja kodu:
+ *      - Użycie LINQ i nowszych funkcjonalności C#
+ *      - Lepsze formatowanie wyjścia konsoli
+ * Poprawy czytelności:
+ *      - Spójne formatowanie
+ *      - Bardziej opisowe nazwy zmiennych
+ * Obsługa błędów:
+ *      - Sprawdzanie poprawności danych wejściowych
+ *      - Defaultowe wartości w przypadku błędów
+ *      
+ * Kod wymaga jeszcze implementacji brakujących klas 
+ * (Tree, FileManager, DebugVersion, Ver), ale główne 
+ * problemy logiczne i strukturalne zostały rozwiązane.
+ * 
+ * ****************************************************************
+ * Główne zmiany i usprawnienia:
+ * Podział odpowiedzialności:
+ *      - ProcessFileVersioning - zarządzanie wersjami plików
+ *      - HandleApplicationVersion - obsługa wersji aplikacji
+ *      - DisplayVersionInfo - prezentacja informacji o wersji
+ * Zastosowanie zasad SOLID:
+ *      - Single Responsibility - każda metoda wykonuje jedną logiczną operację
+ *      -  Open/Closed - łatwe rozszerzanie funkcjonalności bez modyfikacji istniejących metod
+ *      -  Dependency Inversion - wyraźne rozdzielenie warstw logiki
+ * Poprawa czytelności:
+ *      - Jasne nazwy metod opisujące ich funkcjonalność
+ *      - Usunięcie powtarzającego się kodu
+ *      - Lepsze zarządzanie stanem poprzez parametry metod
+ * Bezpieczeństwo:
+ *      - Spójna obsługa błędów
+ *      - Walidacja danych wejściowych
+ *      - Bezpieczne operacje na plikach
+ * Optymalizacja:
+ *      - Minimalizacja operacji I/O
+ *      - Efektywne wykorzystanie pamięci (StringBuilder)
+ *      - Lepsze zarządzanie zasobami
+ * 
+ * Każda metoda może być teraz testowana niezależnie, 
+ * a modyfikacja jednej funkcjonalności nie wpływa na 
+ * inne części systemu.
+ * 
+ * *****************************************************************
+ * Wyjaśnienie zmian:
+ * Użycie Cast<Match>() na MatchCollection:
+ *      - Regex.Matches zwraca MatchCollection, która jest kolekcją niegeneryczną. Aby móc używać LINQ, należy ją rzutować na IEnumerable<Match> za pomocą Cast<Match>().
+ * Usunięcie zbędnego Cast<Match>() dla pojedynczego Match:
+ *      - Każdy element w MatchCollection jest już obiektem Match, więc nie ma potrzeby ponownego rzutowania.
+ * Poprawa struktury nawiasów:
+ *      - Dodano brakujące nawiasy, aby prawidłowo grupować operacje dla każdego wzorca (p).
+ * Sprawdzenie istnienia grupy 1:
+ *      - Jeśli wyrażenie regularne nie zawiera grupy 1 (indeks 1), dostęp do m.Groups[1] spowoduje błąd. Upewnij się, że wzorce zawierają co najmniej jedną grupę przechwytującą (np. (.*?)).
+ * 
+ * Jeśli istnieje możliwość, że grupa 1 nie istnieje, warto dodać sprawdzenie:
+ *
+ * var matches = patterns
+ *  .Select(p => Regex.Matches(content, p, RegexOptions.Multiline)
+ *      .Cast<Match>()
+ *      .Select(m => m.Groups.Count > 1 ? m.Groups[1].Value.Trim() : string.Empty)
+ *      .ToList())
+ *  .ToList();
+ * 
+ * Ta modyfikacja zabezpiecza przed próbą dostępu do nieistniejącej grupy.
+ * 
+ * ******************************************************************
+ * Dodatkowe usprawnienia dokumentacji:
+ * 1. Pełne opisy klas głównych (Program, Tree, DebugVersion)
+ * 2. Dokumentacja wszystkich właściwości
+ * 3. Opisy parametrów metod
+ * 4. Zwracanych wartości
+ * 5. Dokumentacja enum FileType
+ * 6. Spójna konwencja opisów
+ * 7. Jasne określenie odpowiedzialności klas
+ * 8. Opisy typów zwracanych w komentarzach
+ *
+ * Dokumentacja spełnia standardy IntelliSense i może być 
+ * wykorzystana do automatycznego generowania dokumentacji 
+ * technicznej przy użyciu narzędzi takich jak Sandcastle lub DocFX.
+ * 
+ * *****************************************************************
+ * 
+ */
+
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace VerberyCore
+{
+    /// <summary>
+    /// Główna klasa aplikacji odpowiedzialna za zarządzanie wersjami plików i aplikacji
+    /// </summary>
+    public class Program
+    {
+        private static List<Tree> _trees = new List<Tree>();
+        private static string[]? _args;
+
+        public static string DirectoryPath { get; set; } = ".sb";
+
+        /// <summary>
+        /// Konfiguracja aplikacji
+        /// </summary>
+        public static Conf? Config { get; set; }
+
+        /// <summary>
+        /// Główny punkt wejścia aplikacji
+        /// </summary>
+        /// <param name="args">Argumenty wiersza poleceń</param>
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("[VERBERY]: Starting application...");
+            _args = args;
+            var cli = new Cli(args);
+
+            try
+            {
+                InitializeConfiguration();
+                ProcessFileVersioning();
+                HandleApplicationVersion();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Inicjalizuje konfigurację aplikacji
+        /// </summary>
+        private static void InitializeConfiguration()
+        {
+            try
+            {
+                var configFile = new FileInfo($"{DirectoryPath}/.sbconf");
+                var configFiles = new List<FileInfo> { configFile };
+
+                //Config = new Conf(_args);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.ToString()}");
+            }
+        }
+
+        /// <summary>
+        /// Przeprowadza proces wersjonowania plików
+        /// </summary>
+        private static void ProcessFileVersioning()
+        {
+            _trees = FileManager.GetDataTree("./");
+
+            var tempContent = GenerateFileTreeContent();
+            if (string.IsNullOrEmpty(tempContent))
+            {
+                Console.WriteLine("[VERBERY]: No files to process.");
+                return;
+            }
+
+            Console.WriteLine("[VERBERY]: Processing file versions...");
+
+            // Sprawdzenie lub utworzenie katalogu
+            CheckDirectoryOrCreate(DirectoryPath, FileAttributes.Directory | FileAttributes.Hidden);
+
+            if (!File.Exists($"{DirectoryPath}/.sbver_files_temp"))
+                File.CreateText($"{DirectoryPath}/.sbver_files_temp").Close();
+
+            try
+            {
+                File.WriteAllText($"{DirectoryPath}/.sbver_files_temp", tempContent);
+
+                var existingContent = File.Exists($"{DirectoryPath}/.sbver_files")
+                    ? File.ReadAllText($"{DirectoryPath}/.sbver_files")
+                    : string.Empty;
+
+                // Sprawdzenie, czy zawartość się zmieniła
+                if (tempContent == existingContent)
+                {
+                    Console.WriteLine("[VERBERY]: No changes detected in file versions. Skipping update.");
+                    File.Delete($"{DirectoryPath}/.sbver_files_temp"); // Usunięcie tymczasowego pliku
+                    return;
+                }
+
+                var changes = FindChangedFiles(tempContent, existingContent);
+
+                if (changes.Any())
+                {
+                    try
+                    {
+                        CreateBackupFile(changes);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.ToString()}");
+                    }
+                }
+
+                if (File.Exists($"{DirectoryPath}/.sbver_files"))
+                {
+                    File.Replace($"{DirectoryPath}/.sbver_files_temp", $"{DirectoryPath}/.sbver_files", null);
+                }
+                else
+                {
+                    File.Move($"{DirectoryPath}/.sbver_files_temp", $"{DirectoryPath}/.sbver_files");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message} {ex.StackTrace}");
+            }
+        }
+
+        /// <summary>
+        /// Generuje zawartość drzewa plików w formacie tekstowym
+        /// </summary>
+        /// <returns>Tekstowa reprezentacja drzewa plików</returns>
+        private static string GenerateFileTreeContent()
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < _trees.Count; i++)
+            {
+                sb.AppendLine($"ID: {i}");
+                sb.AppendLine($"file name: {_trees[i].Name}");
+                sb.AppendLine($"file path: {_trees[i].Path}");
+                sb.AppendLine($"file type: {_trees[i].FileType}");
+                sb.AppendLine($"file hash: {_trees[i].Hash}");
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Wykrywa zmienione pliki między dwiema wersjami
+        /// </summary>
+        /// <param name="tempContent">Zawartość tymczasowej wersji plików</param>
+        /// <param name="existingContent">Zawartość istniejącej wersji plików</param>
+        /// <returns>Lista zmienionych plików</returns>
+        private static List<Tree> FindChangedFiles(string tempContent, string existingContent)
+        {
+            var tempFiles = ParseFileContent(tempContent);
+            var existingFiles = ParseFileContent(existingContent);
+
+            return existingFiles
+                .Where(ef => !tempFiles.Any(tf =>
+                    tf.Path == ef.Path &&
+                    tf.Hash != ef.Hash))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Parsuje zawartość pliku wersji na listę obiektów Tree
+        /// </summary>
+        /// <param name="content">Zawartość pliku do parsowania</param>
+        /// <returns>Lista obiektów Tree reprezentujących pliki</returns>
+        private static List<Tree> ParseFileContent(string content)
+        {
+            if (string.IsNullOrEmpty(content))
+                return new List<Tree>();
+
+            var patterns = new[] {
+                @"file name: (.*)",
+                @"file path: (.*)",
+                @"file type: (.*)",
+                @"file hash: (.*)"
+            };
+
+            var matches = patterns
+                .Select(p => Regex.Matches(content, p, RegexOptions.Multiline)
+                    .Cast<Match>()
+                    .Select(m => m.Groups.Count > 1 ? m.Groups[1].Value.Trim() : string.Empty)
+                    .ToList())
+                .ToList();
+
+            return matches[0].Select((_, i) => new Tree
+            {
+                Name = matches[0][i],
+                Path = matches[1][i],
+                FileType = Enum.Parse<FileType>(matches[2][i]),
+                Hash = matches[3][i]
+            }).ToList();
+        }
+
+        /// <summary>
+        /// Tworzy plik backupu ze zmienionymi plikami
+        /// </summary>
+        /// <param name="changes">Lista zmienionych plików</param>
+        private static void CreateBackupFile(List<Tree> changes)
+        {
+            var backupContent = string.Join(Environment.NewLine,
+                changes.Select(c => $"{c.Name}{Environment.NewLine}{c.Hash}"));
+            File.WriteAllText($"{DirectoryPath}/.sbver_backup", backupContent);
+        }
+
+        /// <summary>
+        /// Zarządza wersją aplikacji
+        /// </summary>
+        private static void HandleApplicationVersion()
+        {
+            var versionInfo = GetCurrentVersion();
+            var newVersion = VersionManager.IncrementVersion(versionInfo);
+
+            try
+            {
+                UpdateVersionFile(newVersion);
+                DisplayVersionInfo(versionInfo, newVersion);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Pobiera aktualną wersję aplikacji z pliku
+        /// </summary>
+        /// <returns>Obiekt DebugVersion z aktualną wersją</returns>
+        private static DebugVersion GetCurrentVersion()
+        {
+            const string defaultVersion = "0.1.0.0";
+            var versionFile = $"{DirectoryPath}/.sbver";
+
+            CheckDirectoryOrCreate(DirectoryPath, FileAttributes.Directory | FileAttributes.Hidden);
+
+            if (!File.Exists(versionFile))
+            {
+                File.WriteAllText(versionFile, defaultVersion);
+            }
+
+            var versionText = File.ReadAllText(versionFile).Trim();
+            var versionParts = versionText.Split('.', StringSplitOptions.RemoveEmptyEntries);
+
+            if (versionParts.Length != 4 || !versionParts.All(p => int.TryParse(p, out _)))
+            {
+                versionParts = defaultVersion.Split('.');
+            }
+
+            return new DebugVersion
+            {
+                Major = int.Parse(versionParts[0]),
+                Minor = int.Parse(versionParts[1]),
+                Build = int.Parse(versionParts[2]),
+                Revision = int.Parse(versionParts[3])
+            };
+        }
+
+        /// <summary>
+        /// Pobiera aktualną wersję aplikacji
+        /// </summary>
+        /// <returns>Aktualna wersja</returns>
+        public static DebugVersion GetVersion()
+        {
+            return GetCurrentVersion();
+        }
+
+        /// <summary>
+        /// Aktualizuje plik z wersją aplikacji
+        /// </summary>
+        /// <param name="newVersion">Nowy numer wersji</param>
+        private static void UpdateVersionFile(DebugVersion newVersion)
+        {
+            File.WriteAllText($"{DirectoryPath}/.sbver",
+                $"{newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}");
+        }
+
+        /// <summary>
+        /// Wyświetla informacje o wersji w konsoli
+        /// </summary>
+        /// <param name="currentVersion">Aktualna wersja aplikacji</param>
+        /// <param name="newVersion">Nowa wersja aplikacji</param>
+        private static void DisplayVersionInfo(DebugVersion currentVersion, DebugVersion newVersion)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var assemblyName = assembly.GetName();
+
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine($"""
+                {Environment.NewLine}{assemblyName.Name?.ToUpper()} ver.{assemblyName.Version}
+                
+                -- VERBERY APPLICATION --
+                
+                Current thread      : {Environment.CurrentManagedThreadId}
+                Current process     : {Environment.ProcessId}
+                Current user        : {Environment.UserName}
+                Current OS          : {Environment.OSVersion}
+                Current version     : {currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}.{currentVersion.Revision}
+                New version         : {newVersion.Major}.{newVersion.Minor}.{newVersion.Build}.{newVersion.Revision}
+                """);
+            Console.ResetColor();
+        }
+
+        /// <summary>
+        /// Checks if the directory exists, and creates it with specified attributes if it does not
+        /// </summary>
+        /// <param name="path">Directory path</param>
+        /// <param name="attributes">Directory attributes, like FileAttributes.Encrypted or FileAttributes.Hidden, etc.</param>
+        public static void CheckDirectoryOrCreate(string path, FileAttributes attributes)
+        {
+            var directoryInfo = new DirectoryInfo(path);
+
+            if (!directoryInfo.Exists)
+            {
+                directoryInfo.Create();
+                directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+            }
+            else
+            {
+                // If the directory exists, ensure it has the correct attributes
+                // Check if the directory has the specified attributes and add them if not
+                if ((directoryInfo.Attributes & attributes) != attributes)
+                {
+                    directoryInfo.Attributes |= attributes;
+                }
+            }
+        }
+    }
+}
+
+// OtherInformation: Compare this snippet from F:\dev\.softbery\Tree.cs
+// Version: 1.0.1.2
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VerberyCore
+{
+    /// <summary>
+    /// Typy plik�w obs�ugiwane przez system
+    /// </summary>
+    public enum FileType
+	{
+        /// <summary>
+        /// Zwyk�y plik
+        /// </summary>
+        file,
+        /// <summary>
+        /// Katalog
+        /// </summary>
+        directory,
+        /// <summary>
+        /// Link symboliczny
+        /// </summary>
+        symlink
+    }
+
+    /// <summary>
+    /// Reprezentuje pojedynczy plik w systemie wersjonowania
+    /// </summary>
+    public class Tree
+	{
+        /// <summary>
+        /// Nazwa pliku
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// �cie�ka do pliku
+        /// </summary>
+        public string Path { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Typ pliku (enum FileType)
+        /// </summary>
+        public FileType FileType { get; set; }
+
+        /// <summary>
+        /// Skr�t pliku (hash)
+        /// </summary>
+        public string? Hash { get; set; }
+        /// <summary>
+        /// Drzewo katalog�w
+        /// </summary>
+        public DirectoryTree? Directory { get; set; }
+        /// <summary>
+        /// Informacje o pliku
+        /// </summary>
+        public FileInfo? Info { get; set; }
+        /// <summary>
+        /// Pe�na �cie�ka do pliku
+        /// </summary>
+        public string? FullPath { get; set; }
+        /// <summary>
+        /// Wersja pliku
+        /// </summary>
+        public string? Version { get; set; }
+    }
+
+    /// <summary>
+    /// Reprezentuje drzewo katalog�w
+    /// </summary>
+	public class DirectoryTree
+	{
+        /// <summary>
+        /// Nazwa katalogu
+        /// </summary>
+		public string Name { get; set; }
+        /// <summary>
+        /// �cie�ka do katalogu
+        /// </summary>
+		public string Path { get; set; }
+        /// <summary>
+        /// Informacja o katalogu
+        /// </summary>
+		public DirectoryInfo Info { get; set; }
+        /// <summary>
+        /// Typ katalogu (enum FileType)
+        /// </summary>
+		public FileType FileType { get; set; }
+
+        /// <summary>
+        /// Inicjalizuje nowy obiekt DirectoryTree
+        /// </summary>
+        /// <param name="path">�cie�ka do listy katalogu.</param>
+        public DirectoryTree(string path)
+        {
+            Path = path;
+            Info = new DirectoryInfo(path);
+            Name = Info.Name;
+            FileType = FileType.directory;
+        }
+
+    }
+}
+
+// OtherInformation: Compare this snippet from F:\dev\.softbery\VersionManager.cs
+// Version: 1.0.1.2
+/*
+ * Główne usprawnienia:
+ * 1. Pełna dokumentacja XML z opisami wyjątków
+ * 2. Lepsze nazewnictwo metod i stałych
+ * 3. Separacja odpowiedzialności:
+ *      - Logika inkrementacji w osobnej metodzie
+ *      - Przetwarzanie plików w wydzielonych metodach
+ * 4. Bezpieczeństwo:
+ *      - Obsługa błędów I/O
+ *      - Walidacja danych wejściowych
+ * 5. Optymalizacja:
+ *      - Wygenerowane regexy dla lepszej wydajności
+ *      - Stałe dla wartości granicznych
+ * 6. Zgodność z SEMVER:
+ *      - Jasne zasady inkrementacji wersji
+ *      - Ograniczenia wartości poszczególnych komponentów
+ * 7. Rozszerzalność:
+ *      - Możliwość łatwej modyfikacji zasad wersjonowania
+ *      - Obsługa różnych formatów plików
+ * 8. Lepsze komunikaty błędów:
+ *      - Kolorowe wyjęcie diagnostyczne
+ *      - Szczegółowe informacje o błędach
+ * 
+ * Nowe funkcjonalności:
+ *      - Obsługa błędów przekroczenia maksymalnych wartości
+ *      - Automatyczne dodawanie nagłówka wersji jeśli brak
+ *      - Wsparcie dla różnych formatów komentarzy
+ *      - Bezpieczne operacje na plikach
+ * 
+ * Kod jest teraz bardziej odporny na błędy i łatwiejszy w
+ * utrzymaniu, z zachowaniem pełnej zgodności wstecznej.
+ */
+
+using System.Text.RegularExpressions;
+
+namespace VerberyCore
+{
+    /// <summary>
+    /// Reprezentuje numer wersji aplikacji w formacie Major.Minor.Build.Revision
+    /// </summary>
+    public class DebugVersion
+    {
+        /// <summary>
+        /// Main version number (zmiana oznacza brak kompatybilności wstecznej)
+        /// </summary>
+        public int Major { get; set; }
+
+        /// <summary>
+        /// Second version number (new functionalities while maintaining compatibility)
+        /// </summary>
+        public int Minor { get; set; }
+
+        /// <summary>
+        /// Build number (bug fixes and minor changes)
+        /// </summary>
+        public int Build { get; set; }
+
+        /// <summary>
+        /// Revision number (automatic increment)
+        /// </summary>
+        public int Revision { get; set; }
+
+        /// <summary>
+        /// Returns a formatted representation of the version
+        /// </summary>
+        public override string ToString() => $"{Major}.{Minor}.{Build}.{Revision}";
+    }
+
+    /// <summary>
+    /// Manages application versions according to the principles of semantic versioning
+    /// </summary>
+    public static partial class VersionManager
+    {
+        #region Constants
+        private const int MAX_REVISION = 99;
+        private const int MAX_BUILD = 99;
+        private const int MAX_MINOR = 12;
+        private const int MAX_MAJOR = int.MaxValue;
+        #endregion
+
+        /// <summary>
+        /// Aktualizuje numer wersji w podanym pliku
+        /// </summary>
+        /// <param name="filePath">Ścieżka do pliku</param>
+        /// <exception cref="FileNotFoundException">Gdy plik nie istnieje</exception>
+        /// <exception cref="UnauthorizedAccessException">Brak uprawnień do zapisu</exception>
+        public static void UpdateVersion(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine(new FileNotFoundException("Plik nie istnieje", filePath).Message);
+                return;
+            }
+
+            try
+            {
+                var originalLines = File.ReadAllLines(filePath);
+                var originalContent = string.Join(Environment.NewLine, originalLines);
+                var updatedLines = ProcessVersionLines(originalLines);
+                var updatedContent = string.Join(Environment.NewLine, updatedLines);
+
+                // Sprawdzenie, czy zawartość się zmieniła
+                if (originalContent == updatedContent)
+                {
+                    Console.WriteLine($"[VERBERY]: No changes detected in version file {filePath}. Skipping update.");
+                    return;
+                }
+
+                File.WriteAllLines(filePath, updatedLines);
+            }
+            catch (Exception ex)
+            {
+                HandleVersionUpdateError(ex, filePath);
+            }
+        }
+
+        /// <summary>
+        /// Inkrementuje numer wersji zgodnie z zasadami semantycznego wersjonowania
+        /// </summary>
+        /// <param name="currentVersion">Aktualna wersja</param>
+        /// <returns>Nowa wersja</returns>
+        public static DebugVersion IncrementVersion(DebugVersion currentVersion)
+        {
+            var newVersion = new DebugVersion
+            {
+                Major = currentVersion.Major,
+                Minor = currentVersion.Minor,
+                Build = currentVersion.Build,
+                Revision = currentVersion.Revision
+            };
+
+            newVersion.Revision++;
+
+            if (newVersion.Revision > MAX_REVISION)
+            {
+                newVersion.Revision = 0;
+                newVersion.Build++;
+            }
+
+            if (newVersion.Build > MAX_BUILD)
+            {
+                newVersion.Build = 0;
+                newVersion.Minor++;
+            }
+
+            if (newVersion.Minor > MAX_MINOR)
+            {
+                newVersion.Minor = 0;
+                newVersion.Major++;
+            }
+
+            if (newVersion.Major > MAX_MAJOR)
+            {
+                throw new OverflowException("Osiągnięto maksymalną wartość wersji głównej");
+            }
+
+            return newVersion;
+        }
+
+        #region Private Methods
+        private static string[] ProcessVersionLines(string[] lines)
+        {
+            var versionFound = false;
+            var newLines = new string[lines.Length];
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (VersionRegex().IsMatch(lines[i]))
+                {
+                    newLines[i] = UpdateVersionLine(lines[i]);
+                    versionFound = true;
+                }
+                else
+                {
+                    newLines[i] = lines[i];
+                }
+            }
+
+            if (!versionFound)
+            {
+                var list = newLines.ToList();
+                list.Insert(0, GenerateNewVersionHeader());
+                return list.ToArray();
+            }
+
+            return newLines;
+        }
+
+        private static string UpdateVersionLine(string line)
+        {
+            var match = VersionNumberRegex().Match(line);
+            if (!match.Success) return line;
+
+            var currentVersion = new DebugVersion
+            {
+                Major = int.Parse(match.Groups[1].Value),
+                Minor = int.Parse(match.Groups[2].Value),
+                Build = int.Parse(match.Groups[3].Value),
+                Revision = int.Parse(match.Groups[4].Value)
+            };
+
+            var newVersion = IncrementVersion(currentVersion);
+            return $"// Version: {newVersion}";
+        }
+
+        private static string GenerateNewVersionHeader() => "// Version: 0.1.0.0";
+
+        private static void HandleVersionUpdateError(Exception ex, string filePath)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Błąd aktualizacji wersji w pliku {filePath}:");
+            Console.WriteLine(ex.Message);
+            Console.ResetColor();
+        }
+        #endregion
+
+        #region Generated Regex
+        [GeneratedRegex(@"^//.*Version:\s*(\d+)\.(\d+)\.(\d+)\.(\d+)", RegexOptions.IgnoreCase)]
+        private static partial Regex VersionNumberRegex();
+
+        [GeneratedRegex(@"^//.*Version:", RegexOptions.IgnoreCase)]
+        private static partial Regex VersionRegex();
+
+        /// <summary>
+        /// Returns the current version of the application
+        /// </summary>
+        /// <returns></returns>
+        internal static DebugVersion GetCurrentVersion()
+        {
+            return new DebugVersion() { Build = 0, Major = 1, Minor = 0, Revision = 0 };
+        }
+
+        /// <summary>
+        /// Update the version file with the new version
+        /// </summary>
+        /// <param name="newVersion"></param>
+        internal static void UpdateVersionFile(DebugVersion newVersion)
+        {
+            var dv = new DebugVersion()
+            {
+                Major = newVersion.Major,
+                Minor = newVersion.Minor,
+                Build = newVersion.Build,
+                Revision = newVersion.Revision
+            };
+        }
+
+        /// <summary>
+        /// Parses a version string in the format Major.Minor.Build.Revision
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        internal static DebugVersion ParseVersion(string version)
+        {
+            return new DebugVersion()
+            {
+                Major = int.Parse(version.Split('.')[0]),
+                Minor = int.Parse(version.Split('.')[1]),
+                Build = int.Parse(version.Split('.')[2]),
+                Revision = int.Parse(version.Split('.')[3])
+            };
+        }
+        #endregion
+    }
+}
+
