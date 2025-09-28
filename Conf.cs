@@ -1,4 +1,4 @@
-// Version: 10.0.1.5
+// Version: 10.0.1.6
 /*
  * CHANGES:
  * G��wne zmiany i usprawnienia:
